@@ -112,7 +112,7 @@
         <button id="exportLogButton" class="power-switch">Export Log</button>
     </div>
 
-    <!-- 🟢 NEW SCOPE WINDOW: Square Canvas to maintain perfect radar circular dimensions -->
+    <!-- 🟢 MATRIX CANVAS SCREEN -->
     <canvas id="visualizerGrid" style="width: 100%; height: 260px; border: 1px solid #005500; background: #000500; margin-bottom: 15px; border-radius: 4px;"></canvas>
     
     <div id="trackInfo">Awaiting connection tracking initialization...</div>
@@ -141,9 +141,15 @@
     window.sessionLogRegistry = window.sessionLogRegistry || [];
     
     let audioContext, analyser, sourceNode;
-    let radarAngle = 0; // Tracks the rotating sweep hand coordinates
 
-    // Helper method: Cleans raw paths to isolate pure string names
+    // 🟢 INITIALIZE MATRIX FALL TRACKER CONTEXT
+    const matrixDrops = [];
+    const columns = 24; 
+    for (let i = 0; i < columns; i++) {
+        matrixDrops[i] = Math.random() * -100; 
+    }
+
+    // Helper method: Cleans raw paths to isolate pure string names [FIXED TO JAVASCRIPT]
     function getCleanTrackName(srcUrl) {
         if (!srcUrl) return "Unknown Track";
         return decodeURIComponent(srcUrl.substring(srcUrl.lastIndexOf('/') + 1));
@@ -165,7 +171,7 @@
         try {
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
             analyser = audioContext.createAnalyser();
-            analyser.fftSize = 64; // Creates retro tactical blocky layout bands
+            analyser.fftSize = 64; 
             
             sourceNode = audioContext.createMediaElementSource(audioPlayer);
             sourceNode.connect(analyser);
@@ -178,73 +184,51 @@
         }
     }
 
- // --- SECTION 23 METRIC DIGITAL RAIN MODULE ---
-// Save file as: skin_matrix.js
-
-let radarAngle = 0; // Guard variable to maintain background logic structure
-const matrixDrops = [];
-const columns = 24; // Number of vertical streams across the panel grid
-
-// Initialize drop vertical position layers once matrix is loaded
-for (let i = 0; i < columns; i++) {
-    matrixDrops[i] = Math.random() * -100; // Staggers start heights off-screen
-}
-
-function drawEqualizerGridLoop() {
-    requestAnimationFrame(drawEqualizerGridLoop);
-    
-    // Dynamic boundary canvas sync check
-    if (canvas.width !== canvas.clientWidth || canvas.height !== canvas.clientHeight) {
-        canvas.width = canvas.clientWidth;
-        canvas.height = canvas.clientHeight;
-    }
-    
-    const bufferLength = analyser ? analyser.frequencyBinCount : 32;
-    const dataArray = new Uint8Array(bufferLength);
-    if (analyser) {
-        analyser.getByteFrequencyData(dataArray);
-    }
-
-    // 🟢 CRT PHOSPHOR LAG: Fades old rows out to leave trailing rain tails
-    ctx.fillStyle = 'rgba(0, 12, 0, 0.12)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    const colWidth = canvas.width / columns;
-    ctx.font = '13px monospace';
-    ctx.shadowBlur = 4;
-    ctx.shadowColor = '#33ff33';
-
-    for (let i = 0; i < columns; i++) {
-        // Intercept frequency data to drive velocity parameters dynamically
-        const audioValue = dataArray[i % bufferLength] / 255;
+    // --- SECTION 23 DIGITAL RAIN REPAINT MATRIX ENGINE ---
+    function drawEqualizerGridLoop() {
+        requestAnimationFrame(drawEqualizerGridLoop);
         
-        // Base falling speed + acceleration multiplier from audio amplitude
-        const dropSpeed = 2 + (audioValue * 8);
-
-        // Generate a random Web 1.0 terminal code symbol
-        const char = String.fromCharCode(33 + Math.floor(Math.random() * 93));
+        if (canvas.width !== canvas.clientWidth || canvas.height !== canvas.clientHeight) {
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+        }
         
-        // High volume segments cause target stream heads to glow neon-white
-        if (audioValue > 0.75) {
-            ctx.fillStyle = '#ffffff';
-        } else {
-            ctx.fillStyle = '#33ff33';
+        const bufferLength = analyser ? analyser.frequencyBinCount : 32;
+        const dataArray = new Uint8Array(bufferLength);
+        if (analyser) {
+            analyser.getByteFrequencyData(dataArray);
         }
 
-        // Draw the streaming matrix character
-        ctx.fillText(char, i * colWidth + (colWidth / 4), matrixDrops[i]);
+        // Phosphor overlay trail to leave falling traces
+        ctx.fillStyle = 'rgba(0, 12, 0, 0.12)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Drive the coordinate point down the display viewport matrix
-        matrixDrops[i] += dropSpeed;
+        const colWidth = canvas.width / columns;
+        ctx.font = '13px monospace';
+        ctx.shadowBlur = 4;
+        ctx.shadowColor = '#33ff33';
 
-        // Reset system marker to top once drop clears the bottom baseline border
-        if (matrixDrops[i] > canvas.height && Math.random() > 0.95) {
-            matrixDrops[i] = 0;
+        for (let i = 0; i < columns; i++) {
+            const audioValue = dataArray[i % bufferLength] / 255;
+            const dropSpeed = 2 + (audioValue * 8); // Speeds streams up depending on volume intensity
+
+            // Web 1.0 terminal character selector
+            const char = String.fromCharCode(33 + Math.floor(Math.random() * 93));
+            
+            if (audioValue > 0.75) {
+                ctx.fillStyle = '#ffffff'; // Explodes white on raw peak amplitudes
+            } else {
+                ctx.fillStyle = '#33ff33';
+            }
+
+            ctx.fillText(char, i * colWidth + (colWidth / 4), matrixDrops[i]);
+            matrixDrops[i] += dropSpeed;
+
+            if (matrixDrops[i] > canvas.height && Math.random() > 0.95) {
+                matrixDrops[i] = 0;
+            }
         }
     }
-}
-
-
 
     // --- COMPREHENSIVE STREAM SEQUENCER ---
     async function playNextStreamTrack() {
@@ -280,12 +264,7 @@ function drawEqualizerGridLoop() {
         audioPlayer.src = decodedUrl;
         trackInfo.textContent = `Now playing: ${rawFileName}\n📡 [Queue: ${activeStreamingDeck.length} tracks remaining]`;
 
-        try {
-            await audioPlayer.play();
-            console.log(`📡 Streaming node locked: ${rawFileName} (${activeStreamingDeck.length} left)`);
-        } catch (playError) {
-            console.warn('⚠️ Playback blocked by browser policy. Awaiting manual user interaction.', playError);
-            trackInfo.textContent = '⚠️ Click "Connect" or hit the play bar below to force the stream.';
+                   trackInfo.textContent = '⚠️ Click "Connect" or hit the play bar below to force the stream.';
         }
     }
 
@@ -362,12 +341,14 @@ function drawEqualizerGridLoop() {
     document.getElementById('skipButton').addEventListener('click', playNextStreamTrack); 
     audioPlayer.addEventListener('ended', playNextStreamTrack);
 
-    // Initial dummy screen draw loop boot to showcase radar animation immediately on load
+    // Initial dummy screen draw loop boot to showcase digital rain immediately on load
     drawEqualizerGridLoop();
 </script>
 
 </body>
 </html>
+
+
 
 
 
