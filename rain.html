@@ -261,12 +261,18 @@
         const decodedUrl = decodeURIComponent(targetTrackUrl);
         const rawFileName = decodedUrl.substring(decodedUrl.lastIndexOf('/') + 1);
 
-        audioPlayer.src = decodedUrl;
-        trackInfo.textContent = `Now playing: ${rawFileName}\n📡 [Queue: ${activeStreamingDeck.length} tracks remaining]`;
+           audioPlayer.src = decodedUrl;
+    trackInfo.textContent = `Now playing: ${rawFileName}\n📡 [Queue: ${activeStreamingDeck.length} tracks remaining]`;
 
-                   trackInfo.textContent = '⚠️ Click "Connect" or hit the play bar below to force the stream.';
-        }
+    try {
+        await audioPlayer.play();
+        console.log(`📡 Streaming node locked: ${rawFileName} (${activeStreamingDeck.length} left)`);
+    } catch (playError) {
+        console.warn('⚠️ Playback blocked by browser policy. Awaiting manual user interaction.', playError);
+        trackInfo.textContent = '⚠️ Click "Connect" or hit the play bar below to force the stream.';
     }
+}
+
 
     // --- TELEMETRY LOGGER & DYNAMIC WALLPAPER MATRIX ENGINE ---
     audioPlayer.addEventListener('playing', function() {
