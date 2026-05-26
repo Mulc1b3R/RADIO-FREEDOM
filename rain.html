@@ -111,6 +111,16 @@
         <button id="skipButton" class="power-switch">Skip Track</button>
         <button id="exportLogButton" class="power-switch">Export Log</button>
     </div>
+    <!-- ⚙️ THE CHASSIS SKIN INTERFACE DROPDOWN -->
+<div style="margin: 15px 0 15px 0; text-align: left;">
+    <label for="skinSelect" style="font-size: 11px; color: #008800; letter-spacing: 1px;">CONSOLE SKIN:</label>
+    <select id="skinSelect" style="background: #000000; border: 1px solid #33ff33; color: #33ff33; font-family: 'Courier New', monospace; font-size: 12px; width: 100%; padding: 8px; margin-top: 5px; cursor: pointer; border-radius: 4px; text-shadow: none;">
+        <option value="radar">TACTICAL RADAR SCOPE</option>
+        <option value="matrix">DIGITAL CODE WATERFALL</option>
+        <option value="oscilloscope">LASER OSCILLOSCOPE</option>
+    </select>
+</div>
+
 
     <!-- 🟢 MATRIX CANVAS SCREEN -->
     <canvas id="visualizerGrid" style="width: 100%; height: 260px; border: 1px solid #005500; background: #000500; margin-bottom: 15px; border-radius: 4px;"></canvas>
@@ -142,27 +152,22 @@
     
     let audioContext, analyser, sourceNode;
 
-    // 🟢 INITIALIZE MATRIX FALL TRACKER CONTEXT
-    const matrixDrops = [];
-    const columns = 24; 
-    for (let i = 0; i < columns; i++) {
-        matrixDrops[i] = Math.random() * -100; 
+    // --- SECTION 23 DIGITAL RAIN REPAINT MATRIX ENGINE ---
+function drawEqualizerGridLoop() {
+    requestAnimationFrame(drawEqualizerGridLoop);
+    
+    if (canvas.width !== canvas.clientWidth || canvas.height !== canvas.clientHeight) {
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
+    }
+    
+    const bufferLength = analyser ? analyser.frequencyBinCount : 32;
+    const dataArray = new Uint8Array(bufferLength);
+    if (analyser) {
+        analyser.getByteFrequencyData(dataArray);
     }
 
-    // Helper method: Cleans raw paths to isolate pure string names [FIXED TO JAVASCRIPT]
-    function getCleanTrackName(srcUrl) {
-        if (!srcUrl) return "Unknown Track";
-        return decodeURIComponent(srcUrl.substring(srcUrl.lastIndexOf('/') + 1));
-    }
-
-    // High-Efficiency Fisher-Yates Randomisation Array Randomiser
-    function shuffleBroadcastDeck(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    }
+   
 
     // --- REAL-TIME AUDIO INTERCEPTOR EQUALIZER GRID ENGINE ---
     function initVisualizerEngine() {
