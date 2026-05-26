@@ -178,15 +178,72 @@
         }
     }
 
-   // --- SECTION 23 MATRIX WATERFALL VISUAL ENGINE ---
-// Save filename as: skin_matrix.js
-// Note: See [Source 1] for full code implementation.
+ // --- SECTION 23 METRIC DIGITAL RAIN MODULE ---
+// Save file as: skin_matrix.js
+
+let radarAngle = 0; // Guard variable to maintain background logic structure
+const matrixDrops = [];
+const columns = 24; // Number of vertical streams across the panel grid
+
+// Initialize drop vertical position layers once matrix is loaded
+for (let i = 0; i < columns; i++) {
+    matrixDrops[i] = Math.random() * -100; // Staggers start heights off-screen
+}
 
 function drawEqualizerGridLoop() {
     requestAnimationFrame(drawEqualizerGridLoop);
-    // ... (logic to update canvas size and analyze frequency data)
-    // ... (apply green shadow and fill color, draw random chars based on audio)
+    
+    // Dynamic boundary canvas sync check
+    if (canvas.width !== canvas.clientWidth || canvas.height !== canvas.clientHeight) {
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
+    }
+    
+    const bufferLength = analyser ? analyser.frequencyBinCount : 32;
+    const dataArray = new Uint8Array(bufferLength);
+    if (analyser) {
+        analyser.getByteFrequencyData(dataArray);
+    }
+
+    // 🟢 CRT PHOSPHOR LAG: Fades old rows out to leave trailing rain tails
+    ctx.fillStyle = 'rgba(0, 12, 0, 0.12)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    const colWidth = canvas.width / columns;
+    ctx.font = '13px monospace';
+    ctx.shadowBlur = 4;
+    ctx.shadowColor = '#33ff33';
+
+    for (let i = 0; i < columns; i++) {
+        // Intercept frequency data to drive velocity parameters dynamically
+        const audioValue = dataArray[i % bufferLength] / 255;
+        
+        // Base falling speed + acceleration multiplier from audio amplitude
+        const dropSpeed = 2 + (audioValue * 8);
+
+        // Generate a random Web 1.0 terminal code symbol
+        const char = String.fromCharCode(33 + Math.floor(Math.random() * 93));
+        
+        // High volume segments cause target stream heads to glow neon-white
+        if (audioValue > 0.75) {
+            ctx.fillStyle = '#ffffff';
+        } else {
+            ctx.fillStyle = '#33ff33';
+        }
+
+        // Draw the streaming matrix character
+        ctx.fillText(char, i * colWidth + (colWidth / 4), matrixDrops[i]);
+
+        // Drive the coordinate point down the display viewport matrix
+        matrixDrops[i] += dropSpeed;
+
+        // Reset system marker to top once drop clears the bottom baseline border
+        if (matrixDrops[i] > canvas.height && Math.random() > 0.95) {
+            matrixDrops[i] = 0;
+        }
+    }
 }
+
 
 
     // --- COMPREHENSIVE STREAM SEQUENCER ---
