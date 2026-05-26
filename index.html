@@ -112,7 +112,7 @@
         <button id="exportLogButton" class="power-switch">Export Log</button>
     </div>
 
-    <!-- 🟢 NEW: Real-Time Frequency Matrix Readout Canvas Screen -->
+    <!-- Real-Time Frequency Matrix Readout Canvas Screen -->
     <canvas id="visualizerGrid" style="width: 100%; height: 80px; border: 1px solid #005500; background: #000500; margin-bottom: 15px; border-radius: 4px;"></canvas>
     
     <div id="trackInfo">Awaiting connection tracking initialization...</div>
@@ -133,7 +133,7 @@
     const canvas = document.getElementById('visualizerGrid');
     const ctx = canvas.getContext('2d');
     
-    // 🔓 CRITICAL SECURITY FIX: Explicitly bypass browser canvas inspection CORS restrictions
+    // 🔓 Explicitly bypass browser canvas inspection CORS restrictions
     audioPlayer.crossOrigin = "anonymous";
 
     let masterLibrary = [];       // Primary backup array storage
@@ -142,8 +142,8 @@
     
     let audioContext, analyser, sourceNode;
 
-    // Helper method: Cleans raw paths to isolate pure string names
-    def getCleanTrackName(srcUrl) {
+    // Helper method: Cleans raw paths to isolate pure string names [FIXED]
+    function getCleanTrackName(srcUrl) {
         if (!srcUrl) return "Unknown Track";
         return decodeURIComponent(srcUrl.substring(srcUrl.lastIndexOf('/') + 1));
     }
@@ -258,7 +258,7 @@
         }
     }
 
-        // --- TELEMETRY LOGGER & DYNAMIC WALLPAPER MATRIX ENGINE ---
+      // --- TELEMETRY LOGGER & DYNAMIC WALLPAPER MATRIX ENGINE ---
     audioPlayer.addEventListener('playing', function() {
         const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
         const currentUrl = audioPlayer.src;
@@ -341,4 +341,14 @@
 
 </body>
 </html>
+
+
+
+ 
+</script>
+
+</body>
+</html>
+
+
 
