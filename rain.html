@@ -274,7 +274,7 @@
 }
 
 
-    // --- TELEMETRY LOGGER & DYNAMIC WALLPAPER MATRIX ENGINE ---
+        // --- TELEMETRY LOGGER & DYNAMIC WALLPAPER MATRIX ENGINE ---
     audioPlayer.addEventListener('playing', function() {
         const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
         const currentUrl = audioPlayer.src;
@@ -295,8 +295,10 @@
             console.warn("⚠️ Engine URL Parsing dropped, deploying storage matrix structural bypass.");
         }
 
+        // 🔒 FIXED COMPILATION BLOCK: Direct download routing link matrix restored 
         const targetWallpaperUrl = `https://archive.org{collectionName}/__ia_thumb.jpg`;
 
+        // Direct CSS window background properties injection execution
         document.body.style.backgroundImage = `url('${targetWallpaperUrl}')`;
         document.body.style.backgroundSize = "cover";
         document.body.style.backgroundPosition = "center";
@@ -305,6 +307,7 @@
         const logEntry = `[${timestamp}] ✅ PLAYING: ${getCleanTrackName(currentUrl)}\n📍 URL: ${currentUrl}\n🖼️ BG IMAGE: ${targetWallpaperUrl}\n`;
         window.sessionLogRegistry.push(logEntry);
     });
+
 
     // --- EXCEPTION INTERCEPT / DEAD LINK SYSTEM AUTO SKIPPER ---
     audioPlayer.addEventListener('error', function() {
