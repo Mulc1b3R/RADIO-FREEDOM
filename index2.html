@@ -398,6 +398,10 @@
 
         audioPlayer.src = decodedUrl;
         trackInfo.textContent = `Now playing: ${rawFileName}\n📡 [Queue: ${activeStreamingDeck.length} tracks remaining]`;
+		// ⚡ SECTION 23 TELEMETRY LOGGER LOGIC
+        const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
+        window.sessionLogRegistry.push(`[${timestamp}] TERMINAL NODE STREAM LOCKED: ${rawFileName}`);
+
 
         try {
             await audioPlayer.play();
