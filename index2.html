@@ -219,14 +219,16 @@
     const canvas = document.getElementById('visualizerGrid');
     const ctx = canvas.getContext('2d');
     
-    // 🔓 Explicitly bypass browser canvas inspection CORS restrictions
+        // 🔓 Explicitly bypass browser canvas inspection CORS restrictions
     audioPlayer.crossOrigin = "anonymous";
 
     let masterLibrary = [];       
     let activeStreamingDeck = [];  
+    let searchMasterMatrix = [];   // ⚡ SECTOR 23 CUMULATIVE SEARCH MATRIX NODE
     window.sessionLogRegistry = window.sessionLogRegistry || [];
     
     let audioContext, analyser, sourceNode;
+
 
     // --- MASTER SWAPPABLE VISUAL ENGINE AUTOMATION ---
     let radarAngle = 0;
@@ -370,6 +372,8 @@
                 const response = await fetch('load.json');
                 const data = await response.json();
                 masterLibrary = data.mp3s.slice();
+                searchMasterMatrix = data.mp3s.slice(); // ⚡ Lock baseline tracks into search memory bank
+
                 
                 document.getElementById('specsCount').textContent = masterLibrary.length;
                 
