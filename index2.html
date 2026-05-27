@@ -476,7 +476,7 @@
     // Initial dummy screen draw loop boot to showcase visualization immediately on load
     drawEqualizerGridLoop();
 	
-	    // --- SECTION 23 SEARCH LOGIC OVERRIDE ENGINE ---
+	      // --- SECTION 23 SEARCH LOGIC OVERRIDE ENGINE (CUMULATIVE HYBRID PACK) ---
     const searchInput = document.getElementById('trackSearchInput');
     const searchBtn = document.getElementById('searchMatrixBtn');
     const searchResults = document.getElementById('searchResultsDisplay');
@@ -491,15 +491,20 @@
             return;
         }
 
-        // Check if database payload has initialized in browser memory yet
-        if (masterLibrary.length === 0) {
+        // Check if database payload has initialized in the cumulative search cache yet
+        // Fallback to checking masterLibrary if searchMasterMatrix hasn't initialized
+        const activeSearchPool = (typeof searchMasterMatrix !== 'undefined' && searchMasterMatrix.length > 0) 
+            ? searchMasterMatrix 
+            : (typeof masterLibrary !== 'undefined' ? masterLibrary : []);
+
+        if (activeSearchPool.length === 0) {
             searchResults.style.display = 'block';
             searchResults.innerHTML = `<span style="color: #ffaa00;">⚠️ NOTICE: Connect to the master network terminal node first to download the tracking database registry.</span>`;
             return;
         }
 
-        // Scan master tracking list for matched terms or phrases
-        const matches = masterLibrary.filter(url => {
+        // Scan the entire cumulative tracking list for matched terms or phrases
+        const matches = activeSearchPool.filter(url => {
             const cleanName = decodeURIComponent(url.substring(url.lastIndexOf('/') + 1)).toLowerCase();
             return cleanName.includes(query);
         });
@@ -536,7 +541,9 @@
                 trackInfo.textContent = `MANUAL OVERRIDE: ${decodeURIComponent(rawFileName)}`;
                 
                 // Remove this specific choice manually from the active deck pool so it won't repeat
-                activeStreamingDeck = activeStreamingDeck.filter(url => url !== targetStreamUrl);
+                if (typeof activeStreamingDeck !== 'undefined') {
+                    activeStreamingDeck = activeStreamingDeck.filter(url => url !== targetStreamUrl);
+                }
                 
                 audioPlayer.play().catch(e => console.warn("Stream tracking bypass drop out alert:", e));
                 
