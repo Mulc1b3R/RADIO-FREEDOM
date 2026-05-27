@@ -2,7 +2,7 @@
 
 # 📡 RADIO-FREEDOM // SECTION 23 TRANSMISSION NODE
 > **AUTONOMOUS AUDIO SUBVERSION STREAM**  
-> Broadcast Command Post: [@mojo-696 on YouTube](https://youtube.com) (1.2K Subscribers // 171 Video Transmissions)  
+> Broadcast Command Post: https://www.youtube.com/@mojo-696   
 > Live Reception Terminal: https://mulc1b3r.github.io/RADIO-FREEDOM/index.html
 
 ---
