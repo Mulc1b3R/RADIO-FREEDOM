@@ -342,18 +342,21 @@
         }
     }
 
-    // --- TELEMETRY LOGGER & DYNAMIC WALLPAPER MATRIX ENGINE ---
-   audioPlayer.addEventListener('playing', () => {
+  audioPlayer.addEventListener('playing', () => {
     let collectionName = "alanwattscollection"; // Default fallback
 
     try {
         const currentUrl = audioPlayer.src;
-        const parsedUrl = new URL(currentUrl);
+        // Strip out any trailing query strings or hash markers before parsing the segments
+        const cleanUrlString = currentUrl.split('?')[0].split('#')[0];
+        const parsedUrl = new URL(cleanUrlString);
+        
         const pathSegments = parsedUrl.pathname.split('/').filter(seg => seg.length > 0);
         
         // Grab the directory segment right before the MP3 filename
         if (pathSegments.length >= 2) {
-            collectionName = pathSegments[pathSegments.length - 2];
+            // Added decodeURIComponent to resolve percent-encoding issues safely
+            collectionName = decodeURIComponent(pathSegments[pathSegments.length - 2]);
         }
     } catch(e) {
         console.warn("⚠ Engine URL Parsing dropped, deploying storage matrix structural bypass.");
@@ -366,6 +369,7 @@
     document.body.style.backgroundImage = `url('${targetWallpaperUrl}')`;
     document.body.style.backgroundSize = "cover";
 });
+
 
     // --- EXCEPTION INTERCEPT / DEAD LINK SYSTEM AUTO SKIPPER ---
     audioPlayer.addEventListener('error', function() {
