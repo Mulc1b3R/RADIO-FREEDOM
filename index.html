@@ -363,7 +363,7 @@
             console.warn("⚠️ Engine URL Parsing dropped, deploying storage matrix structural bypass.");
         }
 
-        const targetWallpaperUrl = `https://archive.org{collectionName}/__ia_thumb.jpg`;
+        const targetWallpaperUrl = `https://archive.org/{collectionName}/__ia_thumb.jpg`;
 
         document.body.style.backgroundImage = `url('${targetWallpaperUrl}')`;
         document.body.style.backgroundSize = "cover";
