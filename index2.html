@@ -696,13 +696,17 @@
                 scrapedMp3Pool = data;
             }
 
-            if (scrapedMp3Pool.length === 0) {
+                        if (scrapedMp3Pool.length === 0) {
                 if (trackInfoPanel) trackInfoPanel.innerText = `DATABASE ERROR: 0 PATHS LOADED`;
                 return;
             }
 
+            // ⚡ THE MASTER MATRIX INTERCEPT NODE
+            searchMasterMatrix = Array.from(new Set([...searchMasterMatrix, ...scrapedMp3Pool]));
+
             // Scramble the new target collection station pool completely in memory
             scrapedMp3Pool.sort(() => Math.random() - 0.5);
+
             console.log(`🎲 Local Deck Engine Active: Transferred ${scrapedMp3Pool.length} tracks into loop queue for channel ${channelNum}.`);
 
             // Overdrive injection straight into your streaming deck depletion array loop logic
