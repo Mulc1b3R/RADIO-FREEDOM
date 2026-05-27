@@ -564,20 +564,26 @@
 <!-- SECTION 23: SIDEBAR PRESET CONSOLE (FIXED FLOATING DOCK)            -->
 <!-- =================================================================== -->
 <script>
+<!-- =================================================================== -->
+<!-- SECTION 23: SIDEBAR PRESET CONSOLE (DYNAMIC LOCALIZED ENGINE)        -->
+<!-- =================================================================== -->
+
 (() => {
+    // 🛠️ HARDWIRED OVERDRIVE PRESET LINKS (MANUALLY EXPANDABLE ARRAY BANK)
+    // Add or remove database links here — the system handles the visual compilation math automatically.
     const PRESET_CHANNELS = {
-        1: { name: "Twilight-zone", url: "https://archive.org/download/twilight-zone-radio-dramas/" },
-        2: { name: "Exploring-Tomororw", url: "https://archive.org/download/Exploring-Tomororw/" },
-        3: { name: "Beyondtomorrow_", url: "https://archive.org/download/beyondtomorrow_201707/" },
-        4: { name: "Mysterious_Traveler", url: "https://archive.org/download/OTRR_Mysterious_Traveler_Singles/" },
-		5: { name: "WATTS", url: "https://archive.org" },
-        6: { name: "BOX13", url: "https://archive.org" },
-        7: { name: "SANCT", url: "https://archive.org" },
-        8: { name: "WEIRD", url: "https://archive.org" },
-		9: { name: "WATTS", url: "https://archive.org" },
-       10: { name: "BOX13", url: "https://archive.org" },
-       11: { name: "SANCT", url: "https://archive.org" },
-       12: { name: "WEIRD", url: "https://archive.org" }
+        1:  { name: "WATTS",  url: "WATTS.json" },
+        2:  { name: "BOX13",  url: "BOX13.json" },
+        3:  { name: "SANCT",  url: "SANCT.json" },
+        4:  { name: "WEIRD",  url: "WEIRD.json" },
+        5:  { name: "TWIL",   url: "TWILIGHT.json" },
+        6:  { name: "DIM_X",  url: "DIM_X.json" },
+        7:  { name: "EXPLR",  url: "EXPLR.json" },
+        8:  { name: "BYNDT",  url: "BYNDT.json" },
+        9:  { name: "TRAVL",  url: "TRAVL.json" },
+        10: { name: "2000P",  url: "2000P.json" },
+        11: { name: "FUTUR",  url: "FUTUR.json" },
+        12: { name: "HALLF",  url: "HALLF.json" }
     };
 
     const chassis = document.querySelector('.crt-chassis');
@@ -585,9 +591,10 @@
 
     // 1. Build the physical container using explicit absolute screen coordinates
     const sidebar = document.createElement('div');
+    sidebar.className = 's23-sidebar-preset-panel';
     sidebar.style.display = "flex";
     sidebar.style.flexDirection = "column";
-    sidebar.style.gap = "15px";
+    sidebar.style.gap = "12px";
     sidebar.style.width = "75px";
     sidebar.style.minWidth = "75px";
     sidebar.style.background = "#050505";
@@ -596,16 +603,21 @@
     sidebar.style.padding = "15px 6px";
     sidebar.style.boxShadow = "inset 0 0 10px rgba(0, 255, 0, 0.2), 0 0 15px rgba(0, 255, 0, 0.4)";
     
-    // Locks the panel outside the left edge of your terminal frame completely
-    sidebar.style.position = "absolute";
-    sidebar.style.left = "-95px"; 
-    sidebar.style.top = "0px";
+        // Forces a physical layout anchor on your local desktop browser files
+    sidebar.style.position = "relative";
+    sidebar.style.float = "left";
+    sidebar.style.marginLeft = "-95px";
 
-    // 2. Assemble the 12 tactile presets
-    for (let i = 1; i <= 12; i++) {
+
+    // 2. AUTOMATED COUNT MATRIX: Calculate exact mapping configuration length on the fly
+    const totalButtons = Object.keys(PRESET_CHANNELS).length;
+    console.log(`📡 Radio Deck Scanner: Identified ${totalButtons} active preset channels.`);
+
+    // 3. Assemble the tactical mechanical button loops dynamically
+    for (let i = 1; i <= totalButtons; i++) {
         const btn = document.createElement('button');
         btn.style.width = "100%";
-        btn.style.height = "55px";
+        btn.style.height = "52px";
         btn.style.background = "#111";
         btn.style.color = "#00ff00";
         btn.style.border = "2px solid #005500";
@@ -619,7 +631,7 @@
         
         btn.innerHTML = `CH ${i}<div style="font-size:9px; color:#008800; margin-top:2px; font-weight:normal;">${PRESET_CHANNELS[i].name}</div>`;
         
-        // Tactile compression simulation states
+        // Tactile switch compression mechanics
         btn.onmousedown = () => {
             btn.style.transform = "translateY(2px)";
             btn.style.boxShadow = "0 1px 0 #003300";
@@ -637,13 +649,13 @@
         sidebar.appendChild(btn);
     }
     
-    // Ensure the chassis node acts as the absolute reference base anchor
+    // Ensure the chassis node acts as the absolute reference base anchor coordinate
     chassis.style.position = "relative";
     
-    // Mount to the left side of the dashboard
+    // Mount the completed hardware block directly onto the left flank edge
     chassis.appendChild(sidebar);
 
-    // 📡 LIVE STREAM SCRAPER OVERDRIVE
+    // 📡 LOCAL RESOURCE FETCHER & OVERDRIVE LOOP
     async function triggerPresetTuning(channelNum, buttonNode) {
         const player = document.getElementById("audioPlayer");
         if (!player) return;
@@ -652,46 +664,47 @@
         const trackInfoPanel = document.getElementById("trackInfo");
         if (trackInfoPanel) trackInfoPanel.innerText = `TUNING STATIC NODE: [${targetConfig.name}]...`;
 
+        // Clear active selection indicators across other channels
+        document.querySelectorAll('.s23-preset-btn').forEach(b => b.style.borderColor = "#005500");
+        buttonNode.style.borderColor = "#00ff00";
+
         try {
+            // Fetch the clean playlist database array directly from your local GitHub domain repository
             const response = await fetch(targetConfig.url);
-            if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+            if (!response.ok) throw new Error(`HTTP Matrix Load Failure: ${response.status}`);
             
-            const htmlText = await response.text();
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(htmlText, 'text/html');
-            const links = doc.querySelectorAll('a');
+            const data = await response.json();
             
+            // Isolate the mp3 path array seamlessly out of your flat database format
             let scrapedMp3Pool = [];
-            
-            links.forEach(link => {
-                let href = link.getAttribute('href') || '';
-                if (href.toLowerCase().endsWith('.mp3')) {
-                    if (href.includes('?')) href = href.split('?')[0];
-                    
-                    let rawFilename = decodeURIComponent(href).trim();
-                    while (rawFilename.includes("  ")) {
-                        rawFilename = rawFilename.replace("  ", " ");
-                    }
-                    
-                    const safeFileName = encodeURIComponent(rawFilename)
-                        .replace(/%2F/g, '/')
-                        .replace(/%3A/g, ':');
-                        
-                    scrapedMp3Pool.push(targetConfig.url + safeFileName);
-                }
-            });
+            if (data && Array.isArray(data.mp3s)) {
+                scrapedMp3Pool = data.mp3s;
+            } else if (Array.isArray(data)) {
+                scrapedMp3Pool = data;
+            }
 
-            if (scrapedMp3Pool.length === 0) return;
+            if (scrapedMp3Pool.length === 0) {
+                if (trackInfoPanel) trackInfoPanel.innerText = `DATABASE ERROR: 0 PATHS LOADED`;
+                return;
+            }
 
+            // Scramble the new target collection station pool completely in memory
             scrapedMp3Pool.sort(() => Math.random() - 0.5);
+            console.log(`🎲 Local Deck Engine Active: Transferred ${scrapedMp3Pool.length} tracks into loop queue for channel ${channelNum}.`);
 
+            // Overdrive injection straight into your streaming deck depletion array loop logic
             if (typeof activeStreamingDeck !== 'undefined') {
                 activeStreamingDeck = [...scrapedMp3Pool];
                 player.src = activeStreamingDeck.shift();
-                player.play().catch(e => {});
+                player.play().catch(e => console.warn("Buffer lock active."));
+            } else {
+                player.src = scrapedMp3Pool[0];
+                player.play().catch(e => console.warn("Fallback track activation active."));
             }
+
         } catch (error) {
-            if (trackInfoPanel) trackInfoPanel.innerText = `LINK BLOCKED OR CORS BARRIER`;
+            console.error("❌ Preset Local Load Failure:", error);
+            if (trackInfoPanel) trackInfoPanel.innerText = `TUNING CRASHED: TARGET JSON MISSING`;
         }
     }
 })();
@@ -699,8 +712,20 @@
 
 
 
+
+
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
 
 
 
