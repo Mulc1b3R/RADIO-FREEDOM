@@ -629,6 +629,7 @@
     // 3. Assemble the tactical mechanical button loops dynamically
     for (let i = 1; i <= totalButtons; i++) {
         const btn = document.createElement('button');
+		btn.className = 's23-preset-btn'; // Add this line right here!
         btn.style.width = "100%";
         btn.style.height = "52px";
         btn.style.background = "#111";
