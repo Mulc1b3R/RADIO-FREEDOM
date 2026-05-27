@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Section 23 // Pirate Radio Terminal</title>
+    <style>
+               /* Phosphor Terminal Grid Layout Matrix */
+        body {
+            background-color: #000000;
+            color: #33ff33;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 5px #33ff33;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* 🔒 FIXED: Changed from hidden to auto so you can scroll down to your tools */
+            overflow-y: auto; 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+
+        .crt-chassis {
+            border: 2px solid #33ff33;
+            background: rgba(0, 15, 0, 0.9);
+            box-shadow: 0 0 20px #005500, inset 0 0 15px #003300;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Console Control Deck Button Container */
+        .control-deck {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        /* 1990s Arcade Tactile Push Button Style */
+        .power-switch {
+            background: #000000;
+            border: 2px solid #33ff33;
+            color: #33ff33;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 12px 5px;
+            cursor: pointer;
+            box-shadow: 0 0 10px #005500;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            flex: 1;
+            min-width: 105px;
+            text-shadow: none;
+        }
+
+        .power-switch:hover {
+            background: #33ff33;
+            color: #000000;
+            box-shadow: 0 0 20px #33ff33;
+        }
+
+        /* Responsive Dashboard text readout window */
+        #trackInfo {
+            font-size: 13px;
+            margin: 25px 0;
+            height: 60px;
+            overflow: hidden;
+            border: 1px solid #005500;
+            padding: 10px;
+            background: #000500;
+            border-radius: 4px;
+            text-align: left;
+            line-height: 1.4;
+            word-break: break-all;
+        }
+
+        /* HTML5 Native Component Coloring Overrides */
+        audio {
+            width: 100%;
+            margin-top: 15px;
+            filter: invert(1) hue-rotate(90deg) saturate(1.5); 
+        }
+
+        .terminal-specs {
+            font-size: 10px;
+            color: #008800;
+            margin-top: 25px;
+            text-shadow: none;
+            line-height: 1.5;
+        }
+		/* =================================================================== */
+/* SECTION 23: TACTICAL SIDEBAR PRESET CONSOLE                         */
+/* =================================================================== */
+
+/* Retro Mechanical Sidebar Console Container */
+.s23-sidebar-preset-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 15px;
+    width: 70px;
+    background: #080808;
+    border: 2px solid #00ff00;
+    border-radius: 5px;
+    padding: 15px 6px;
+    box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.2);
+    margin-right: 15px; /* Creates a clean gap before the main terminal elements */
+}
+
+/* Tactile Push-Button Matrices */
+.s23-preset-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 55px;
+    background: #111;
+    color: #00ff00;
+    border: 2px solid #005500;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    text-shadow: 0 0 4px rgba(0, 255, 0, 0.6);
+    box-shadow: 0 4px 0 #003300, inset 0 2px 3px rgba(255, 255, 255, 0.1);
+    transition: all 0.05s ease;
+}
+
+.s23-preset-btn span {
+    font-size: 9px;
+    color: #008800;
+    margin-top: 2px;
+}
+
+/* Active Mechanical Compression Styles */
+.s23-preset-btn:hover {
+    background: #151515;
+    border-color: #00ff00;
+}
+
+.s23-preset-btn:active, .s23-preset-btn.tuning-active {
+    background: #001100;
+    border-color: #00ff00;
+    box-shadow: 0 1px 0 #003300, inset 0 4px 8px rgba(0, 0, 0, 0.8);
+    transform: translateY(3px);
+    color: #fff;
+    text-shadow: 0 0 8px #00ff00;
+}
+
+    </style>
+</head>
+<body>
+
+<div class="crt-chassis">
+    <h2>📡 SECTION 23 NODE</h2>
+    <p style="font-size: 11px; color: #00aa00;">AUTONOMOUS AUDIO SUBVERSION STREAM</p>
+    <br>
+    
+    <div class="control-deck">
+        <button id="playButton" class="power-switch">Connect</button>
+        <button id="skipButton" class="power-switch">Skip Track</button>
+        <button id="exportLogButton" class="power-switch">Export Log</button>
+    </div>
+
+    <!-- ⚙️ THE CHASSIS SKIN INTERFACE DROPDOWN -->
+    <div style="margin: 15px 0 15px 0; text-align: left;">
+        <label for="skinSelect" style="font-size: 11px; color: #008800; letter-spacing: 1px;">CONSOLE SKIN:</label>
+        <select id="skinSelect" style="background: #000000; border: 1px solid #33ff33; color: #33ff33; font-family: 'Courier New', monospace; font-size: 12px; width: 100%; padding: 8px; margin-top: 5px; cursor: pointer; border-radius: 4px; text-shadow: none;">
+            <option value="radar">TACTICAL RADAR SCOPE</option>
+            <option value="matrix">DIGITAL CODE WATERFALL</option>
+            <option value="oscilloscope">LASER OSCILLOSCOPE</option>
+        </select>
+    </div>
+
+        <!-- 🟢 MONITOR CANVAS SCREEN -->
+    <canvas id="visualizerGrid" style="width: 100%; height: 260px; border: 1px solid #005500; background: #000500; margin-bottom: 15px; border-radius: 4px;"></canvas>
+    
+    <!-- 🕵️ COCKPIT SEARCH INTERFACE INJECTED DIRECTLY INTO THE SEAM -->
+    <div style="margin: 0 0 15px 0; text-align: left;">
+        <label for="trackSearchInput" style="font-size: 11px; color: #008800; letter-spacing: 1px;">SEARCH MATRIX DATA:</label>
+        <div style="display: flex; gap: 10px; margin-top: 5px;">
+            <input type="text" id="trackSearchInput" placeholder="Enter keyword / series..." style="background: #000500; border: 1px solid #005500; color: #33ff33; font-family: 'Courier New', monospace; font-size: 13px; padding: 10px; flex: 1; border-radius: 4px; box-shadow: inset 0 0 5px #003300;">
+            <button id="searchMatrixBtn" class="power-switch" style="padding: 10px 15px; min-width: 80px; margin: 0; text-shadow: none;">SCAN</button>
+        </div>
+        <!-- Interactive results drawer overlay -->
+        <div id="searchResultsDisplay" style="font-size: 11px; color: #00bb00; margin-top: 8px; max-height: 120px; overflow-y: auto; border: 1px dashed #003300; padding: 5px; display: none; background: rgba(0,5,0,0.8); border-radius: 4px; line-height: 1.4;"></div>
+    </div>
+
+    <!-- YOUR EXISTING TRACK INFO PANEL RESUMES IMMEDIATELY BELOW -->
+    <div id="trackInfo">Awaiting connection tracking initialization...</div>
+
+
+    <audio id="audioPlayer" controls></audio>
+
+    <div class="terminal-specs">
+        NODE ADDR: 0x63673528404C9B9394d4Ec6FA037ED825c8b0faa<br>
+        SYS STATUS: <span id="specsCount">0</span> LINKS HARVESTED // WEB 1.0 LEECHING LIVE<br>
+        Copyright © 2026 Psico Communications
+    </div>
+</div>
+
+<script>
+    // --- CORE TRANSMISSION MEDIA & VISUAL SPECTROGRAM MATRIX ---
+    const audioPlayer = document.getElementById('audioPlayer');
+    const trackInfo = document.getElementById('trackInfo');
+    const canvas = document.getElementById('visualizerGrid');
+    const ctx = canvas.getContext('2d');
+    
+    // 🔓 Explicitly bypass browser canvas inspection CORS restrictions
+    audioPlayer.crossOrigin = "anonymous";
+
+    let masterLibrary = [];       
+    let activeStreamingDeck = [];  
+    window.sessionLogRegistry = window.sessionLogRegistry || [];
+    
+    let audioContext, analyser, sourceNode;
+
+    // --- MASTER SWAPPABLE VISUAL ENGINE AUTOMATION ---
+    let radarAngle = 0;
+    const matrixDrops = [];
+    const columns = 24;
+    for (let i = 0; i < columns; i++) matrixDrops[i] = Math.random() * -100;
+
+    // Helper method: Cleans raw paths to isolate pure string names
+    function getCleanTrackName(srcUrl) {
+        if (!srcUrl) return "Unknown Track";
+        return decodeURIComponent(srcUrl.substring(srcUrl.lastIndexOf('/') + 1));
+    }
+
+    // High-Efficiency Fisher-Yates Randomisation Array Randomiser
+    function shuffleBroadcastDeck(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // --- REAL-TIME AUDIO INTERCEPTOR EQUALIZER GRID ENGINE ---
+    function initVisualizerEngine() {
+        if (audioContext) return; 
+        
+        try {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioContext.createAnalyser();
+            analyser.fftSize = 64; 
+            
+            sourceNode = audioContext.createMediaElementSource(audioPlayer);
+            sourceNode.connect(analyser);
+            analyser.connect(audioContext.destination); 
+            
+            drawEqualizerGridLoop();
+            console.log("📡 Visualizer Grid Engine online. Audio frequency interceptor locked.");
+        } catch (e) {
+            console.warn("⚠️ Web Audio initialization blocked. Awaiting secure node manual interaction event.", e);
+        }
+    }
+
+    function drawEqualizerGridLoop() {
+        requestAnimationFrame(drawEqualizerGridLoop);
+        
+        if (canvas.width !== canvas.clientWidth || canvas.height !== canvas.clientHeight) {
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+        }
+        
+        const bufferLength = analyser ? analyser.frequencyBinCount : 32;
+        const dataArray = new Uint8Array(bufferLength);
+        const selectedSkin = document.getElementById('skinSelect').value;
+
+        // --- MODE A: OSCILLOSCOPE WAVEFORM ENGINE ---
+        if (selectedSkin === 'oscilloscope') {
+            if (analyser) analyser.getByteTimeDomainData(dataArray);
+            else for(let i = 0; i < bufferLength; i++) dataArray[i] = 128;
+
+            ctx.fillStyle = 'rgba(0, 10, 0, 0.18)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = 'rgba(0, 55, 0, 0.25)'; ctx.lineWidth = 1;
+            ctx.beginPath();
+            for (let y = 0; y < canvas.height; y += 30) { ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); }
+            ctx.stroke();
+
+            ctx.lineWidth = 2; ctx.strokeStyle = '#33ff33'; ctx.shadowColor = '#33ff33'; ctx.shadowBlur = 8;
+            ctx.beginPath();
+            const sliceWidth = canvas.width / bufferLength;
+            let x = 0;
+            for (let i = 0; i < bufferLength; i++) {
+                const v = dataArray[i] / 128.0;
+                const y = (v * canvas.height) / 2;
+                if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                x += sliceWidth;
+            }
+            ctx.lineTo(canvas.width, canvas.height / 2); ctx.stroke();
+        } 
+        
+        // --- MODE B: DIGITAL CODE WATERFALL ENGINE ---
+        else if (selectedSkin === 'matrix') {
+            if (analyser) analyser.getByteFrequencyData(dataArray);
+            ctx.fillStyle = 'rgba(0, 12, 0, 0.12)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            const colWidth = canvas.width / columns;
+            ctx.font = '13px monospace'; ctx.shadowBlur = 4; ctx.shadowColor = '#33ff33';
+
+            for (let i = 0; i < columns; i++) {
+                const audioValue = dataArray[i % bufferLength] / 255;
+                const dropSpeed = 2 + (audioValue * 8);
+                const char = String.fromCharCode(33 + Math.floor(Math.random() * 93));
+                ctx.fillStyle = audioValue > 0.75 ? '#ffffff' : '#33ff33';
+                ctx.fillText(char, i * colWidth + (colWidth / 4), matrixDrops[i]);
+                matrixDrops[i] += dropSpeed;
+                if (matrixDrops[i] > canvas.height && Math.random() > 0.95) matrixDrops[i] = 0;
+            }
+        } 
+        
+                // --- MODE C: DEFAULT TACTICAL RADAR SCOPE ENGINE ---
+        else {
+            if (analyser) analyser.getByteFrequencyData(dataArray);
+            ctx.fillStyle = 'rgba(0, 8, 0, 0.08)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            const centerX = canvas.width / 2, centerY = canvas.height / 2;
+            const maxRadius = Math.min(canvas.width, canvas.height) / 2 * 0.9;
+
+            ctx.strokeStyle = 'rgba(0, 85, 0, 0.4)'; ctx.lineWidth = 1; ctx.shadowBlur = 0;
+            for (let r = 1; r <= 3; r++) {
+                ctx.beginPath(); ctx.arc(centerX, centerY, maxRadius * (r / 3), 0, 2 * Math.PI); ctx.stroke();
+            }
+            ctx.beginPath(); ctx.moveTo(centerX - maxRadius, centerY); ctx.lineTo(centerX + maxRadius, centerY); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(centerX, centerY - maxRadius); ctx.lineTo(centerX, centerY + maxRadius); ctx.stroke();
+
+            const angleStep = (2 * Math.PI) / bufferLength;
+            for (let i = 0; i < bufferLength; i++) {
+                const barHeight = (dataArray[i] / 255) * maxRadius * 0.4;
+                const currentAngle = i * angleStep;
+                ctx.strokeStyle = '#33ff33'; ctx.lineWidth = 3; ctx.shadowColor = '#33ff33'; ctx.shadowBlur = 6;
+                ctx.beginPath();
+                ctx.moveTo(centerX + Math.cos(currentAngle) * (maxRadius * 0.4), centerY + Math.sin(currentAngle) * (maxRadius * 0.4));
+                ctx.lineTo(centerX + Math.cos(currentAngle) * (maxRadius * 0.4 + barHeight), centerY + Math.sin(currentAngle) * (maxRadius * 0.4 + barHeight));
+                ctx.stroke();
+            }
+
+            radarAngle += 0.02; if (radarAngle >= 2 * Math.PI) radarAngle = 0;
+            ctx.strokeStyle = 'rgba(51, 255, 51, 0.3)'; ctx.lineWidth = 2; ctx.beginPath();
+            ctx.moveTo(centerX, centerY); ctx.lineTo(centerX + Math.cos(radarAngle) * maxRadius, centerY + Math.sin(radarAngle) * maxRadius); ctx.stroke();
+
+            ctx.fillStyle = 'rgba(51, 255, 51, 0.04)';
+            for (let n = 0; n < 10; n++) ctx.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, 2, 2);
+        }
+    }
+
+    // --- COMPREHENSIVE STREAM SEQUENCER ---
+    async function playNextStreamTrack() {
+        initVisualizerEngine();
+
+        if (masterLibrary.length === 0) {
+            try {
+                trackInfo.textContent = '📡 Syncing master manifest database node...';
+                const response = await fetch('load.json');
+                const data = await response.json();
+                masterLibrary = data.mp3s.slice();
+                
+                document.getElementById('specsCount').textContent = masterLibrary.length;
+                
+                activeStreamingDeck = shuffleBroadcastDeck([...masterLibrary]);
+                console.log(`📦 Broadcast matrix live: ${masterLibrary.length} tracks committed.`);
+            } catch (error) {
+                console.error('❌ Error loading transmission node manifest:', error);
+                trackInfo.textContent = 'Connection Error: Unable to read load.json data archive.';
+                return;
+            }
+        }
+
+        if (activeStreamingDeck.length === 0) {
+            console.log("🔄 Active streaming queue depleted. Reshuffling master matrix...");
+            activeStreamingDeck = shuffleBroadcastDeck([...masterLibrary]);
+        }
+
+        const targetTrackUrl = activeStreamingDeck.shift();
+        const decodedUrl = decodeURIComponent(targetTrackUrl);
+        const rawFileName = decodedUrl.substring(decodedUrl.lastIndexOf('/') + 1);
+
+        audioPlayer.src = decodedUrl;
+        trackInfo.textContent = `Now playing: ${rawFileName}\n📡 [Queue: ${activeStreamingDeck.length} tracks remaining]`;
+
+        try {
+            await audioPlayer.play();
+            console.log(`📡 Streaming node locked: ${rawFileName} (${activeStreamingDeck.length} left)`);
+        } catch (playError) {
+            console.warn('⚠️ Playback blocked by browser policy. Awaiting manual user interaction.', playError);
+            trackInfo.textContent = '⚠️ Click "Connect" or hit the play bar below to force the stream.';
+        }
+    }
+
+  audioPlayer.addEventListener('playing', () => {
+    let collectionName = "alanwattscollection"; // Default fallback
+
+    try {
+        const currentUrl = audioPlayer.src;
+        // Strip out any trailing query strings or hash markers before parsing the segments
+        const cleanUrlString = currentUrl.split('?')[0].split('#')[0];
+        const parsedUrl = new URL(cleanUrlString);
+        
+        const pathSegments = parsedUrl.pathname.split('/').filter(seg => seg.length > 0);
+        
+        // Grab the directory segment right before the MP3 filename
+        if (pathSegments.length >= 2) {
+            // Added decodeURIComponent to resolve percent-encoding issues safely
+            collectionName = decodeURIComponent(pathSegments[pathSegments.length - 2]);
+        }
+    } catch(e) {
+        console.warn("⚠ Engine URL Parsing dropped, deploying storage matrix structural bypass.");
+    }
+
+    // Constructs the exact URL string structure using the variable token template
+    const targetWallpaperUrl = `https://archive.org/download/${collectionName}/__ia_thumb.jpg`;
+    
+    // Deploys the constructed string directly to the interface wallpaper matrix
+    document.body.style.backgroundImage = `url('${targetWallpaperUrl}')`;
+    document.body.style.backgroundSize = "cover";
+});
+
+
+    // --- EXCEPTION INTERCEPT / DEAD LINK SYSTEM AUTO SKIPPER ---
+    audioPlayer.addEventListener('error', function() {
+        const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
+        const failedUrl = audioPlayer.src;
+        const errorDetails = audioPlayer.error;
+        
+        let errorType = "UNKNOWN_ERR";
+        if (errorDetails) {
+            switch(errorDetails.code) {
+                case 1: errorType = "MEDIA_ERR_ABORTED"; break;
+                case 2: errorType = "MEDIA_ERR_NETWORK"; break;
+                case 3: errorType = "MEDIA_ERR_DECODE"; break;
+                case 4: errorType = "MEDIA_ERR_SRC_NOT_SUPPORTED"; break;
+            }
+        }
+        
+        const errorLog = `[${timestamp}] ❌ ERROR: ${errorType}\n📍 FAILED URL: ${failedUrl}\n`;
+        window.sessionLogRegistry.push(errorLog);
+        trackInfo.textContent = `❌ Transmission dropped. Skipping dead node entry...`;
+        
+        setTimeout(playNextStreamTrack, 1500);
+    });
+
+    // --- TELEMETRY EXPORT INTERFACE DOWNLOAD SYSTEM ---
+    document.getElementById('exportLogButton').addEventListener('click', function() {
+        if(window.sessionLogRegistry.length === 0) {
+            alert("No data recorded in telemetry logs yet.");
+            return;
+        }
+        const logBlob = new Blob([window.sessionLogRegistry.join("\n")], { type: 'text/plain' });
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.href = URL.createObjectURL(logBlob);
+        downloadAnchor.download = `section23_node_telemetry.txt`;
+        downloadAnchor.click();
+    });
+
+    // Master Event Hooks Assignment Layout Grid
+    document.getElementById('playButton').addEventListener('click', playNextStreamTrack);
+    document.getElementById('skipButton').addEventListener('click', playNextStreamTrack); 
+    audioPlayer.addEventListener('ended', playNextStreamTrack);
+
+    // Initial dummy screen draw loop boot to showcase visualization immediately on load
+    drawEqualizerGridLoop();
+	
+	    // --- SECTION 23 SEARCH LOGIC OVERRIDE ENGINE ---
+    const searchInput = document.getElementById('trackSearchInput');
+    const searchBtn = document.getElementById('searchMatrixBtn');
+    const searchResults = document.getElementById('searchResultsDisplay');
+
+    function executeMatrixSearch() {
+        const query = searchInput.value.trim().toLowerCase();
+        
+        // Safety guard: Clear display if search input is completely empty
+        if (!query) {
+            searchResults.style.display = 'none';
+            searchResults.innerHTML = '';
+            return;
+        }
+
+        // Check if database payload has initialized in browser memory yet
+        if (masterLibrary.length === 0) {
+            searchResults.style.display = 'block';
+            searchResults.innerHTML = `<span style="color: #ffaa00;">⚠️ NOTICE: Connect to the master network terminal node first to download the tracking database registry.</span>`;
+            return;
+        }
+
+        // Scan master tracking list for matched terms or phrases
+        const matches = masterLibrary.filter(url => {
+            const cleanName = decodeURIComponent(url.substring(url.lastIndexOf('/') + 1)).toLowerCase();
+            return cleanName.includes(query);
+        });
+
+        searchResults.style.display = 'block';
+
+        if (matches.length === 0) {
+            searchResults.innerHTML = `<span style="color: #ff3333;">❌ NO VECTOR MATCHES FOUND FOR: "${query}"</span>`;
+            return;
+        }
+
+        // Build list layout rows for all matched tracking logs found
+        let outputHtml = `<strong>🎯 FOUND ${matches.length} SECTOR MATCHES:</strong><br><hr style="border-color: #003300; margin: 5px 0;">`;
+        
+        matches.forEach((url, idx) => {
+            const fileName = decodeURIComponent(url.substring(url.lastIndexOf('/') + 1));
+            // Injects absolute direct stream triggers onto each individual list result line
+            outputHtml += `<div class="search-result-row" data-url="${encodeURI(url)}" style="cursor: pointer; padding: 4px; border-bottom: 1px dashed #001100; word-break: break-all;">[${idx + 1}] 📡 ${fileName}</div>`;
+        });
+
+        searchResults.innerHTML = outputHtml;
+
+        // Bind interactive target override click hooks to each generated result line item
+        document.querySelectorAll('.search-result-row').forEach(row => {
+            row.addEventListener('mouseover', function() { this.style.background = '#002200'; });
+            row.addEventListener('mouseout', function() { this.style.background = 'transparent'; });
+            
+            row.addEventListener('click', function() {
+                const targetStreamUrl = decodeURI(this.getAttribute('data-url'));
+                
+                // Force intercept player loop execution to immediately load the manual choice string
+                audioPlayer.src = targetStreamUrl;
+                const rawFileName = targetStreamUrl.substring(targetStreamUrl.lastIndexOf('/') + 1);
+                trackInfo.textContent = `MANUAL OVERRIDE: ${decodeURIComponent(rawFileName)}`;
+                
+                // Remove this specific choice manually from the active deck pool so it won't repeat
+                activeStreamingDeck = activeStreamingDeck.filter(url => url !== targetStreamUrl);
+                
+                audioPlayer.play().catch(e => console.warn("Stream tracking bypass drop out alert:", e));
+                
+                // Clear and fold search drawer display safely away
+                searchResults.style.display = 'none';
+                searchInput.value = '';
+            });
+        });
+    }
+
+    // Bind execution keys directly to dashboard face interface nodes
+    searchBtn.addEventListener('click', executeMatrixSearch);
+    searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') executeMatrixSearch();
+    });
+
+</script>
+	<!-- =================================================================== -->
+<!-- SECTION 23 TELEMETRY WALLPAPER FAILSAFE (REMOVABLE DETACHED NODE)   -->
+<!-- =================================================================== -->
+<!-- =================================================================== -->
+<!-- SECTION 23: SIDEBAR PRESET CONSOLE (FIXED STANDALONE PACK)          -->
+<!-- =================================================================== -->
+<!-- =================================================================== -->
+<!-- SECTION 23: SIDEBAR PRESET CONSOLE (FIXED FLOATING DOCK)            -->
+<!-- =================================================================== -->
+<script>
+(() => {
+    const PRESET_CHANNELS = {
+        1: { name: "Twilight-zone", url: "https://archive.org/download/twilight-zone-radio-dramas/" },
+        2: { name: "Exploring-Tomororw", url: "https://archive.org/download/Exploring-Tomororw/" },
+        3: { name: "Beyondtomorrow_", url: "https://archive.org/download/beyondtomorrow_201707/" },
+        4: { name: "Mysterious_Traveler", url: "https://archive.org/download/OTRR_Mysterious_Traveler_Singles/" },
+		5: { name: "WATTS", url: "https://archive.org" },
+        6: { name: "BOX13", url: "https://archive.org" },
+        7: { name: "SANCT", url: "https://archive.org" },
+        8: { name: "WEIRD", url: "https://archive.org" },
+		9: { name: "WATTS", url: "https://archive.org" },
+       10: { name: "BOX13", url: "https://archive.org" },
+       11: { name: "SANCT", url: "https://archive.org" },
+       12: { name: "WEIRD", url: "https://archive.org" }
+    };
+
+    const chassis = document.querySelector('.crt-chassis');
+    if (!chassis) return;
+
+    // 1. Build the physical container using explicit absolute screen coordinates
+    const sidebar = document.createElement('div');
+    sidebar.style.display = "flex";
+    sidebar.style.flexDirection = "column";
+    sidebar.style.gap = "15px";
+    sidebar.style.width = "75px";
+    sidebar.style.minWidth = "75px";
+    sidebar.style.background = "#050505";
+    sidebar.style.border = "2px solid #00ff00";
+    sidebar.style.borderRadius = "6px";
+    sidebar.style.padding = "15px 6px";
+    sidebar.style.boxShadow = "inset 0 0 10px rgba(0, 255, 0, 0.2), 0 0 15px rgba(0, 255, 0, 0.4)";
+    
+    // Locks the panel outside the left edge of your terminal frame completely
+    sidebar.style.position = "absolute";
+    sidebar.style.left = "-95px"; 
+    sidebar.style.top = "0px";
+
+    // 2. Assemble the 12 tactile presets
+    for (let i = 1; i <= 12; i++) {
+        const btn = document.createElement('button');
+        btn.style.width = "100%";
+        btn.style.height = "55px";
+        btn.style.background = "#111";
+        btn.style.color = "#00ff00";
+        btn.style.border = "2px solid #005500";
+        btn.style.borderRadius = "4px";
+        btn.style.fontFamily = "monospace";
+        btn.style.fontSize = "11px";
+        btn.style.fontWeight = "bold";
+        btn.style.cursor = "pointer";
+        btn.style.boxShadow = "0 3px 0 #003300";
+        btn.style.transition = "all 0.05s ease";
+        
+        btn.innerHTML = `CH ${i}<div style="font-size:9px; color:#008800; margin-top:2px; font-weight:normal;">${PRESET_CHANNELS[i].name}</div>`;
+        
+        // Tactile compression simulation states
+        btn.onmousedown = () => {
+            btn.style.transform = "translateY(2px)";
+            btn.style.boxShadow = "0 1px 0 #003300";
+            btn.style.background = "#001100";
+            btn.style.color = "#fff";
+        };
+        btn.onmouseup = btn.onmouseleave = () => {
+            btn.style.transform = "none";
+            btn.style.boxShadow = "0 3px 0 #003300";
+            btn.style.background = "#111";
+            btn.style.color = "#00ff00";
+        };
+
+        btn.addEventListener('click', () => triggerPresetTuning(i, btn));
+        sidebar.appendChild(btn);
+    }
+    
+    // Ensure the chassis node acts as the absolute reference base anchor
+    chassis.style.position = "relative";
+    
+    // Mount to the left side of the dashboard
+    chassis.appendChild(sidebar);
+
+    // 📡 LIVE STREAM SCRAPER OVERDRIVE
+    async function triggerPresetTuning(channelNum, buttonNode) {
+        const player = document.getElementById("audioPlayer");
+        if (!player) return;
+        
+        const targetConfig = PRESET_CHANNELS[channelNum];
+        const trackInfoPanel = document.getElementById("trackInfo");
+        if (trackInfoPanel) trackInfoPanel.innerText = `TUNING STATIC NODE: [${targetConfig.name}]...`;
+
+        try {
+            const response = await fetch(targetConfig.url);
+            if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+            
+            const htmlText = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlText, 'text/html');
+            const links = doc.querySelectorAll('a');
+            
+            let scrapedMp3Pool = [];
+            
+            links.forEach(link => {
+                let href = link.getAttribute('href') || '';
+                if (href.toLowerCase().endsWith('.mp3')) {
+                    if (href.includes('?')) href = href.split('?')[0];
+                    
+                    let rawFilename = decodeURIComponent(href).trim();
+                    while (rawFilename.includes("  ")) {
+                        rawFilename = rawFilename.replace("  ", " ");
+                    }
+                    
+                    const safeFileName = encodeURIComponent(rawFilename)
+                        .replace(/%2F/g, '/')
+                        .replace(/%3A/g, ':');
+                        
+                    scrapedMp3Pool.push(targetConfig.url + safeFileName);
+                }
+            });
+
+            if (scrapedMp3Pool.length === 0) return;
+
+            scrapedMp3Pool.sort(() => Math.random() - 0.5);
+
+            if (typeof activeStreamingDeck !== 'undefined') {
+                activeStreamingDeck = [...scrapedMp3Pool];
+                player.src = activeStreamingDeck.shift();
+                player.play().catch(e => {});
+            }
+        } catch (error) {
+            if (trackInfoPanel) trackInfoPanel.innerText = `LINK BLOCKED OR CORS BARRIER`;
+        }
+    }
+})();
+</script>
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
