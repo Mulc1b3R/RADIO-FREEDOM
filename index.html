@@ -493,6 +493,46 @@
     });
 
 </script>
+	<!-- =================================================================== -->
+<!-- SECTION 23 TELEMETRY WALLPAPER FAILSAFE (REMOVABLE DETACHED NODE)   -->
+<!-- =================================================================== -->
+<script>
+(() => {
+    // This looks for the same global player entity without touching your other scripts
+    const playerNode = document.getElementById("audioPlayer");
+    if (!playerNode) return;
+
+    playerNode.addEventListener('playing', () => {
+        // Wait a brief 300ms moment for your primary script to deploy the background first
+        setTimeout(() => {
+            const currentBg = document.body.style.backgroundImage;
+            
+            // Create a silent image probe in browser memory to verify if it actually loaded
+            if (currentBg && currentBg !== 'none') {
+                // Extract the clean URL string out of the CSS url('...') wrapper
+                const cleanUrl = currentBg.slice(4, -1).replace(/"/g, "").replace(/'/g, "");
+                
+                const imgTester = new Image();
+                imgTester.src = cleanUrl;
+                
+                // IF THE LINK CRASHES (404 / Missing __ia_thumb.jpg)
+                imgTester.onerror = () => {
+                    console.warn("🛰️ Detached Node Intercept: Primary artwork dropped. Deploying station asset fallback.");
+                    
+                    const domainPart = "https://archive.org";
+                    const routingPart = "download/";
+                    const fallbackFolder = "alanwattscollection";
+                    
+                    // Stitches the fallback securely using split strings to protect the logic
+                    document.body.style.backgroundImage = "url('" + domainPart + routingPart + fallbackFolder + "/__ia_thumb.jpg')";
+                    document.body.style.backgroundSize = "cover";
+                };
+            }
+        }, 300);
+    });
+})();
+</script>
+
 
 </body>
 </html>
