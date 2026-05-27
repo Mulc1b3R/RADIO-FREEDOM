@@ -495,17 +495,16 @@
             return;
         }
 
-        // Check if database payload has initialized in the cumulative search cache yet
-        // Fallback to checking masterLibrary if searchMasterMatrix hasn't initialized
-        const activeSearchPool = (typeof searchMasterMatrix !== 'undefined' && searchMasterMatrix.length > 0) 
-            ? searchMasterMatrix 
-            : (typeof masterLibrary !== 'undefined' ? masterLibrary : []);
+                // Check if database payload has initialized in the cumulative search cache yet
+        // ⚡ THE MASTER SECTOR MERGE: Fuses all 12 channels and master library on the fly
+        const activeSearchPool = Array.from(new Set([...masterLibrary, ...searchMasterMatrix]));
 
         if (activeSearchPool.length === 0) {
             searchResults.style.display = 'block';
             searchResults.innerHTML = `<span style="color: #ffaa00;">⚠️ NOTICE: Connect to the master network terminal node first to download the tracking database registry.</span>`;
             return;
         }
+
 
         // Scan the entire cumulative tracking list for matched terms or phrases
         const matches = activeSearchPool.filter(url => {
