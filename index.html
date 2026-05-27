@@ -343,36 +343,29 @@
     }
 
     // --- TELEMETRY LOGGER & DYNAMIC WALLPAPER MATRIX ENGINE ---
-    audioPlayer.addEventListener('playing', function() {
-        const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
+   audioPlayer.addEventListener('playing', () => {
+    let collectionName = "alanwattscollection"; // Default fallback
+
+    try {
         const currentUrl = audioPlayer.src;
+        const parsedUrl = new URL(currentUrl);
+        const pathSegments = parsedUrl.pathname.split('/').filter(seg => seg.length > 0);
         
-        let collectionName = "alanwattscollection"; 
-
-        try {
-            const parsedUrl = new URL(currentUrl);
-            const pathSegments = parsedUrl.pathname.split('/').filter(seg => seg.length > 0);
-            
-            for(let i = 0; i < pathSegments.length - 1; i++) {
-                if(['download', 'details', 'metadata', 'items', 'stream'].includes(pathSegments[i].toLowerCase())) {
-                    collectionName = pathSegments[i+1];
-                    break;
-                }
-            }
-        } catch(e) {
-            console.warn("⚠️ Engine URL Parsing dropped, deploying storage matrix structural bypass.");
+        // Grab the directory segment right before the MP3 filename
+        if (pathSegments.length >= 2) {
+            collectionName = pathSegments[pathSegments.length - 2];
         }
+    } catch(e) {
+        console.warn("⚠ Engine URL Parsing dropped, deploying storage matrix structural bypass.");
+    }
 
-        const targetWallpaperUrl = `https://archive.org/download/{collectionName}/__ia_thumb.jpg`;
-
-        document.body.style.backgroundImage = `url('${targetWallpaperUrl}')`;
-        document.body.style.backgroundSize = "cover";
-        document.body.style.backgroundPosition = "center";
-        document.body.style.backgroundRepeat = "no-repeat";
-
-        const logEntry = `[${timestamp}] ✅ PLAYING: ${getCleanTrackName(currentUrl)}\n📍 URL: ${currentUrl}\n🖼️ BG IMAGE: ${targetWallpaperUrl}\n`;
-        window.sessionLogRegistry.push(logEntry);
-    });
+    // Constructs the exact URL string structure using the variable token template
+    const targetWallpaperUrl = `https://archive.org/download/${collectionName}/__ia_thumb.jpg`;
+    
+    // Deploys the constructed string directly to the interface wallpaper matrix
+    document.body.style.backgroundImage = `url('${targetWallpaperUrl}')`;
+    document.body.style.backgroundSize = "cover";
+});
 
     // --- EXCEPTION INTERCEPT / DEAD LINK SYSTEM AUTO SKIPPER ---
     audioPlayer.addEventListener('error', function() {
