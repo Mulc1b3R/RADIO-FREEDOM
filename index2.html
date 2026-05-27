@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Section 23 // Pirate Radio Terminal</title>
     <style>
-        /* Phosphor Terminal Grid Layout Matrix */
+               /* Phosphor Terminal Grid Layout Matrix */
         body {
             background-color: #000000;
             color: #33ff33;
@@ -18,11 +18,13 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow: hidden;
+            /* 🔒 FIXED: Changed from hidden to auto so you can scroll down to your tools */
+            overflow-y: auto; 
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
         }
+
 
         .crt-chassis {
             border: 2px solid #33ff33;
