@@ -892,16 +892,16 @@
 
         redirectMonitor(localData);
     }
-
-    // 📡 STEP 4: Direct Data Link Redirection Router
+// 📡 STEP 4: Direct Data Link Redirection Router (FIXED SYNTAX)
     function redirectMonitor(localData) {
         if (!metaWindow || metaWindow.closed) return;
 
-        // If it's a standard archive identifier, bypass local text grids and hit the native details repo
+        // 🔒 FIX: Use backticks (`) and add forward slash for proper interpolation
         if (localData.slug) {
-            const targetUrl = `https://archive.org{localData.slug}`;
+            const targetUrl = `https://archive.org/details/${localData.slug}`;
             metaWindow.location.href = targetUrl;
-        } else {
+        }
+     else {
             // High-utility fallback template if streaming outlying assets from raw edge servers
             metaWindow.document.body.innerHTML = `
                 <div style="background:#000000; color:#33ff33; font-family:'Courier New', monospace; padding:20px; height:100vh; border:2px solid #33ff33; box-sizing:border-box; text-shadow: 0 0 5px #33ff33;">
