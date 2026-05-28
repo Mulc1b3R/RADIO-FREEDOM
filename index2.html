@@ -851,7 +851,7 @@ if (searchInput) searchInput.addEventListener('keyup', (e) => { if (e.key === 'E
     function redirectMonitor(localData) {
         if (!metaWindow || metaWindow.closed) return;
         if (localData.slug) {
-            metaWindow.location.href = `https://archive.org/${localData.slug}`;
+            metaWindow.location.href = `https://archive.org/details/${localData.slug}`;
         } else {
             metaWindow.document.body.innerHTML = `
                 <div style="background:#000000; color:#33ff33; font-family:'Courier New', monospace; padding:20px; height:100vh; border:2px solid #33ff33; box-sizing:border-box; text-shadow: 0 0 5px #33ff33;">
