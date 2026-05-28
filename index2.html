@@ -982,45 +982,46 @@
 
     chassis.appendChild(likeBtn);
 
-    // 🧠 STEP 2: The Core Intelligent Cross-Reference Matrix (In-Memory Dictionary)
+       // 🧠 STEP 2: The Core Intelligent Cross-Reference Matrix (ALIGNED FILENAMES)
     const CROSS_REF_DICTIONARY = {
         "TWILIGHT": {
             genre: "SCI-FI ANTHOLOGY",
-            matches: ["2000 Plus", "Beyond Tomorrow", "Exploring Tomorrow", "Dimension X", "X Minus One", "Ray Bradbury"]
+            matches: ["2000-Plus", "beyond-tomorrow", "Exploring-Tomororw", "Dimension", "X-Minus-One", "Ray-Bradbury"]
         },
         "SUSPENSE": {
             genre: "PSYCHOLOGICAL THRILLER",
-            matches: ["Murder By Experts", "Alfred Hitchcock", "The Whistler", "Inner Sanctum", "The Mysterious Traveler", "Escape"]
+            matches: ["Murder_By_Experts", "Alfred-Hitchcock", "Whistler", "Inner", "Mysterious-Traveler", "Escape"]
         },
         "MURDER": {
             genre: "DETECTIVE NOIR & MYSTERY",
-            matches: ["Suspense", "Sherlock Holmes", "The Black Museum", "Secrets Of Scotland Yard", "Whitehall 1212", "Philip Marlowe"]
+            matches: ["Suspense", "sherlock", "Black-Museum", "Secrets", "Whitehall", "Marlowe"]
         },
         "SCOTLAND": {
             genre: "BRITISH PROCEDURAL MYSTERY",
-            matches: ["Sherlock Holmes", "Haunted BBC", "The Black Museum", "Whitehall 1212", "Murder By Experts", "Paul Temple"]
+            matches: ["sherlock", "Haunted-BBC", "Black-Museum", "Whitehall", "Murder_By_Experts"]
         },
         "SHERLOCK": {
             genre: "VICTORIAN DETECTIVE NOIR",
-            matches: ["Secrets Of Scotland Yard", "The Black Museum", "Whitehall 1212", "Murder By Experts", "Haunted BBC"]
+            matches: ["Secrets", "Black-Museum", "Whitehall", "Murder_By_Experts", "Haunted-BBC"]
         },
         "BBC": {
             genre: "BRITISH HERITAGE DRAMA",
-            matches: ["Haunted BBC", "Secrets Of Scotland Yard", "Sherlock Holmes", "Lord Of The Rings"]
+            matches: ["Haunted-BBC", "Secrets", "sherlock", "lord-of-the-rings"]
         },
         "LOTR": {
             genre: "EPIC LITERARY FANTASY",
-            matches: ["Ray Bradbury", "Twilight Zone", "BBC Sci Fi", "The Hobbit", "Weird Circle"]
+            matches: ["Ray-Bradbury", "Twilight-zone", "BBC", "Hobbit", "Weird"]
         },
         "ALFRED": {
             genre: "MACABRE MYSTERY AUDIO",
-            matches: ["Suspense", "Murder By Experts", "The Mysterious Traveler", "Inner Sanctum", "Lights Out"]
+            matches: ["Suspense", "Murder_By_Experts", "Mysterious-Traveler", "Inner", "Lights-Out"]
         },
         "RAY": {
             genre: "SPECULATIVE LITERARY SCI-FI",
-            matches: ["Twilight Zone", "2000 Plus", "Dimension X", "X Minus One", "Lord Of The Rings", "Exploring Tomorrow"]
+            matches: ["Twilight-zone", "2000-Plus", "Dimension", "X-Minus-One", "lord-of-the-rings", "Exploring-Tomororw"]
         }
     };
+
 
     function analyzeActiveStream() {
         const player = document.getElementById('audioPlayer');
