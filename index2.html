@@ -508,130 +508,12 @@
     // Initial dummy screen draw loop boot to showcase visualization immediately on load
     drawEqualizerGridLoop();
 	
-	      // --- SECTION 23 SEARCH LOGIC OVERRIDE ENGINE (CUMULATIVE HYBRID PACK)
-	// ===================================================================
-// SECTION 23: GLOBAL NETWORK STATE INITIALIZATION
+	// --- SECTION 23 SEARCH LOGIC OVERRIDE ENGINE (CUMULATIVE HYBRID PACK)
+
 // ===================================================================
-   let isConnected = false; 
-    // ===================================================================
-    // SECTION 23: MULTI-CHANNEL ROOT DIRECTORY DATA CRAWLER
-    // ===================================================================
-    const searchInput = document.getElementById('trackSearchInput');
-    const searchBtn = document.getElementById('searchMatrixBtn');
-    const searchResults = document.getElementById('searchResultsDisplay');
-
-    function executeMatrixSearch() {
-        // TACTICAL RESILIENCE CHECK: Ensure node is connected first
-        if (!isConnected) {
-            searchResults.style.display = 'block';
-            searchResults.innerHTML = `<div class="search-row" style="cursor:default;color:#ffaa00;">⚠️ TACTICAL ERROR: Link to the master network node first before launching SCAN sequence.</div>`;
-            return;
-        }
-        
-        const query = searchInput.value.toUpperCase().trim();
-        searchResults.innerHTML = '';
-        
-        if (!query) {
-            searchResults.style.display = 'none';
-            return;
-        }
-
-        // Show instant progress telemetry in your display window while crawling files
-        searchResults.style.display = 'block';
-        searchResults.innerHTML = '<div class="search-row" style="cursor:default;color:#ffff33;animation:blink 1s infinite;">📡 INITIALISING MULTI-CHANNEL CRAWL SEQUENCE...</div>';
-
-        // 🗺️ STEP 1: Dynamically compile the target file roster from presets + master database
-        const crawlRoster = ["load.json"]; // Seed roster with primary bulk archive
-        
-        for (let ch in PRESET_CHANNELS) {
-            const fileUrl = PRESET_CHANNELS[ch].url;
-            if (fileUrl && fileUrl !== ".json" && !crawlRoster.includes(fileUrl)) {
-                crawlRoster.push(fileUrl);
-            }
-        }
-
-        // 📡 STEP 2: Launch multi-threaded parallel fetch queries to your local directory
-        const fetchPromises = crawlRoster.map(file => 
-            fetch(file)
-                .then(res => {
-                    if (!res.ok) throw new Error(`Fetch Fail: ${file}`);
-                    return res.json();
-                })
-                .then(data => {
-                    if (Array.isArray(data)) return data;
-                    if (data && Array.isArray(data.mp3s)) return data.mp3s;
-                    return [];
-                })
-                .catch(err => {
-                    console.warn(`CRAWLER CAUTION: Skipping outlying node [${file}] due to network timeout.`);
-                    return []; // Recover gracefully to protect the remaining crawl chain
-                })
-        );
-
-        // 🧠 STEP 3: Unify the total dataset layers and filter for the keyword
-        Promise.all(fetchPromises)
-            .then(allArrays => {
-                const unifiedLibrary = allArrays.flat();
-                searchResults.innerHTML = '';
-
-                // Filter rows checking raw file strings for matching query parameters
-                const matches = unifiedLibrary.filter(track => {
-                    const cleanTrackPath = decodeURIComponent(track).toUpperCase();
-                    return cleanTrackPath.includes(query) || cleanTrackPath.replace(/[_-]/g, ' ').includes(query);
-                });
-
-                // Deduplicate matching targets to guarantee zero redundancy in display rows
-                const uniqueMatches = Array.from(new Set(matches)).slice(0, 30); // Bound display to top 30 hits
-
-                if (uniqueMatches.length > 0) {
-                    uniqueMatches.forEach(track => {
-                        const row = document.createElement('div');
-                        row.className = 'search-row';
-                        
-                        // Human-readable parse: extract the file element from the final URL branch
-                        const filename = decodeURIComponent(track).split('/').pop().replace(/\.[^/.]+$/, "").replace(/[_-]/g, ' ');
-                        row.innerText = filename.toUpperCase();
-                        
-                        // 🔒 SYSTEM STATE INTERCEPT & DECK CONTAMINATION SHIELD
-                        row.addEventListener('click', () => {
-                            audioPlayer.src = track;
-                            audioPlayer.play();
-                            
-                            // Inject tactical manual override notification into readout console
-                            document.getElementById('trackInfo').innerHTML = `MANUAL OVERRIDE: ${row.innerText}<br>[QUEUE PROTECTION ENGAGED]`;
-                            
-                            // Scrub track completely from streaming array vectors so it cannot repeat
-                            if (typeof activeStreamingDeck !== 'undefined') {
-                                activeStreamingDeck = activeStreamingDeck.filter(item => item !== track);
-                            }
-                            
-                            searchResults.style.display = 'none';
-                        });
-                        searchResults.appendChild(row);
-                    });
-                } else {
-                    searchResults.innerHTML = '<div class="search-row" style="cursor:default;color:#ff3333;">ZERO MATCHES LOCATED IN MULTI-CHANNEL MATRIX</div>';
-                }
-            })
-            .catch(globalErr => {
-                searchResults.innerHTML = '<div class="search-row" style="cursor:default;color:#ff3333;">TACTICAL CRASH: UNABLE TO COMPILE NETWORK FILES</div>';
-                console.error(globalErr);
-            });
-    }
-
-    // Bind execution to your tactical chassis scan button interface element
-    searchBtn.addEventListener('click', executeMatrixSearch);
-    searchInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') executeMatrixSearch(); });
-
-
-</script>
-
-<script>
-<script>
+// SECTION 23: GLOBAL NETWORK STATE INITIALIZATION (ROOT SCOPE)
 // ===================================================================
-// SECTION 23: GLOBAL NETWORK STATE INITIALIZATION (GLOBAL SCOPE)
-// ===================================================================
-let isConnected = false; 
+let isConnected = false;
 
 // 🔓 UNIVERSAL MATRIX DIRECTORY: Bound to window context to cross all scope walls
 window.PRESET_CHANNELS = {
@@ -650,341 +532,103 @@ window.PRESET_CHANNELS = {
 };
 
 // ===================================================================
-// SECTION 23: SIDEBAR PRESET CONSOLE (DYNAMIC LOCALIZED ENGINE)       
-// =================================================================== 
-(() => {
-    // 📡 SCOPE BRIDGE: Local block reads directly from the window context
-    const PRESET_CHANNELS = window.PRESET_CHANNELS;
+// SECTION 23: MULTI-CHANNEL ROOT DIRECTORY DATA CRAWLER
+// ===================================================================
+const searchInput = document.getElementById('trackSearchInput');
+const searchBtn = document.getElementById('searchMatrixBtn');
+const searchResults = document.getElementById('searchResultsDisplay');
 
-    const chassis = document.querySelector('.crt-chassis');
-    if (!chassis) return;
-
-    const sidebar = document.createElement('div');
-    sidebar.className = 's23-sidebar-preset-panel';
-    sidebar.style.display = "flex";
-    sidebar.style.flexDirection = "column";
-    sidebar.style.gap = "12px";
-    sidebar.style.width = "75px";
-    sidebar.style.minWidth = "75px";
-    sidebar.style.background = "#050505";
-    sidebar.style.border = "2px solid #00ff00";
-    sidebar.style.borderRadius = "6px";
-    sidebar.style.padding = "15px 6px";
-    sidebar.style.boxShadow = "inset 0 0 10px rgba(0, 255, 0, 0.2), 0 0 15px rgba(0, 255, 0, 0.4)";
-    
-        // Forces a physical layout anchor on your local desktop browser files
-        // Cleans out the desktop floating clash and uses pure absolute grid calculations
-    sidebar.style.position = "absolute";
-    sidebar.style.left = "-95px"; 
-    sidebar.style.top = "0px";   // Negative number pulls the panel straight to the top ceiling line!
-
-
-
-    // 2. AUTOMATED COUNT MATRIX: Calculate exact mapping configuration length on the fly
-    const totalButtons = Object.keys(PRESET_CHANNELS).length;
-    console.log(`📡 Radio Deck Scanner: Identified ${totalButtons} active preset channels.`);
-
-    // 3. Assemble the tactical mechanical button loops dynamically
-    for (let i = 1; i <= totalButtons; i++) {
-        const btn = document.createElement('button');
-		btn.className = 's23-preset-btn'; // Add this line right here!
-        btn.style.width = "100%";
-        btn.style.height = "52px";
-        btn.style.background = "#111";
-        btn.style.color = "#00ff00";
-        btn.style.border = "2px solid #005500";
-        btn.style.borderRadius = "4px";
-        btn.style.fontFamily = "monospace";
-        btn.style.fontSize = "11px";
-        btn.style.fontWeight = "bold";
-        btn.style.cursor = "pointer";
-        btn.style.boxShadow = "0 3px 0 #003300";
-        btn.style.transition = "all 0.05s ease";
-        
-        btn.innerHTML = `CH ${i}<div style="font-size:9px; color:#008800; margin-top:2px; font-weight:normal;">${PRESET_CHANNELS[i].name}</div>`;
-        
-        // Tactile switch compression mechanics
-        btn.onmousedown = () => {
-            btn.style.transform = "translateY(2px)";
-            btn.style.boxShadow = "0 1px 0 #003300";
-            btn.style.background = "#001100";
-            btn.style.color = "#fff";
-        };
-        btn.onmouseup = btn.onmouseleave = () => {
-            btn.style.transform = "none";
-            btn.style.boxShadow = "0 3px 0 #003300";
-            btn.style.background = "#111";
-            btn.style.color = "#00ff00";
-        };
-
-        btn.addEventListener('click', () => triggerPresetTuning(i, btn));
-        sidebar.appendChild(btn);
+async function executeMatrixSearch() {
+    if (!isConnected) {
+        searchResults.style.display = 'block';
+        searchResults.innerHTML = `<div class="search-row" style="cursor:default;color:#ffaa00;padding:8px;border-bottom:1px dashed #003300;">⚠ TACTICAL ERROR: Link to the master network node first before launching SCAN sequence.</div>`;
+        return;
     }
+
+    const query = searchInput.value.toUpperCase().trim();
+    searchResults.innerHTML = '';
     
-    // Ensure the chassis node acts as the absolute reference base anchor coordinate
-    chassis.style.position = "relative";
-    
-    // Mount the completed hardware block directly onto the left flank edge
-    chassis.appendChild(sidebar);
-
-    // 📡 LOCAL RESOURCE FETCHER & OVERDRIVE LOOP
-    async function triggerPresetTuning(channelNum, buttonNode) {
-        const player = document.getElementById("audioPlayer");
-        if (!player) return;
-        
-        const targetConfig = PRESET_CHANNELS[channelNum];
-        const trackInfoPanel = document.getElementById("trackInfo");
-        if (trackInfoPanel) trackInfoPanel.innerText = `TUNING STATIC NODE: [${targetConfig.name}]...`;
-
-        // Clear active selection indicators across other channels
-        document.querySelectorAll('.s23-preset-btn').forEach(b => b.style.borderColor = "#005500");
-        buttonNode.style.borderColor = "#00ff00";
-
-        try {
-            // Fetch the clean playlist database array directly from your local GitHub domain repository
-            const response = await fetch(targetConfig.url);
-            if (!response.ok) throw new Error(`HTTP Matrix Load Failure: ${response.status}`);
-            
-            const data = await response.json();
-            
-            // Isolate the mp3 path array seamlessly out of your flat database format
-            let scrapedMp3Pool = [];
-            if (data && Array.isArray(data.mp3s)) {
-                scrapedMp3Pool = data.mp3s;
-            } else if (Array.isArray(data)) {
-                scrapedMp3Pool = data;
-            }
-
-                        if (scrapedMp3Pool.length === 0) {
-                if (trackInfoPanel) trackInfoPanel.innerText = `DATABASE ERROR: 0 PATHS LOADED`;
-                return;
-            }
-
-            // ⚡ THE MASTER MATRIX INTERCEPT NODE
-            searchMasterMatrix = Array.from(new Set([...searchMasterMatrix, ...scrapedMp3Pool]));
-            isConnected = true; 
-            // Scramble the new target collection station pool completely in memory
-            scrapedMp3Pool.sort(() => Math.random() - 0.5);
-
-            console.log(`🎲 Local Deck Engine Active: Transferred ${scrapedMp3Pool.length} tracks into loop queue for channel ${channelNum}.`);
-
-            // Overdrive injection straight into your streaming deck depletion array loop logic
-            if (typeof activeStreamingDeck !== 'undefined') {
-                activeStreamingDeck = [...scrapedMp3Pool];
-                player.src = activeStreamingDeck.shift();
-                player.play().catch(e => console.warn("Buffer lock active."));
-            } else {
-                player.src = scrapedMp3Pool[0];
-                player.play().catch(e => console.warn("Fallback track activation active."));
-            }
-
-        } catch (error) {
-            console.error("❌ Preset Local Load Failure:", error);
-            if (trackInfoPanel) trackInfoPanel.innerText = `TUNING CRASHED: TARGET JSON MISSING`;
-        }
+    if (!query) {
+        searchResults.style.display = 'none';
+        return;
     }
-})();
-</script>
-<!-- SECTION 23: DECOUPLED AUXILIARY METADATA POP-UP ENGINE // V1.API    -->
-<!-- =================================================================== -->
-<script id="s23-metadata-sandbox">
-(function() {
-    // 🎛️ TARGET CORE CHASSIS DIRECTLY
-    const chassis = document.querySelector('.crt-chassis');
-    if (!chassis) return; 
 
-    // Ensure the chassis acts as the absolute alignment parent
-    chassis.style.position = 'relative';
+    searchResults.style.display = 'block';
+    searchResults.innerHTML = '<div class="search-row" style="cursor:default;color:#ffff33;padding:8px;border-bottom:1px dashed #003300;">📡 INITIALISING MULTI-CHANNEL CRAWL SEQUENCE...</div>';
 
-    // ⚙️ CONFIGURATION: Absolute positioning coordinates pinned to right chassis wall
-    const BUTTON_STYLES = {
-        position: 'absolute',
-        right: '-145px', 
-        top: '30px',     
-        width: '130px',
-        height: '48px',
-        background: '#111',
-        color: '#00ff00',
-        border: '2px solid #005500',
-        borderRadius: '5px',
-        fontFamily: "'Courier New', monospace",
-        fontSize: '11px',
-        fontWeight: 'bold',
-        cursor: 'pointer',
-        boxShadow: '0 3px 0 #003300, inset 0 1px 2px rgba(255,255,255,0.1)',
-        textShadow: '0 0 4px rgba(0, 255, 0, 0.6)',
-        textTransform: 'uppercase',
-        zIndex: '9999'
-    };
-
-    let metaWindow = null;
-
-    // 🔨 STEP 1: Dynamically generate the hardware button
-    const metaBtn = document.createElement('button');
-    metaBtn.id = 's23-meta-probe-btn';
-    metaBtn.innerHTML = 'METADATA<br><span style="font-size:8px;color:#008800;">PROBE NODE</span>';
-    
-    Object.assign(metaBtn.style, BUTTON_STYLES);
-
-    // Replicate mechanical tactile transitions
-    metaBtn.addEventListener('mouseenter', () => metaBtn.style.borderColor = '#00ff00');
-    metaBtn.addEventListener('mouseleave', () => metaBtn.style.borderColor = '#005500');
-    metaBtn.addEventListener('mousedown', () => {
-        metaBtn.style.transform = 'translateY(2px)';
-        metaBtn.style.boxShadow = '0 1px 0 #003300, inset 0 3px 6px rgba(0,0,0,0.8)';
-    });
-    metaBtn.addEventListener('mouseup', () => {
-        metaBtn.style.transform = 'none';
-        metaBtn.style.boxShadow = BUTTON_STYLES.boxShadow;
-    });
-
-    chassis.appendChild(metaBtn);
-
-        // 🧠 STEP 2: The URL String Splitting & Telemetry Extraction Routine (FIXED)
-    function extractBaseIdentifiers() {
-        const player = document.getElementById('audioPlayer');
-        if (!player || !player.src || player.src.includes(window.location.hostname)) {
-            return null;
-        }
-
-        try {
-            const rawUrl = decodeURIComponent(player.src);
-            
-            if (rawUrl.includes('/download/')) {
-                const urlParts = rawUrl.split('/download/');
-                
-                // 🔒 FIX 1: Explicitly isolate the tracking segment at index [1]
-                const pathSegment = urlParts[1]; 
-                const pathParts = pathSegment.split('/');
-                
-                // 🔒 FIX 2: Capture raw identifier and cleanly enforce lowercase for API calls
-                let rawSlug = pathParts[0] || '';
-                let apiCleanSlug = rawSlug.trim();
-                
-                let collectionSlug = pathParts[0] || 'UNKNOWN';
-                let filenameSlug = pathParts[pathParts.length - 1] || 'UNKNOWN';
-
-                filenameSlug = filenameSlug.replace(/\.[^/.]+$/, "");
-
-                const cleanCollection = collectionSlug.replace(/[_-]/g, ' ').replace(/\s+/g, ' ').trim();
-                const cleanTrack = filenameSlug.replace(/[_-]/g, ' ').replace(/\s+/g, ' ').trim();
-
-                return {
-                    slug: apiCleanSlug, // Passed directly to the fetch query
-                    collection: cleanCollection,
-                    track: cleanTrack
-                };
-            }
-            
-            const fallbackName = rawUrl.split('/').pop().replace(/\.[^/.]+$/, "").replace(/[_-]/g, ' ');
-            return { slug: null, collection: 'REMOTE STORAGE NODE', track: fallbackName };
-
-        } catch (e) {
-            return null;
+    const crawlRoster = ["load.json"];
+    for (let ch in window.PRESET_CHANNELS) {
+        const fileUrl = window.PRESET_CHANNELS[ch].url;
+        if (fileUrl && !crawlRoster.includes(fileUrl)) {
+            crawlRoster.push(fileUrl);
         }
     }
 
-
-       // 📺 STEP 3: Spawning the Auxiliary CRT Monitor Window (Option 2 Redirection)
-    function launchMetaMonitor() {
-        const localData = extractBaseIdentifiers();
-
-        if (!localData) {
-            alert("TACTICAL ERROR: No active stream detected. Link to a channel preset first.");
-            return;
-        }
-
-        // Configure optimal web layout dimensions for the native archive panel
-        const winWidth = 650;  
-        const winHeight = 550; 
-        const leftPos = (window.screen.width / 2) - (winWidth / 2) + 260; 
-        const topPos = (window.screen.height / 2) - (winHeight / 2);
-
-        // If the monitor is already active, refocus it and force the new route redirection
-        if (metaWindow && !metaWindow.closed) {
-            metaWindow.focus();
-            redirectMonitor(localData);
-            return;
-        }
-
-        // Open the window canvas shell cleanly pointing to about:blank initially
-        metaWindow = window.open('about:blank', 'S23_METADATA_MONITOR', 
-            `width=${winWidth},height=${winHeight},top=${topPos},left=${leftPos},resizable=yes,scrollbars=yes,status=no,location=no,toolbar=no,menubar=no`
+    try {
+        const fetchPromises = crawlRoster.map(file =>
+            fetch(file)
+                .then(res => res.ok ? res.json() : [])
+                .then(data => {
+                    if (Array.isArray(data)) return data;
+                    if (data && Array.isArray(data.mp3s)) return data.mp3s;
+                    return [];
+                })
+                .catch(() => [])
         );
 
-        if (!metaWindow) {
-            alert("POP-UP INTERCEPTED: Please white-list this terminal node to deploy the Auxiliary Metadata Monitor.");
-            return;
-        }
+        const allArrays = await Promise.all(fetchPromises);
+        const unifiedLibrary = allArrays.flat();
+        searchResults.innerHTML = '';
 
-        redirectMonitor(localData);
-    }
-    // 📡 STEP 4: Direct Data Link Redirection Router (FIXED SYNTAX)
-    function redirectMonitor(localData) {
-        if (!metaWindow || metaWindow.closed) return;
-
-        // 🔒 FIX: Use backticks (`) and add forward slash for proper interpolation
-        if (localData.slug) {
-            const targetUrl = `https://archive.org/details/${localData.slug}`;
-            metaWindow.location.href = targetUrl;
-        } else {
-            // High-utility fallback template if streaming outlying assets from raw edge servers
-            metaWindow.document.body.innerHTML = `
-                <div style="background:#000000; color:#33ff33; font-family:'Courier New', monospace; padding:20px; height:100vh; border:2px solid #33ff33; box-sizing:border-box; text-shadow: 0 0 5px #33ff33;">
-                    <h3 style="font-size:13px; border-bottom:1px solid #005500; padding-bottom:5px; color:#fff;">🛰️ SECTION 23 AUXILIARY STREAM DIAGNOSTICS</h3>
-                    <p style="color:#008800; font-size:10px; font-weight:bold; letter-spacing:1px; margin-top:15px;">LOCAL REPOSITORY NAME:</p>
-                    <p style="color:#ffffff; font-size:12px;">${localData.collection.toUpperCase()}</p>
-                    <p style="color:#008800; font-size:10px; font-weight:bold; letter-spacing:1px;">ACTIVE IDENTIFIER:</p>
-                    <p style="color:#ffffff; font-size:12px;">${localData.track.toUpperCase()}</p>
-                    <hr style="border:none; border-top:1px dashed #005500; margin:20px 0;">
-                    <p style="color:#ffff33; font-size:11px;">📡 REDIRECTION SKIPPED: ASSET INJECTED VIA RAW REMOTE STORAGE EDGE.</p>
-                </div>
-            `;
-        }
-    }
-
-
-    // Bind execution listener directly to the button interface
-    metaBtn.addEventListener('click', launchMetaMonitor);
-
-    // 📡 STEP 5: Live Sync Loop (Forces open pop-up to refresh instantly when tracks swap)
-    const activePlayer = document.getElementById('audioPlayer');
-    if (activePlayer) {
-        activePlayer.addEventListener('play', () => {
-            if (metaWindow && !metaWindow.closed) {
-                const refreshedData = extractBaseIdentifiers();
-                if (refreshedData) {
-                    redirectMonitor(refreshedData);
-                }
-            }
+        const matches = unifiedLibrary.filter(track => {
+            const cleanTrackPath = decodeURIComponent(track).toUpperCase();
+            return cleanTrackPath.includes(query) || cleanTrackPath.replace(/[_-]/g, ' ').includes(query);
         });
+
+        const uniqueMatches = Array.from(new Set(matches)).slice(0, 30);
+
+        if (uniqueMatches.length > 0) {
+            uniqueMatches.forEach(track => {
+                const row = document.createElement('div');
+                row.className = 'search-row';
+                
+                // Hard-coded layout integrity checks for the dynamic search rows
+                row.style.padding = "8px";
+                row.style.borderBottom = "1px dashed #003300";
+                row.style.cursor = "pointer";
+
+                const filename = decodeURIComponent(track).split('/').pop().replace(/\.[^/.]+$/, "").replace(/[_-]/g, ' ');
+                row.innerText = `📡 ${filename.toUpperCase()}`;
+
+                row.addEventListener('click', () => {
+                    audioPlayer.src = track;
+                    audioPlayer.play().catch(e => console.warn("Buffer lock active."));
+                    document.getElementById('trackInfo').innerHTML = `MANUAL OVERRIDE: ${filename.toUpperCase()}<br>[QUEUE PROTECTION ENGAGED]`;
+                    
+                    if (typeof activeStreamingDeck !== 'undefined') {
+                        activeStreamingDeck = activeStreamingDeck.filter(item => item !== track);
+                    }
+                    searchResults.style.display = 'none';
+                });
+
+                searchResults.appendChild(row);
+            });
+        } else {
+            searchResults.innerHTML = '<div class="search-row" style="cursor:default;color:#ff3333;padding:8px;border-bottom:1px dashed #003300;">ZERO MATCHES LOCATED IN MULTI-CHANNEL MATRIX</div>';
+        }
+    } catch (globalErr) {
+        searchResults.innerHTML = '<div class="search-row" style="cursor:default;color:#ff3333;padding:8px;border-bottom:1px dashed #003300;">TACTICAL CRASH: UNABLE TO COMPILE NETWORK FILES</div>';
+        console.error(globalErr);
     }
-})();
-</script>
-<script>
-	// ===================================================================
+}
+
+if (searchBtn) searchBtn.addEventListener('click', executeMatrixSearch);
+if (searchInput) searchInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') executeMatrixSearch(); });
+// ===================================================================
 // SECTION 24: SIDEBAR PRESET CONSOLE (DYNAMIC LOCALIZED ENGINE)       
 // =================================================================== 
 (() => {
-    // 🛠️ HARDWIRED OVERDRIVE PRESET LINKS (LOCALIZED DATA OBJECT MANUALLY COMPLETED IN HIGHER SCOPE)
-    /* 
-    const PRESET_CHANNELS = {
-        1:  { name: "Sci Fi",  url: "Twilight-zone.json" },
-        2:  { name: "Suspense",  url: "Suspense.json" },
-        3:  { name: "Murder_By_Experts",  url: "Murder_By_Experts.json" },
-        4:  { name: "Mysterious-Traveler",  url: "Mysterious-Traveler.json" },
-        5:  { name: "2000_Plus",   url: "2000-Plus.json" },
-        6:  { name: "BBC-sci fi",  url: "BBC.json" },
-        7:  { name: "Sci-fi-Radio",  url: "Sci-fi-Radio.json" },
-        8:  { name: "lord-of-the-rings",  url: "lord-of-the-rings.json" },
-        9:  { name: "Sherlock Holmes",  url: "sherlock.json" },
-        10: { name: "Haunted-BBC",  url: "Haunted-BBC.json" },
-        11: { name: "Alfred-Hitchcock",  url: "Alfred-Hitchcock.json" },
-        12: { name: "Ray-Bradbury",  url: "Ray-Bradbury.json" }
-    }; 
-    */
-
-    // 📡 SCOPE BRIDGE: Map local execution back to the universal window context setup on boot
+    // 📡 SCOPE BRIDGE: Local block queries directly off the universal window configuration layout
     const PRESET_CHANNELS = window.PRESET_CHANNELS || {
         1:  { name: "Sci Fi",  url: "Twilight-zone.json" },
         2:  { name: "Suspense",  url: "Suspense.json" },
@@ -1003,26 +647,122 @@ window.PRESET_CHANNELS = {
     const chassis = document.querySelector('.crt-chassis');
     if (!chassis) return;
 
-    // Build or attach your physical button layouts here dynamically
+    // Check if panel already exists to prevent duplicate UI assembly clutter
+    let existingPanel = document.querySelector('.s23-sidebar-preset-panel');
+    if (existingPanel) existingPanel.remove();
+
+    const sidebar = document.createElement('div');
+    sidebar.className = 's23-sidebar-preset-panel';
+    sidebar.style.display = "flex";
+    sidebar.style.flexDirection = "column";
+    sidebar.style.gap = "12px";
+    sidebar.style.width = "75px";
+    sidebar.style.minWidth = "75px";
+    sidebar.style.background = "#050505";
+    sidebar.style.border = "2px solid #00ff00";
+    sidebar.style.borderRadius = "6px";
+    sidebar.style.padding = "15px 6px";
+    sidebar.style.boxShadow = "inset 0 0 10px rgba(0, 255, 0, 0.2), 0 0 15px rgba(0, 255, 0, 0.4)";
+    sidebar.style.position = "absolute";
+    sidebar.style.left = "-95px"; 
+    sidebar.style.top = "0px";
+
     const totalButtons = Object.keys(PRESET_CHANNELS).length;
     console.log(`📡 Radio Deck Scanner: Identified ${totalButtons} active preset channels.`);
+
+    // Map rows and dynamically mount physical tactile layout buttons
+    Object.keys(PRESET_CHANNELS).forEach(key => {
+        const chData = PRESET_CHANNELS[key];
+        const btn = document.createElement('button');
+        btn.className = 's23-preset-btn';
+        btn.innerHTML = `<span style="font-size:9px;color:#008800;display:block;">CH ${key}</span><span style="font-size:8px;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;">${chData.name.substring(0,8).toUpperCase()}</span>`;
+        
+        btn.style.width = "100%";
+        btn.style.height = "52px";
+        btn.style.background = "#111";
+        btn.style.color = "#00ff00";
+        btn.style.border = "2px solid #005500";
+        btn.style.borderRadius = "4px";
+        btn.style.fontFamily = "monospace";
+        btn.style.cursor = "pointer";
+        btn.style.boxShadow = "0 3px 0 #003300";
+        btn.style.transition = "all 0.05s ease";
+
+        // Tactile switch compression mechanics
+        btn.onmousedown = () => {
+            btn.style.transform = "translateY(2px)";
+            btn.style.boxShadow = "0 1px 0 #003300";
+            btn.style.background = "#001100";
+            btn.style.color = "#fff";
+        };
+        btn.onmouseup = btn.onmouseleave = () => {
+            btn.style.transform = "none";
+            btn.style.boxShadow = "0 3px 0 #003300";
+            btn.style.background = "#111";
+            btn.style.color = "#00ff00";
+        };
+
+        btn.addEventListener('click', async () => {
+            const trackInfoPanel = document.getElementById('trackInfo');
+            if (trackInfoPanel) trackInfoPanel.textContent = `📡 TUNING CHANNEL ${key}: ${chData.name.toUpperCase()}...`;
+            
+            // Clear active selection indicators across other channels
+            document.querySelectorAll('.s23-preset-btn').forEach(b => b.style.borderColor = "#005500");
+            btn.style.borderColor = "#00ff00";
+
+            try {
+                const res = await fetch(chData.url);
+                const json = await res.json();
+                
+                let scrapedMp3Pool = [];
+                if (json && Array.isArray(json.mp3s)) {
+                    scrapedMp3Pool = json.mp3s;
+                } else if (Array.isArray(json)) {
+                    scrapedMp3Pool = json;
+                }
+
+                if (scrapedMp3Pool.length === 0) {
+                    if (trackInfoPanel) trackInfoPanel.innerText = `DATABASE ERROR: 0 PATHS LOADED`;
+                    return;
+                }
+
+                // Master search matrix intercept and gate unlock
+                searchMasterMatrix = Array.from(new Set([...searchMasterMatrix, ...scrapedMp3Pool]));
+                isConnected = true;
+
+                scrapedMp3Pool.sort(() => Math.random() - 0.5);
+                console.log(`🎲 Local Deck Engine Active: Transferred ${scrapedMp3Pool.length} tracks into queue for channel ${key}.`);
+
+                if (typeof activeStreamingDeck !== 'undefined') {
+                    activeStreamingDeck = [...scrapedMp3Pool];
+                    audioPlayer.src = activeStreamingDeck.shift();
+                    audioPlayer.play().catch(e => console.warn("Buffer lock active."));
+                }
+            } catch (err) {
+                console.error("PRESET TUNING EXCEPTION:", err);
+                if (trackInfoPanel) trackInfoPanel.innerText = `TUNING CRASHED: TARGET JSON MISSING`;
+            }
+        });
+        sidebar.appendChild(btn);
+    });
+
+    chassis.style.position = "relative";
+    chassis.appendChild(sidebar);
 })();
 </script>
-
+<!-- SECTION 23: DECOUPLED AUXILIARY METADATA POP-UP ENGINE // V1.API -->
 <!-- =================================================================== -->
-<!-- SECTION 25: DECOUPLED CROSS-REFERENCE "LIKE SEARCH" ENGINE            -->
-<!-- =================================================================== -->
-<script id="s23-likesearch-sandbox">
+<script id="s23-metadata-sandbox">
 (function() {
-    // 🎛️ TARGET CORE TERMINAL CHASSIS
     const chassis = document.querySelector('.crt-chassis');
-    if (!chassis) return; 
+    if (!chassis) return;
 
-    // ⚙️ GEOMETRIC ALIGNMENT: Stacked perfectly 55px below your Metadata Button
-    const LIKE_BUTTON_STYLES = {
+    chassis.style.position = 'relative';
+
+    const BUTTON_STYLES = {
         position: 'absolute',
-        right: '-145px', 
-        top: '85px',     // Sits cleanly underneath the metadata node at top: 30px
+        right: '-145px',
+        top: '30px',
         width: '130px',
         height: '48px',
         background: '#111',
@@ -1039,288 +779,102 @@ window.PRESET_CHANNELS = {
         zIndex: '9999'
     };
 
-    let likeWindow = null;
+    let metaWindow = null;
 
-    // 🔨 STEP 1: Dynamically mount the hardware button faceplate
-    const likeBtn = document.createElement('button');
-    likeBtn.id = 's23-like-cross-btn';
-    likeBtn.innerHTML = 'LIKE SEARCH<br><span style="font-size:8px;color:#008800;">RADAR FIND</span>';
-    
-    Object.assign(likeBtn.style, LIKE_BUTTON_STYLES);
+    const metaBtn = document.createElement('button');
+    metaBtn.id = 's23-meta-probe-btn';
+    metaBtn.innerHTML = 'METADATA<br><span style="font-size:8px;color:#008800;">PROBE NODE</span>';
+    Object.assign(metaBtn.style, BUTTON_STYLES);
 
-    // Mechanical click and hover translation physics
-    likeBtn.addEventListener('mouseenter', () => likeBtn.style.borderColor = '#00ff00');
-    likeBtn.addEventListener('mouseleave', () => likeBtn.style.borderColor = '#005500');
-    likeBtn.addEventListener('mousedown', () => {
-        likeBtn.style.transform = 'translateY(2px)';
-        likeBtn.style.boxShadow = '0 1px 0 #003300, inset 0 3px 6px rgba(0,0,0,0.8)';
+    metaBtn.addEventListener('mouseenter', () => metaBtn.style.borderColor = '#00ff00');
+    metaBtn.addEventListener('mouseleave', () => metaBtn.style.borderColor = '#005500');
+    metaBtn.addEventListener('mousedown', () => {
+        metaBtn.style.transform = 'translateY(2px)';
+        metaBtn.style.boxShadow = '0 1px 0 #003300, inset 0 3px 6px rgba(0,0,0,0.8)';
     });
-    likeBtn.addEventListener('mouseup', () => {
-        likeBtn.style.transform = 'none';
-        likeBtn.style.boxShadow = LIKE_BUTTON_STYLES.boxShadow;
+    metaBtn.addEventListener('mouseup', () => {
+        metaBtn.style.transform = 'none';
+        metaBtn.style.boxShadow = BUTTON_STYLES.boxShadow;
     });
 
-    chassis.appendChild(likeBtn);
+    chassis.appendChild(metaBtn);
 
-    // 🧠 STEP 2: The Core Intelligent Cross-Reference Matrix (ALIGNED FILENAMES)
-    const CROSS_REF_DICTIONARY = {
-        "TWILIGHT": {
-            genre: "SCI-FI ANTHOLOGY",
-            matches: ["2000-Plus", "beyond-tomorrow", "Exploring-Tomororw", "Dimension", "X-Minus-One", "Ray-Bradbury"]
-        },
-        "SUSPENSE": {
-            genre: "PSYCHOLOGICAL THRILLER",
-            matches: ["Murder_By_Experts", "Alfred-Hitchcock", "Whistler", "Inner", "Mysterious-Traveler", "Escape"]
-        },
-        "MURDER": {
-            genre: "DETECTIVE NOIR & MYSTERY",
-            matches: ["Suspense", "sherlock", "Black-Museum", "Secrets", "Whitehall", "Marlowe"]
-        },
-        "SCOTLAND": {
-            genre: "BRITISH PROCEDURAL MYSTERY",
-            matches: ["sherlock", "Haunted-BBC", "Black-Museum", "Whitehall", "Murder_By_Experts"]
-        },
-        "SHERLOCK": {
-            genre: "VICTORIAN DETECTIVE NOIR",
-            matches: ["Secrets", "Black-Museum", "Whitehall", "Murder_By_Experts", "Haunted-BBC"]
-        },
-        "BBC": {
-            genre: "BRITISH HERITAGE DRAMA",
-            matches: ["Haunted-BBC", "Secrets", "sherlock", "lord-of-the-rings"]
-        },
-        "LOTR": {
-            genre: "EPIC LITERARY FANTASY",
-            matches: ["Ray-Bradbury", "Twilight-zone", "BBC", "Hobbit", "Weird"]
-        },
-        "ALFRED": {
-            genre: "MACABRE MYSTERY AUDIO",
-            matches: ["Suspense", "Murder_By_Experts", "Mysterious-Traveler", "Inner", "Lights-Out"]
-        },
-        "RAY": {
-            genre: "SPECULATIVE LITERARY SCI-FI",
-            matches: ["Twilight-zone", "2000-Plus", "Dimension", "X-Minus-One", "lord-of-the-rings", "Exploring-Tomororw"]
-        }
-    };
-
-    function analyzeActiveStream() {
+    function extractBaseIdentifiers() {
         const player = document.getElementById('audioPlayer');
         if (!player || !player.src || player.src.includes(window.location.hostname)) {
             return null;
         }
-
-        const rawUrl = decodeURIComponent(player.src).toUpperCase();
-        let genreData = { genre: "GENERIC BROADCAST BLOCK", matches: ["Suspense", "Twilight Zone", "Sherlock Holmes", "Dimension X", "BBC Sci Fi"] };
-
-        for (let key in CROSS_REF_DICTIONARY) {
-            if (rawUrl.includes(key)) {
-                genreData = CROSS_REF_DICTIONARY[key];
-                break;
+        try {
+            const rawUrl = decodeURIComponent(player.src);
+            if (rawUrl.includes('/download/')) {
+                const urlParts = rawUrl.split('/download/');
+                const pathSegment = urlParts[1];
+                const pathParts = pathSegment.split('/');
+                let apiCleanSlug = (pathParts[0] || '').trim();
+                let collectionSlug = pathParts[0] || 'UNKNOWN';
+                let filenameSlug = pathParts[pathParts.length - 1] || 'UNKNOWN';
+                filenameSlug = filenameSlug.replace(/\.[^/.]+$/, "");
+                const cleanCollection = collectionSlug.replace(/[_-]/g, ' ').replace(/\s+/g, ' ').trim();
+                const cleanTrack = filenameSlug.replace(/[_-]/g, ' ').replace(/\s+/g, ' ').trim();
+                return { slug: apiCleanSlug, collection: cleanCollection, track: cleanTrack };
             }
+            const fallbackName = rawUrl.split('/').pop().replace(/\.[^/.]+$/, "").replace(/[_-]/g, ' ');
+            return { slug: null, collection: 'REMOTE STORAGE NODE', track: fallbackName };
+        } catch (e) {
+            return null;
         }
-
-        let extractedTitle = "UNKNOWN SOURCE CARRIER";
-        if (rawUrl.includes('/DOWNLOAD/')) {
-            const parts = rawUrl.split('/DOWNLOAD/')[1].split('/');
-            extractedTitle = parts[0].replace(/[_-]/g, ' ');
-        } else {
-            extractedTitle = rawUrl.split('/').pop().replace(/\.[^/.]+$/, "").replace(/[_-]/g, ' ');
-        }
-
-        return {
-            title: extractedTitle,
-            genre: genreData.genre,
-            recommendations: genreData.matches
-        };
     }
 
-    function launchLikeMonitor() {
-        const streamAnalysis = analyzeActiveStream();
-
-        if (!streamAnalysis) {
-            alert("TACTICAL ERROR: No active frequency stream intercepted. Link a channel preset first.");
+    function launchMetaMonitor() {
+        const localData = extractBaseIdentifiers();
+        if (!localData) {
+            alert("TACTICAL ERROR: No active stream detected. Link to a channel preset first.");
             return;
         }
-
-        const winWidth = 480;
-        const winHeight = 420;
+        const winWidth = 650; const winHeight = 550;
         const leftPos = (window.screen.width / 2) - (winWidth / 2) + 260;
-        const topPos = (window.screen.height / 2) - (winHeight / 2) + 80;
+        const topPos = (window.screen.height / 2) - (winHeight / 2);
 
-        if (likeWindow && !likeWindow.closed) {
-            likeWindow.focus();
-            renderRecommendations(streamAnalysis);
+        if (metaWindow && !metaWindow.closed) {
+            metaWindow.focus();
+            redirectMonitor(localData);
             return;
         }
-
-        likeWindow = window.open('', 'S23_RADAR_FIND_MONITOR', 
-            `width=${winWidth},height=${winHeight},top=${topPos},left=${leftPos},resizable=no,scrollbars=no,status=no,location=no,toolbar=no,menubar=no`
-        );
-
-        if (!likeWindow) {
-            alert("POP-UP INTERCEPTED: Please white-list this terminal node to deploy the Auxiliary Radar Finder.");
+        metaWindow = window.open('about:blank', 'S23_METADATA_MONITOR', `width=${winWidth},height=${winHeight},top=${topPos},left=${leftPos},resizable=yes,scrollbars=yes,status=no,location=no,toolbar=no,menubar=no`);
+        if (!metaWindow) {
+            alert("POP-UP INTERCEPTED: Please white-list this terminal node to deploy the Auxiliary Metadata Monitor.");
             return;
         }
-
-        const htmlPayload = `
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>[AUX MONITOR] Related Signals</title>
-                <style>
-                    body {
-                        background-color: #000000;
-                        color: #33ff33;
-                        font-family: 'Courier New', monospace;
-                        text-shadow: 0 0 5px #33ff33;
-                        padding: 15px;
-                        margin: 0;
-                        overflow: hidden;
-                        border: 2px solid #33ff33;
-                        box-sizing: border-box;
-                        height: 100vh;
-                    }
-                    .crt-scanlines {
-                        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-                        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-                        background-size: 100% 4px;
-                        pointer-events: none;
-                        z-index: 999;
-                    }
-                    .telemetry-grid {
-                        border: 1px solid #005500;
-                        background: rgba(0, 10, 0, 0.8);
-                        padding: 12px;
-                        height: 100%;
-                        box-sizing: border-box;
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: flex-start;
-		                gap: 10px;
-                    }
-                    .header { font-size: 11px; border-bottom: 1px solid #005500; padding-bottom: 4px; color: #fff; text-shadow: 0 0 8px #00ff00; }
-                    .meta-block { font-size: 11px; margin-bottom: 5px; line-height: 1.3; }
-                    .label { color: #008800; font-size: 10px; font-weight: bold; letter-spacing: 1px; }
-                    
-                    .vector-list-box {
-                        border: 1px solid #003300;
-                        background: #000300;
-                        flex: 1;
-                        overflow-y: auto;
-                        border-radius: 3px;
-                    }
-                    .vector-row {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        padding: 8px;
-                        font-size: 11px;
-                        border-bottom: 1px solid #002200;
-                    }
-                    .vector-row:hover { background: #001500; }
-                    
-                    .scan-trigger-btn {
-                        background: #000;
-                        border: 1px solid #00ff00;
-                        color: #00ff00;
-                        font-family: monospace;
-                        font-size: 9px;
-                        font-weight: bold;
-                        padding: 3px 6px;
-                        cursor: pointer;
-                        border-radius: 3px;
-                        text-shadow: none;
-                    }
-                    .scan-trigger-btn:hover {
-                        background: #00ff00;
-                        color: #000000;
-                        box-shadow: 0 0 8px #00ff00;
-                    }
-                </style>
-            </head>
-            <body>
-                <div class="crt-scanlines"></div>
-                <div class="telemetry-grid" id="displayBox"></div>
-            </body>
-            </html>
-        `;
-
-        likeWindow.document.write(htmlPayload);
-        likeWindow.document.close();
-
-        likeWindow.onload = function() {
-            renderRecommendations(streamAnalysis);
-        };
+        redirectMonitor(localData);
     }
 
-    // 📡 STEP 4: Render Recommendations and Bind Cross-Docking Communications
-    function renderRecommendations(analysis) {
-        const box = likeWindow.document.getElementById('displayBox');
-        if (!box) return;
-
-        // Build container base skeleton layout
-        box.innerHTML = `
-            <div class="header">🛰️ SECTION 23 AUXILIARY SIGNAL CROSS-REFERENCE</div>
-            <div class="meta-block">
-                <span class="label">PROBED CLASSIFICATION:</span><br>
-                <span style="color:#ffffff;">${analysis.title.toUpperCase()}</span><br>
-                <span class="label">IDENTIFIED CORE GENRE:</span><br>
-                <span style="color:#ffff33;">${analysis.genre}</span>
-            </div>
-            <div class="label" style="margin-bottom: -5px;">LOCATED SISTER SECTORS (SELECT TO INJECT):</div>
-            <div class="vector-list-box" id="vectorList"></div>
-            <div style="font-size: 9px; color: #005500; border-top: 1px solid #002200; padding-top: 4px; display: flex; justify-content: space-between;">
-                <span>VECTOR: IN-MEMORY ATTR MAP</span>
-                <span>STATE: READY</span>
-            </div>
-        `;
-
-        const listContainer = likeWindow.document.getElementById('vectorList');
-        
-        // Loop and build data row interfaces natively into the pop-up document frame
-        analysis.recommendations.forEach(targetShow => {
-            const row = likeWindow.document.createElement('div');
-            row.className = 'vector-row';
-            row.innerHTML = `
-                <span>⚡ ${targetShow.toUpperCase()}</span>
-                <button class="scan-trigger-btn">TUNING SCAN</button>
+    function redirectMonitor(localData) {
+        if (!metaWindow || metaWindow.closed) return;
+        if (localData.slug) {
+            metaWindow.location.href = `https://archive.org{localData.slug}`;
+        } else {
+            metaWindow.document.body.innerHTML = `
+                <div style="background:#000000; color:#33ff33; font-family:'Courier New', monospace; padding:20px; height:100vh; border:2px solid #33ff33; box-sizing:border-box; text-shadow: 0 0 5px #33ff33;">
+                    <h3 style="font-size:13px; border-bottom:1px solid #005500; padding-bottom:5px; color:#fff;">🛰️ SECTION 23 AUXILIARY STREAM DIAGNOSTICS</h3>
+                    <p style="color:#008800; font-size:10px; font-weight:bold; letter-spacing:1px; margin-top:15px;">LOCAL REPOSITORY NAME:</p>
+                    <p style="color:#ffffff; font-size:12px;">${localData.collection.toUpperCase()}</p>
+                    <p style="color:#008800; font-size:10px; font-weight:bold; letter-spacing:1px;">ACTIVE IDENTIFIER:</p>
+                    <p style="color:#ffffff; font-size:12px;">${localData.track.toUpperCase()}</p>
+                    <hr style="border:none; border-top:1px dashed #005500; margin:20px 0;">
+                    <p style="color:#ffff33; font-size:11px;">📡 REDIRECTION SKIPPED: ASSET INJECTED VIA RAW REMOTE STORAGE EDGE.</p>
+                </div>
             `;
-
-            // 🔀 THE INTER-WINDOW OVERRIDE CROSS-DOCK: Intercepts and drives main terminal inputs
-            row.querySelector('.scan-trigger-btn').addEventListener('click', () => {
-                const mainSearchInput = window.document.getElementById('trackSearchInput');
-                const mainSearchBtn = window.document.getElementById('searchMatrixBtn');
-
-                if (mainSearchInput && mainSearchBtn) {
-                    // Inject string directly back into main frame interface elements
-                    mainSearchInput.value = targetShow;
-                    
-                    // Fire execution flash inside the parent search terminal panel boundary
-                    mainSearchBtn.click();
-                    
-                    // Alert the user inside the pop-up console row that bridge injection worked
-                    row.style.background = '#003300';
-                    row.querySelector('.scan-trigger-btn').innerText = "INJECTED";
-                } else {
-                    alert("INTER-WINDOW CRASH: Unable to connect with Master CRT Chassis search node.");
-                }
-            });
-
-            listContainer.appendChild(row);
-        });
+        }
     }
 
-    // Bind primary action handler directly to the physical interface button
-    likeBtn.addEventListener('click', launchLikeMonitor);
+    metaBtn.addEventListener('click', launchMetaMonitor);
 
-    // 📡 STEP 5: Live Track Sync Loop (Keeps related window current if station changes)
     const activePlayer = document.getElementById('audioPlayer');
     if (activePlayer) {
         activePlayer.addEventListener('play', () => {
-            if (likeWindow && !likeWindow.closed) {
-                const freshAnalysis = analyzeActiveStream();
-                if (freshAnalysis) {
-                    renderRecommendations(freshAnalysis);
-                }
+            if (metaWindow && !metaWindow.closed) {
+                const refreshedData = extractBaseIdentifiers();
+                if (refreshedData) redirectMonitor(refreshedData);
             }
         });
     }
@@ -1329,7 +883,3 @@ window.PRESET_CHANNELS = {
 
 </body>
 </html>
-
-
-
-      
