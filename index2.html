@@ -961,8 +961,56 @@ window.PRESET_CHANNELS = {
     }
 })();
 </script>
+<script>
+	// ===================================================================
+// SECTION 24: SIDEBAR PRESET CONSOLE (DYNAMIC LOCALIZED ENGINE)       
+// =================================================================== 
+(() => {
+    // 🛠️ HARDWIRED OVERDRIVE PRESET LINKS (LOCALIZED DATA OBJECT MANUALLY COMPLETED IN HIGHER SCOPE)
+    /* 
+    const PRESET_CHANNELS = {
+        1:  { name: "Sci Fi",  url: "Twilight-zone.json" },
+        2:  { name: "Suspense",  url: "Suspense.json" },
+        3:  { name: "Murder_By_Experts",  url: "Murder_By_Experts.json" },
+        4:  { name: "Mysterious-Traveler",  url: "Mysterious-Traveler.json" },
+        5:  { name: "2000_Plus",   url: "2000-Plus.json" },
+        6:  { name: "BBC-sci fi",  url: "BBC.json" },
+        7:  { name: "Sci-fi-Radio",  url: "Sci-fi-Radio.json" },
+        8:  { name: "lord-of-the-rings",  url: "lord-of-the-rings.json" },
+        9:  { name: "Sherlock Holmes",  url: "sherlock.json" },
+        10: { name: "Haunted-BBC",  url: "Haunted-BBC.json" },
+        11: { name: "Alfred-Hitchcock",  url: "Alfred-Hitchcock.json" },
+        12: { name: "Ray-Bradbury",  url: "Ray-Bradbury.json" }
+    }; 
+    */
+
+    // 📡 SCOPE BRIDGE: Map local execution back to the universal window context setup on boot
+    const PRESET_CHANNELS = window.PRESET_CHANNELS || {
+        1:  { name: "Sci Fi",  url: "Twilight-zone.json" },
+        2:  { name: "Suspense",  url: "Suspense.json" },
+        3:  { name: "Murder_By_Experts",  url: "Murder_By_Experts.json" },
+        4:  { name: "Mysterious-Traveler",  url: "Mysterious-Traveler.json" },
+        5:  { name: "2000_Plus",   url: "2000-Plus.json" },
+        6:  { name: "BBC-sci fi",  url: "BBC.json" },
+        7:  { name: "Sci-fi-Radio",  url: "Sci-fi-Radio.json" },
+        8:  { name: "lord-of-the-rings",  url: "lord-of-the-rings.json" },
+        9:  { name: "Sherlock Holmes",  url: "sherlock.json" },
+        10: { name: "Haunted-BBC",  url: "Haunted-BBC.json" },
+        11: { name: "Alfred-Hitchcock",  url: "Alfred-Hitchcock.json" },
+        12: { name: "Ray-Bradbury",  url: "Ray-Bradbury.json" }
+    };
+
+    const chassis = document.querySelector('.crt-chassis');
+    if (!chassis) return;
+
+    // Build or attach your physical button layouts here dynamically
+    const totalButtons = Object.keys(PRESET_CHANNELS).length;
+    console.log(`📡 Radio Deck Scanner: Identified ${totalButtons} active preset channels.`);
+})();
+</script>
+
 <!-- =================================================================== -->
-<!-- SECTION 23: DECOUPLED CROSS-REFERENCE "LIKE SEARCH" ENGINE            -->
+<!-- SECTION 25: DECOUPLED CROSS-REFERENCE "LIKE SEARCH" ENGINE            -->
 <!-- =================================================================== -->
 <script id="s23-likesearch-sandbox">
 (function() {
@@ -1014,7 +1062,7 @@ window.PRESET_CHANNELS = {
 
     chassis.appendChild(likeBtn);
 
-       // 🧠 STEP 2: The Core Intelligent Cross-Reference Matrix (ALIGNED FILENAMES)
+    // 🧠 STEP 2: The Core Intelligent Cross-Reference Matrix (ALIGNED FILENAMES)
     const CROSS_REF_DICTIONARY = {
         "TWILIGHT": {
             genre: "SCI-FI ANTHOLOGY",
@@ -1054,7 +1102,6 @@ window.PRESET_CHANNELS = {
         }
     };
 
-
     function analyzeActiveStream() {
         const player = document.getElementById('audioPlayer');
         if (!player || !player.src || player.src.includes(window.location.hostname)) {
@@ -1062,19 +1109,15 @@ window.PRESET_CHANNELS = {
         }
 
         const rawUrl = decodeURIComponent(player.src).toUpperCase();
-        let activeKey = "DEFAULT";
         let genreData = { genre: "GENERIC BROADCAST BLOCK", matches: ["Suspense", "Twilight Zone", "Sherlock Holmes", "Dimension X", "BBC Sci Fi"] };
 
-        // Match the active URL slug pattern against our intelligence dictionary keys
         for (let key in CROSS_REF_DICTIONARY) {
             if (rawUrl.includes(key)) {
-                activeKey = key;
                 genreData = CROSS_REF_DICTIONARY[key];
                 break;
             }
         }
 
-        // Parse clean title out of the raw URL line for readout tracking
         let extractedTitle = "UNKNOWN SOURCE CARRIER";
         if (rawUrl.includes('/DOWNLOAD/')) {
             const parts = rawUrl.split('/DOWNLOAD/')[1].split('/');
@@ -1090,7 +1133,6 @@ window.PRESET_CHANNELS = {
         };
     }
 
-    // 📺 STEP 3: Spawning the Standalone Radar Find Viewport Window
     function launchLikeMonitor() {
         const streamAnalysis = analyzeActiveStream();
 
@@ -1099,11 +1141,10 @@ window.PRESET_CHANNELS = {
             return;
         }
 
-        // Configure strict window boundaries to emulate an auxiliary diagnostic panel
         const winWidth = 480;
         const winHeight = 420;
         const leftPos = (window.screen.width / 2) - (winWidth / 2) + 260;
-        const topPos = (window.screen.height / 2) - (winHeight / 2) + 80; // Vertically offset from metadata window
+        const topPos = (window.screen.height / 2) - (winHeight / 2) + 80;
 
         if (likeWindow && !likeWindow.closed) {
             likeWindow.focus();
@@ -1154,7 +1195,7 @@ window.PRESET_CHANNELS = {
                         display: flex;
                         flex-direction: column;
                         justify-content: flex-start;
-                        gap: 10px;
+		                gap: 10px;
                     }
                     .header { font-size: 11px; border-bottom: 1px solid #005500; padding-bottom: 4px; color: #fff; text-shadow: 0 0 8px #00ff00; }
                     .meta-block { font-size: 11px; margin-bottom: 5px; line-height: 1.3; }
@@ -1286,31 +1327,9 @@ window.PRESET_CHANNELS = {
 })();
 </script>
 
-
-
-
-
-
-
-
 </body>
 </html>
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      
