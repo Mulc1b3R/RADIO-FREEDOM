@@ -627,32 +627,38 @@
 </script>
 
 <script>
+<script>
+// ===================================================================
+// SECTION 23: GLOBAL NETWORK STATE INITIALIZATION (GLOBAL SCOPE)
+// ===================================================================
+let isConnected = false; 
+
+// 🔓 UNIVERSAL MATRIX DIRECTORY: Bound to window context to cross all scope walls
+window.PRESET_CHANNELS = {
+    1: { name: "Sci Fi", url: "Twilight-zone.json" },
+    2: { name: "Suspense", url: "Suspense.json" },
+    3: { name: "Murder_By_Experts", url: "Murder_By_Experts.json" },
+    4: { name: "Mysterious-Traveler", url: "Mysterious-Traveler.json" },
+    5: { name: "2000_Plus", url: "2000-Plus.json" },
+    6: { name: "BBC-sci fi", url: "BBC.json" },
+    7: { name: "Sci-fi-Radio", url: "Sci-fi-Radio.json" },
+    8: { name: "lord-of-the-rings", url: "lord-of-the-rings.json" },
+    9: { name: "Sherlock Holmes", url: "sherlock.json" },
+    10: { name: "Haunted-BBC", url: "Haunted-BBC.json" },
+    11: { name: "Alfred-Hitchcock", url: "Alfred-Hitchcock.json" },
+    12: { name: "Ray-Bradbury", url: "Ray-Bradbury.json" }
+};
+
 // ===================================================================
 // SECTION 23: SIDEBAR PRESET CONSOLE (DYNAMIC LOCALIZED ENGINE)       
-//=================================================================== 
-
+// =================================================================== 
 (() => {
-  // 🛠️ HARDWIRED OVERDRIVE PRESET LINKS (MANUALLY EXPANDABLE ARRAY BANK)
-    // Add or remove database links here — the system handles the visual compilation math automatically.
- /*    const PRESET_CHANNELS = {
-        1:  { name: "Sci Fi",  url: "Twilight-zone.json" },
-        2:  { name: "Suspense",  url: "Suspense.json" },
-        3:  { name: "Murder_By_Experts",  url: "Murder_By_Experts.json" },
-        4:  { name: "Mysterious-Traveler",  url: "Mysterious-Traveler.json" },
-        5:  { name: "2000_Plus",   url: "2000-Plus.json" },
-        6:  { name: "BBC-sci fi",  url: "BBC.json" },
-        7:  { name: "Sci-fi-Radio",  url: "Sci-fi-Radio.json" },
-        8:  { name: "lord-of-the-rings",  url: "lord-of-the-rings.json" },
-        9:  { name: "Sherlock Holmes",  url: "sherlock.json" },
-        10: { name: "Haunted-BBC",  url: "Haunted-BBC.json" },
-        11: { name: "Alfred-Hitchcock",  url: "Alfred-Hitchcock.json" },
-        12: { name: "Ray-Bradbury",  url: "Ray-Bradbury.json" }
-    }; */
+    // 📡 SCOPE BRIDGE: Local block reads directly from the window context
+    const PRESET_CHANNELS = window.PRESET_CHANNELS;
 
     const chassis = document.querySelector('.crt-chassis');
     if (!chassis) return;
 
-    // 1. Build the physical container using explicit absolute screen coordinates
     const sidebar = document.createElement('div');
     sidebar.className = 's23-sidebar-preset-panel';
     sidebar.style.display = "flex";
