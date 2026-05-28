@@ -764,7 +764,7 @@
 
             // ⚡ THE MASTER MATRIX INTERCEPT NODE
             searchMasterMatrix = Array.from(new Set([...searchMasterMatrix, ...scrapedMp3Pool]));
-
+            isConnected = true; 
             // Scramble the new target collection station pool completely in memory
             scrapedMp3Pool.sort(() => Math.random() - 0.5);
 
