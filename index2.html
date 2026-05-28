@@ -395,7 +395,8 @@
                 const response = await fetch('load.json');
                 const data = await response.json();
                 masterLibrary = data.mp3s.slice();
-                searchMasterMatrix = data.mp3s.slice(); // ⚡ Lock baseline tracks into search memory bank
+			    searchMasterMatrix = data.mp3s.slice(); // ⚡ Lock baseline tracks into search memory bank
+                isConnected = true; 
 
                 
                 document.getElementById('specsCount').textContent = masterLibrary.length;
@@ -507,7 +508,11 @@
     // Initial dummy screen draw loop boot to showcase visualization immediately on load
     drawEqualizerGridLoop();
 	
-	      // --- SECTION 23 SEARCH LOGIC OVERRIDE ENGINE (CUMULATIVE HYBRID PACK) ---
+	      // --- SECTION 23 SEARCH LOGIC OVERRIDE ENGINE (CUMULATIVE HYBRID PACK)
+	// ===================================================================
+// SECTION 23: GLOBAL NETWORK STATE INITIALIZATION
+// ===================================================================
+   let isConnected = false; 
     // ===================================================================
     // SECTION 23: MULTI-CHANNEL ROOT DIRECTORY DATA CRAWLER
     // ===================================================================
