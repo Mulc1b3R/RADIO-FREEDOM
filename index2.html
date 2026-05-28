@@ -929,7 +929,329 @@
     }
 })();
 </script>
+<!-- =================================================================== -->
+<!-- SECTION 23: DECOUPLED CROSS-REFERENCE "LIKE SEARCH" ENGINE            -->
+<!-- =================================================================== -->
+<script id="s23-likesearch-sandbox">
+(function() {
+    // 🎛️ TARGET CORE TERMINAL CHASSIS
+    const chassis = document.querySelector('.crt-chassis');
+    if (!chassis) return; 
 
+    // ⚙️ GEOMETRIC ALIGNMENT: Stacked perfectly 55px below your Metadata Button
+    const LIKE_BUTTON_STYLES = {
+        position: 'absolute',
+        right: '-145px', 
+        top: '85px',     // Sits cleanly underneath the metadata node at top: 30px
+        width: '130px',
+        height: '48px',
+        background: '#111',
+        color: '#00ff00',
+        border: '2px solid #005500',
+        borderRadius: '5px',
+        fontFamily: "'Courier New', monospace",
+        fontSize: '11px',
+        fontWeight: 'bold',
+        cursor: 'pointer',
+        boxShadow: '0 3px 0 #003300, inset 0 1px 2px rgba(255,255,255,0.1)',
+        textShadow: '0 0 4px rgba(0, 255, 0, 0.6)',
+        textTransform: 'uppercase',
+        zIndex: '9999'
+    };
+
+    let likeWindow = null;
+
+    // 🔨 STEP 1: Dynamically mount the hardware button faceplate
+    const likeBtn = document.createElement('button');
+    likeBtn.id = 's23-like-cross-btn';
+    likeBtn.innerHTML = 'LIKE SEARCH<br><span style="font-size:8px;color:#008800;">RADAR FIND</span>';
+    
+    Object.assign(likeBtn.style, LIKE_BUTTON_STYLES);
+
+    // Mechanical click and hover translation physics
+    likeBtn.addEventListener('mouseenter', () => likeBtn.style.borderColor = '#00ff00');
+    likeBtn.addEventListener('mouseleave', () => likeBtn.style.borderColor = '#005500');
+    likeBtn.addEventListener('mousedown', () => {
+        likeBtn.style.transform = 'translateY(2px)';
+        likeBtn.style.boxShadow = '0 1px 0 #003300, inset 0 3px 6px rgba(0,0,0,0.8)';
+    });
+    likeBtn.addEventListener('mouseup', () => {
+        likeBtn.style.transform = 'none';
+        likeBtn.style.boxShadow = LIKE_BUTTON_STYLES.boxShadow;
+    });
+
+    chassis.appendChild(likeBtn);
+
+    // 🧠 STEP 2: The Core Intelligent Cross-Reference Matrix (In-Memory Dictionary)
+    const CROSS_REF_DICTIONARY = {
+        "TWILIGHT": {
+            genre: "SCI-FI ANTHOLOGY",
+            matches: ["2000 Plus", "Beyond Tomorrow", "Exploring Tomorrow", "Dimension X", "X Minus One", "Ray Bradbury"]
+        },
+        "SUSPENSE": {
+            genre: "PSYCHOLOGICAL THRILLER",
+            matches: ["Murder By Experts", "Alfred Hitchcock", "The Whistler", "Inner Sanctum", "The Mysterious Traveler", "Escape"]
+        },
+        "MURDER": {
+            genre: "DETECTIVE NOIR & MYSTERY",
+            matches: ["Suspense", "Sherlock Holmes", "The Black Museum", "Secrets Of Scotland Yard", "Whitehall 1212", "Philip Marlowe"]
+        },
+        "SCOTLAND": {
+            genre: "BRITISH PROCEDURAL MYSTERY",
+            matches: ["Sherlock Holmes", "Haunted BBC", "The Black Museum", "Whitehall 1212", "Murder By Experts", "Paul Temple"]
+        },
+        "SHERLOCK": {
+            genre: "VICTORIAN DETECTIVE NOIR",
+            matches: ["Secrets Of Scotland Yard", "The Black Museum", "Whitehall 1212", "Murder By Experts", "Haunted BBC"]
+        },
+        "BBC": {
+            genre: "BRITISH HERITAGE DRAMA",
+            matches: ["Haunted BBC", "Secrets Of Scotland Yard", "Sherlock Holmes", "Lord Of The Rings"]
+        },
+        "LOTR": {
+            genre: "EPIC LITERARY FANTASY",
+            matches: ["Ray Bradbury", "Twilight Zone", "BBC Sci Fi", "The Hobbit", "Weird Circle"]
+        },
+        "ALFRED": {
+            genre: "MACABRE MYSTERY AUDIO",
+            matches: ["Suspense", "Murder By Experts", "The Mysterious Traveler", "Inner Sanctum", "Lights Out"]
+        },
+        "RAY": {
+            genre: "SPECULATIVE LITERARY SCI-FI",
+            matches: ["Twilight Zone", "2000 Plus", "Dimension X", "X Minus One", "Lord Of The Rings", "Exploring Tomorrow"]
+        }
+    };
+
+    function analyzeActiveStream() {
+        const player = document.getElementById('audioPlayer');
+        if (!player || !player.src || player.src.includes(window.location.hostname)) {
+            return null;
+        }
+
+        const rawUrl = decodeURIComponent(player.src).toUpperCase();
+        let activeKey = "DEFAULT";
+        let genreData = { genre: "GENERIC BROADCAST BLOCK", matches: ["Suspense", "Twilight Zone", "Sherlock Holmes", "Dimension X", "BBC Sci Fi"] };
+
+        // Match the active URL slug pattern against our intelligence dictionary keys
+        for (let key in CROSS_REF_DICTIONARY) {
+            if (rawUrl.includes(key)) {
+                activeKey = key;
+                genreData = CROSS_REF_DICTIONARY[key];
+                break;
+            }
+        }
+
+        // Parse clean title out of the raw URL line for readout tracking
+        let extractedTitle = "UNKNOWN SOURCE CARRIER";
+        if (rawUrl.includes('/DOWNLOAD/')) {
+            const parts = rawUrl.split('/DOWNLOAD/')[1].split('/');
+            extractedTitle = parts[0].replace(/[_-]/g, ' ');
+        } else {
+            extractedTitle = rawUrl.split('/').pop().replace(/\.[^/.]+$/, "").replace(/[_-]/g, ' ');
+        }
+
+        return {
+            title: extractedTitle,
+            genre: genreData.genre,
+            recommendations: genreData.matches
+        };
+    }
+
+    // 📺 STEP 3: Spawning the Standalone Radar Find Viewport Window
+    function launchLikeMonitor() {
+        const streamAnalysis = analyzeActiveStream();
+
+        if (!streamAnalysis) {
+            alert("TACTICAL ERROR: No active frequency stream intercepted. Link a channel preset first.");
+            return;
+        }
+
+        // Configure strict window boundaries to emulate an auxiliary diagnostic panel
+        const winWidth = 480;
+        const winHeight = 420;
+        const leftPos = (window.screen.width / 2) - (winWidth / 2) + 260;
+        const topPos = (window.screen.height / 2) - (winHeight / 2) + 80; // Vertically offset from metadata window
+
+        if (likeWindow && !likeWindow.closed) {
+            likeWindow.focus();
+            renderRecommendations(streamAnalysis);
+            return;
+        }
+
+        likeWindow = window.open('', 'S23_RADAR_FIND_MONITOR', 
+            `width=${winWidth},height=${winHeight},top=${topPos},left=${leftPos},resizable=no,scrollbars=no,status=no,location=no,toolbar=no,menubar=no`
+        );
+
+        if (!likeWindow) {
+            alert("POP-UP INTERCEPTED: Please white-list this terminal node to deploy the Auxiliary Radar Finder.");
+            return;
+        }
+
+        const htmlPayload = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>[AUX MONITOR] Related Signals</title>
+                <style>
+                    body {
+                        background-color: #000000;
+                        color: #33ff33;
+                        font-family: 'Courier New', monospace;
+                        text-shadow: 0 0 5px #33ff33;
+                        padding: 15px;
+                        margin: 0;
+                        overflow: hidden;
+                        border: 2px solid #33ff33;
+                        box-sizing: border-box;
+                        height: 100vh;
+                    }
+                    .crt-scanlines {
+                        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+                        background-size: 100% 4px;
+                        pointer-events: none;
+                        z-index: 999;
+                    }
+                    .telemetry-grid {
+                        border: 1px solid #005500;
+                        background: rgba(0, 10, 0, 0.8);
+                        padding: 12px;
+                        height: 100%;
+                        box-sizing: border-box;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: flex-start;
+                        gap: 10px;
+                    }
+                    .header { font-size: 11px; border-bottom: 1px solid #005500; padding-bottom: 4px; color: #fff; text-shadow: 0 0 8px #00ff00; }
+                    .meta-block { font-size: 11px; margin-bottom: 5px; line-height: 1.3; }
+                    .label { color: #008800; font-size: 10px; font-weight: bold; letter-spacing: 1px; }
+                    
+                    .vector-list-box {
+                        border: 1px solid #003300;
+                        background: #000300;
+                        flex: 1;
+                        overflow-y: auto;
+                        border-radius: 3px;
+                    }
+                    .vector-row {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding: 8px;
+                        font-size: 11px;
+                        border-bottom: 1px solid #002200;
+                    }
+                    .vector-row:hover { background: #001500; }
+                    
+                    .scan-trigger-btn {
+                        background: #000;
+                        border: 1px solid #00ff00;
+                        color: #00ff00;
+                        font-family: monospace;
+                        font-size: 9px;
+                        font-weight: bold;
+                        padding: 3px 6px;
+                        cursor: pointer;
+                        border-radius: 3px;
+                        text-shadow: none;
+                    }
+                    .scan-trigger-btn:hover {
+                        background: #00ff00;
+                        color: #000000;
+                        box-shadow: 0 0 8px #00ff00;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="crt-scanlines"></div>
+                <div class="telemetry-grid" id="displayBox"></div>
+            </body>
+            </html>
+        `;
+
+        likeWindow.document.write(htmlPayload);
+        likeWindow.document.close();
+
+        likeWindow.onload = function() {
+            renderRecommendations(streamAnalysis);
+        };
+    }
+
+    // 📡 STEP 4: Render Recommendations and Bind Cross-Docking Communications
+    function renderRecommendations(analysis) {
+        const box = likeWindow.document.getElementById('displayBox');
+        if (!box) return;
+
+        // Build container base skeleton layout
+        box.innerHTML = `
+            <div class="header">🛰️ SECTION 23 AUXILIARY SIGNAL CROSS-REFERENCE</div>
+            <div class="meta-block">
+                <span class="label">PROBED CLASSIFICATION:</span><br>
+                <span style="color:#ffffff;">${analysis.title.toUpperCase()}</span><br>
+                <span class="label">IDENTIFIED CORE GENRE:</span><br>
+                <span style="color:#ffff33;">${analysis.genre}</span>
+            </div>
+            <div class="label" style="margin-bottom: -5px;">LOCATED SISTER SECTORS (SELECT TO INJECT):</div>
+            <div class="vector-list-box" id="vectorList"></div>
+            <div style="font-size: 9px; color: #005500; border-top: 1px solid #002200; padding-top: 4px; display: flex; justify-content: space-between;">
+                <span>VECTOR: IN-MEMORY ATTR MAP</span>
+                <span>STATE: READY</span>
+            </div>
+        `;
+
+        const listContainer = likeWindow.document.getElementById('vectorList');
+        
+        // Loop and build data row interfaces natively into the pop-up document frame
+        analysis.recommendations.forEach(targetShow => {
+            const row = likeWindow.document.createElement('div');
+            row.className = 'vector-row';
+            row.innerHTML = `
+                <span>⚡ ${targetShow.toUpperCase()}</span>
+                <button class="scan-trigger-btn">TUNING SCAN</button>
+            `;
+
+            // 🔀 THE INTER-WINDOW OVERRIDE CROSS-DOCK: Intercepts and drives main terminal inputs
+            row.querySelector('.scan-trigger-btn').addEventListener('click', () => {
+                const mainSearchInput = window.document.getElementById('trackSearchInput');
+                const mainSearchBtn = window.document.getElementById('searchMatrixBtn');
+
+                if (mainSearchInput && mainSearchBtn) {
+                    // Inject string directly back into main frame interface elements
+                    mainSearchInput.value = targetShow;
+                    
+                    // Fire execution flash inside the parent search terminal panel boundary
+                    mainSearchBtn.click();
+                    
+                    // Alert the user inside the pop-up console row that bridge injection worked
+                    row.style.background = '#003300';
+                    row.querySelector('.scan-trigger-btn').innerText = "INJECTED";
+                } else {
+                    alert("INTER-WINDOW CRASH: Unable to connect with Master CRT Chassis search node.");
+                }
+            });
+
+            listContainer.appendChild(row);
+        });
+    }
+
+    // Bind primary action handler directly to the physical interface button
+    likeBtn.addEventListener('click', launchLikeMonitor);
+
+    // 📡 STEP 5: Live Track Sync Loop (Keeps related window current if station changes)
+    const activePlayer = document.getElementById('audioPlayer');
+    if (activePlayer) {
+        activePlayer.addEventListener('play', () => {
+            if (likeWindow && !likeWindow.closed) {
+                const freshAnalysis = analyzeActiveStream();
+                if (freshAnalysis) {
+                    renderRecommendations(freshAnalysis);
+                }
+            }
+        });
+    }
+})();
+</script>
 
 
 
