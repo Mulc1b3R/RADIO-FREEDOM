@@ -508,87 +508,116 @@
     drawEqualizerGridLoop();
 	
 	      // --- SECTION 23 SEARCH LOGIC OVERRIDE ENGINE (CUMULATIVE HYBRID PACK) ---
+    // ===================================================================
+    // SECTION 23: MULTI-CHANNEL ROOT DIRECTORY DATA CRAWLER
+    // ===================================================================
     const searchInput = document.getElementById('trackSearchInput');
     const searchBtn = document.getElementById('searchMatrixBtn');
     const searchResults = document.getElementById('searchResultsDisplay');
 
     function executeMatrixSearch() {
-        const query = searchInput.value.trim().toLowerCase();
+        // TACTICAL RESILIENCE CHECK: Ensure node is connected first
+        if (!isConnected) {
+            searchResults.style.display = 'block';
+            searchResults.innerHTML = `<div class="search-row" style="cursor:default;color:#ffaa00;">⚠️ TACTICAL ERROR: Link to the master network node first before launching SCAN sequence.</div>`;
+            return;
+        }
         
-        // Safety guard: Clear display if search input is completely empty
+        const query = searchInput.value.toUpperCase().trim();
+        searchResults.innerHTML = '';
+        
         if (!query) {
             searchResults.style.display = 'none';
-            searchResults.innerHTML = '';
             return;
         }
 
-                // Check if database payload has initialized in the cumulative search cache yet
-        // ⚡ THE MASTER SECTOR MERGE: Fuses all 12 channels and master library on the fly
-        const activeSearchPool = Array.from(new Set([...masterLibrary, ...searchMasterMatrix]));
-
-        if (activeSearchPool.length === 0) {
-            searchResults.style.display = 'block';
-            searchResults.innerHTML = `<span style="color: #ffaa00;">⚠️ NOTICE: Connect to the master network terminal node first to download the tracking database registry.</span>`;
-            return;
-        }
-
-
-        // Scan the entire cumulative tracking list for matched terms or phrases
-        const matches = activeSearchPool.filter(url => {
-            const cleanName = decodeURIComponent(url.substring(url.lastIndexOf('/') + 1)).toLowerCase();
-            return cleanName.includes(query);
-        });
-
+        // Show instant progress telemetry in your display window while crawling files
         searchResults.style.display = 'block';
+        searchResults.innerHTML = '<div class="search-row" style="cursor:default;color:#ffff33;animation:blink 1s infinite;">📡 INITIALISING MULTI-CHANNEL CRAWL SEQUENCE...</div>';
 
-        if (matches.length === 0) {
-            searchResults.innerHTML = `<span style="color: #ff3333;">❌ NO VECTOR MATCHES FOUND FOR: "${query}"</span>`;
-            return;
+        // 🗺️ STEP 1: Dynamically compile the target file roster from presets + master database
+        const crawlRoster = ["load.json"]; // Seed roster with primary bulk archive
+        
+        for (let ch in PRESET_CHANNELS) {
+            const fileUrl = PRESET_CHANNELS[ch].url;
+            if (fileUrl && fileUrl !== ".json" && !crawlRoster.includes(fileUrl)) {
+                crawlRoster.push(fileUrl);
+            }
         }
 
-        // Build list layout rows for all matched tracking logs found
-        let outputHtml = `<strong>🎯 FOUND ${matches.length} SECTOR MATCHES:</strong><br><hr style="border-color: #003300; margin: 5px 0;">`;
-        
-        matches.forEach((url, idx) => {
-            const fileName = decodeURIComponent(url.substring(url.lastIndexOf('/') + 1));
-            // Injects absolute direct stream triggers onto each individual list result line
-            outputHtml += `<div class="search-result-row" data-url="${encodeURI(url)}" style="cursor: pointer; padding: 4px; border-bottom: 1px dashed #001100; word-break: break-all;">[${idx + 1}] 📡 ${fileName}</div>`;
-        });
+        // 📡 STEP 2: Launch multi-threaded parallel fetch queries to your local directory
+        const fetchPromises = crawlRoster.map(file => 
+            fetch(file)
+                .then(res => {
+                    if (!res.ok) throw new Error(`Fetch Fail: ${file}`);
+                    return res.json();
+                })
+                .then(data => {
+                    if (Array.isArray(data)) return data;
+                    if (data && Array.isArray(data.mp3s)) return data.mp3s;
+                    return [];
+                })
+                .catch(err => {
+                    console.warn(`CRAWLER CAUTION: Skipping outlying node [${file}] due to network timeout.`);
+                    return []; // Recover gracefully to protect the remaining crawl chain
+                })
+        );
 
-        searchResults.innerHTML = outputHtml;
+        // 🧠 STEP 3: Unify the total dataset layers and filter for the keyword
+        Promise.all(fetchPromises)
+            .then(allArrays => {
+                const unifiedLibrary = allArrays.flat();
+                searchResults.innerHTML = '';
 
-        // Bind interactive target override click hooks to each generated result line item
-        document.querySelectorAll('.search-result-row').forEach(row => {
-            row.addEventListener('mouseover', function() { this.style.background = '#002200'; });
-            row.addEventListener('mouseout', function() { this.style.background = 'transparent'; });
-            
-            row.addEventListener('click', function() {
-                const targetStreamUrl = decodeURI(this.getAttribute('data-url'));
-                
-                // Force intercept player loop execution to immediately load the manual choice string
-                audioPlayer.src = targetStreamUrl;
-                const rawFileName = targetStreamUrl.substring(targetStreamUrl.lastIndexOf('/') + 1);
-                trackInfo.textContent = `MANUAL OVERRIDE: ${decodeURIComponent(rawFileName)}`;
-                
-                // Remove this specific choice manually from the active deck pool so it won't repeat
-                if (typeof activeStreamingDeck !== 'undefined') {
-                    activeStreamingDeck = activeStreamingDeck.filter(url => url !== targetStreamUrl);
+                // Filter rows checking raw file strings for matching query parameters
+                const matches = unifiedLibrary.filter(track => {
+                    const cleanTrackPath = decodeURIComponent(track).toUpperCase();
+                    return cleanTrackPath.includes(query) || cleanTrackPath.replace(/[_-]/g, ' ').includes(query);
+                });
+
+                // Deduplicate matching targets to guarantee zero redundancy in display rows
+                const uniqueMatches = Array.from(new Set(matches)).slice(0, 30); // Bound display to top 30 hits
+
+                if (uniqueMatches.length > 0) {
+                    uniqueMatches.forEach(track => {
+                        const row = document.createElement('div');
+                        row.className = 'search-row';
+                        
+                        // Human-readable parse: extract the file element from the final URL branch
+                        const filename = decodeURIComponent(track).split('/').pop().replace(/\.[^/.]+$/, "").replace(/[_-]/g, ' ');
+                        row.innerText = filename.toUpperCase();
+                        
+                        // 🔒 SYSTEM STATE INTERCEPT & DECK CONTAMINATION SHIELD
+                        row.addEventListener('click', () => {
+                            audioPlayer.src = track;
+                            audioPlayer.play();
+                            
+                            // Inject tactical manual override notification into readout console
+                            document.getElementById('trackInfo').innerHTML = `MANUAL OVERRIDE: ${row.innerText}<br>[QUEUE PROTECTION ENGAGED]`;
+                            
+                            // Scrub track completely from streaming array vectors so it cannot repeat
+                            if (typeof activeStreamingDeck !== 'undefined') {
+                                activeStreamingDeck = activeStreamingDeck.filter(item => item !== track);
+                            }
+                            
+                            searchResults.style.display = 'none';
+                        });
+                        searchResults.appendChild(row);
+                    });
+                } else {
+                    searchResults.innerHTML = '<div class="search-row" style="cursor:default;color:#ff3333;">ZERO MATCHES LOCATED IN MULTI-CHANNEL MATRIX</div>';
                 }
-                
-                audioPlayer.play().catch(e => console.warn("Stream tracking bypass drop out alert:", e));
-                
-                // Clear and fold search drawer display safely away
-                searchResults.style.display = 'none';
-                searchInput.value = '';
+            })
+            .catch(globalErr => {
+                searchResults.innerHTML = '<div class="search-row" style="cursor:default;color:#ff3333;">TACTICAL CRASH: UNABLE TO COMPILE NETWORK FILES</div>';
+                console.error(globalErr);
             });
-        });
     }
 
-    // Bind execution keys directly to dashboard face interface nodes
+    // Bind execution to your tactical chassis scan button interface element
     searchBtn.addEventListener('click', executeMatrixSearch);
-    searchInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') executeMatrixSearch();
-    });
+    searchInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') executeMatrixSearch(); });
+
 
 </script>
 	<!-- =================================================================== -->
