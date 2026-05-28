@@ -750,9 +750,13 @@ if (searchInput) searchInput.addEventListener('keyup', (e) => { if (e.key === 'E
     chassis.appendChild(sidebar);
 })();
 </script>
-<!-- SECTION 23: DECOUPLED AUXILIARY METADATA POP-UP ENGINE // V1.API -->
-<!-- =================================================================== -->
-<script id="s23-metadata-sandbox">
+	<script id="s23-metadata-sandbox">
+
+// =================================================================== 
+
+// SECTION 23: DECOUPLED AUXILIARY METADATA POP-UP ENGINE  V1.API 
+//=================================================================== 
+
 (function() {
     const chassis = document.querySelector('.crt-chassis');
     if (!chassis) return;
@@ -806,18 +810,20 @@ if (searchInput) searchInput.addEventListener('keyup', (e) => { if (e.key === 'E
         }
         try {
             const rawUrl = decodeURIComponent(player.src);
+            
             if (rawUrl.includes('/download/')) {
                 const urlParts = rawUrl.split('/download/');
-                const pathSegment = urlParts[1];
-                const pathParts = pathSegment.split('/');
+                const pathParts = urlParts[1].split('/');
                 let apiCleanSlug = (pathParts[0] || '').trim();
-                let collectionSlug = pathParts[0] || 'UNKNOWN';
-                let filenameSlug = pathParts[pathParts.length - 1] || 'UNKNOWN';
-                filenameSlug = filenameSlug.replace(/\.[^/.]+$/, "");
-                const cleanCollection = collectionSlug.replace(/[_-]/g, ' ').replace(/\s+/g, ' ').trim();
-                const cleanTrack = filenameSlug.replace(/[_-]/g, ' ').replace(/\s+/g, ' ').trim();
-                return { slug: apiCleanSlug, collection: cleanCollection, track: cleanTrack };
+                
+                const filename = rawUrl.split('/').pop().replace(/\.[^/.]+$/, "").replace(/[_-]/g, ' ');
+                return { 
+                    slug: apiCleanSlug, 
+                    collection: pathParts[0].replace(/[_-]/g, ' ').trim(), 
+                    track: filename.trim() 
+                };
             }
+            
             const fallbackName = rawUrl.split('/').pop().replace(/\.[^/.]+$/, "").replace(/[_-]/g, ' ');
             return { slug: null, collection: 'REMOTE STORAGE NODE', track: fallbackName };
         } catch (e) {
@@ -850,8 +856,10 @@ if (searchInput) searchInput.addEventListener('keyup', (e) => { if (e.key === 'E
 
     function redirectMonitor(localData) {
         if (!metaWindow || metaWindow.closed) return;
-        if (localData.slug) {
-            metaWindow.location.href = `https://archive.org/details/${localData.slug}`;
+        
+        // 🚀 INSTANT REDIRECT DIRECTION ENGAGED
+        if (localData && localData.slug) {
+            metaWindow.location.href = `https://archive.org{localData.slug}`;
         } else {
             metaWindow.document.body.innerHTML = `
                 <div style="background:#000000; color:#33ff33; font-family:'Courier New', monospace; padding:20px; height:100vh; border:2px solid #33ff33; box-sizing:border-box; text-shadow: 0 0 5px #33ff33;">
@@ -880,6 +888,8 @@ if (searchInput) searchInput.addEventListener('keyup', (e) => { if (e.key === 'E
     }
 })();
 </script>
+
+
 	<!-- =================================================================== -->
 <!-- SECTION 25: AUXILIARY "LIKE THIS" RADAR SEARCH FINDER               -->
 <!-- =================================================================== -->
