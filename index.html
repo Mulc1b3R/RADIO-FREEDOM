@@ -756,13 +756,23 @@
 <!-- =================================================================== -->
 <!-- SECTION 23: DECOUPLED AUXILIARY METADATA POP-UP ENGINE              -->
 <!-- =================================================================== -->
+<!-- =================================================================== -->
+<!-- SECTION 23: DECOUPLED AUXILIARY METADATA POP-UP ENGINE              -->
+<!-- =================================================================== -->
 <script id="s23-metadata-sandbox">
 (function() {
-    // ⚙️ CONFIGURATION: Absolute positioning coordinates matching your layout grid
+    // 🎛️ TARGET CORE CHASSIS DIRECTLY
+    const chassis = document.querySelector('.crt-chassis');
+    if (!chassis) return; // Safeguard if layout hasn't rendered
+
+    // Ensure the chassis acts as the absolute alignment parent
+    chassis.style.position = 'relative';
+
+    // ⚙️ CONFIGURATION: Absolute positioning coordinates pinned to right chassis wall
     const BUTTON_STYLES = {
         position: 'absolute',
-        right: '-145px', // Sits perfectly opposite your left preset panel
-        top: '0px',
+        right: '-145px', // Pushes it completely outside the right border of the chassis
+        top: '30px',     // Aligns perfectly horizontal with your top headers
         width: '130px',
         height: '48px',
         background: '#111',
@@ -781,7 +791,7 @@
 
     let metaWindow = null;
 
-    // 🔨 STEP 1: Dynamically generate the hardware button to avoid modifying your HTML body
+    // 🔨 STEP 1: Dynamically generate the hardware button
     const metaBtn = document.createElement('button');
     metaBtn.id = 's23-meta-probe-btn';
     metaBtn.innerHTML = 'METADATA<br><span style="font-size:8px;color:#008800;">PROBE NODE</span>';
@@ -789,7 +799,7 @@
     // Apply styling matrix definitions
     Object.assign(metaBtn.style, BUTTON_STYLES);
 
-    // Replicate your tactile mechanical button hover and click audio transitions
+    // Replicate your tactile mechanical button hover and click transitions
     metaBtn.addEventListener('mouseenter', () => metaBtn.style.borderColor = '#00ff00');
     metaBtn.addEventListener('mouseleave', () => metaBtn.style.borderColor = '#005500');
     metaBtn.addEventListener('mousedown', () => {
@@ -801,34 +811,29 @@
         metaBtn.style.boxShadow = BUTTON_STYLES.boxShadow;
     });
 
-    // Append the button cleanly directly into your wrapping layout container
-    const mainContainer = document.querySelector('.system-container') || document.body;
-    mainContainer.style.position = 'relative'; // Secures absolute alignment stability
-    mainContainer.appendChild(metaBtn);
+    // 🔒 FIXED: Inject directly into the chassis container so absolute coords anchor to it
+    chassis.appendChild(metaBtn);
 
     // 🧠 STEP 2: The Core URL String Splitting & Telemetry Extraction Routine
     function extractMetadata() {
         const player = document.getElementById('audioPlayer');
-        if (!player || !player.src || player.src.includes('window.location')) {
+        if (!player || !player.src || player.src.includes(window.location.hostname)) {
             return { collection: 'NO LIVE STREAM DETECTED', track: 'AWAITING LINK CONNECTION...' };
         }
 
         try {
             const rawUrl = decodeURIComponent(player.src);
             
-            // Handle standard archive.org download path hierarchy
             if (rawUrl.includes('/download/')) {
                 const urlParts = rawUrl.split('/download/');
-                const pathSegment = urlParts[1]; // Yields identifier/filename.mp3
+                const pathSegment = urlParts[1]; 
                 const pathParts = pathSegment.split('/');
                 
                 let collectionSlug = pathParts[0] || 'UNKNOWN ARCHIVE';
                 let filenameSlug = pathParts[pathParts.length - 1] || 'UNKNOWN TRACK';
 
-                // Strip extension cleanly
                 filenameSlug = filenameSlug.replace(/\.[^/.]+$/, "");
 
-                // Clear out underscores, dashes, and duplicate padding
                 const cleanCollection = collectionSlug.replace(/[_-]/g, ' ').replace(/\s+/g, ' ').trim();
                 const cleanTrack = filenameSlug.replace(/[_-]/g, ' ').replace(/\s+/g, ' ').trim();
 
@@ -838,7 +843,6 @@
                 };
             }
             
-            // Fallback parsing for alternative directories or raw storage nodes
             const fallbackName = rawUrl.split('/').pop().replace(/\.[^/.]+$/, "").replace(/[_-]/g, ' ');
             return { collection: 'REMOTE STORAGE NODE', track: fallbackName };
 
@@ -851,17 +855,15 @@
     function launchMetaMonitor() {
         const metaData = extractMetadata();
 
-        // If a monitor is already active, refocus it and refresh data strings
         if (metaWindow && !metaWindow.closed) {
             metaWindow.focus();
             updateMonitorContent(metaWindow, metaData);
             return;
         }
 
-        // Configure strict, borderless geometry parameters
         const winWidth = 420;
         const winHeight = 220;
-        const leftPos = (window.screen.width / 2) - (winWidth / 2) + 250; // Offsets to the right side of screen
+        const leftPos = (window.screen.width / 2) - (winWidth / 2) + 250; 
         const topPos = (window.screen.height / 2) - (winHeight / 2);
 
         metaWindow = window.open('', 'S23_METADATA_MONITOR', 
@@ -873,7 +875,6 @@
             return;
         }
 
-        // Write the custom styling environment directly into the pop-up memory core
         const htmlPayload = `
             <!DOCTYPE html>
             <html>
@@ -917,9 +918,7 @@
             </head>
             <body>
                 <div class="crt-scanlines"></div>
-                <div class="telemetry-grid" id="displayBox">
-                    <!-- Dynamic Data Fields Injected Safely Here -->
-                </div>
+                <div class="telemetry-grid" id="displayBox"></div>
             </body>
             </html>
         `;
@@ -927,7 +926,6 @@
         metaWindow.document.write(htmlPayload);
         metaWindow.document.close();
 
-        // Wait for DOM parsing to finish inside window memory, then deploy the data strings
         metaWindow.onload = function() {
             updateMonitorContent(metaWindow, metaData);
         };
@@ -940,11 +938,11 @@
 
         box.innerHTML = `
             <div class="header">🛰️ SECTION 23 AUXILIARY STREAM DIAGNOSTICS</div>
-            <div>
+            <div style="margin-top: 10px;">
                 <div class="label">ARCHIVE SOURCE PACK:</div>
                 <div class="data-field">${data.collection.toUpperCase()}</div>
             </div>
-            <div>
+            <div style="margin-top: 10px;">
                 <div class="label">EXTRACTED IDENTIFIER:</div>
                 <div class="data-field">${data.track.toUpperCase()}</div>
             </div>
@@ -955,10 +953,10 @@
         `;
     }
 
-    // Bind execution listener directly to the new button interface
+    // Bind execution listener
     metaBtn.addEventListener('click', launchMetaMonitor);
 
-    // 📡 STEP 5: Live Sync Loop (Automatically updates open pop-up when track changes)
+    // 📡 STEP 5: Live Sync Loop
     const activePlayer = document.getElementById('audioPlayer');
     if (activePlayer) {
         activePlayer.addEventListener('play', () => {
@@ -970,6 +968,7 @@
     }
 })();
 </script>
+
 
 
 
