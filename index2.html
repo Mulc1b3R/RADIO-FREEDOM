@@ -419,6 +419,11 @@
         const decodedUrl = decodeURIComponent(targetTrackUrl);
         const rawFileName = decodedUrl.substring(decodedUrl.lastIndexOf('/') + 1);
 
+		// 🚀 INSERT TELEMETRY CAPTURE HERE
+        // Pack the data string or object into history variables before changing the player source
+        if (typeof trackTelemetryUpdate === "function") {
+            trackTelemetryUpdate({ url: decodedUrl, title: rawFileName });
+        }
         audioPlayer.src = decodedUrl;
         trackInfo.textContent = `Now playing: ${rawFileName}\n📡 [Queue: ${activeStreamingDeck.length} tracks remaining]`;
 		// ⚡ SECTION 23 TELEMETRY LOGGER LOGIC
