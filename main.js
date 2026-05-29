@@ -270,12 +270,23 @@
     // Master Event Hooks Assignment Layout Grid
     document.getElementById('playButton').addEventListener('click', playNextStreamTrack);
     document.getElementById('skipButton').addEventListener('click', playNextStreamTrack); 
-    audioPlayer.addEventListener('ended', playNextStreamTrack);
+    
+    // Master Event Hooks Assignment Layout Grid
+    audioPlayer.addEventListener('ended', () => {
+        // Look across the global scope gate to see if an intermission ad is pending
+        if (window.jingleBreakPending === true && typeof window.injectAutomatedJingleBreak === "function") {
+            window.injectAutomatedJingleBreak();
+        } else {
+            playNextStreamTrack();
+        }
+    });
+
+    // Explicitly expose your play function to global scope so jingle.js can call it back
+    window.playNextStreamTrack = playNextStreamTrack;
 
     // Initial dummy screen draw loop boot to showcase visualization immediately on load
     drawEqualizerGridLoop();
-	
-	// --- SECTION 23 SEARCH LOGIC OVERRIDE ENGINE (CUMULATIVE HYBRID PACK)
+
 
 // ===================================================================
 // SECTION 23: GLOBAL NETWORK STATE INITIALIZATION (ROOT SCOPE)
