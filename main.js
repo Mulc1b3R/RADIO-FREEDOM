@@ -288,7 +288,7 @@ window.PRESET_CHANNELS = {
     2: { name: "Suspense", url: "Suspense.json" },
     3: { name: "Murder_By_Experts", url: "Murder_By_Experts.json" },
     4: { name: "Mysterious-Traveler", url: "Mysterious-Traveler.json" },
-    5: { name: "2000_Plus", url: "2000-Plus.json" },
+    5: { name: "Movies", url: "2000-Plus.json" },
     6: { name: "BBC-sci fi", url: "BBC.json" },
     7: { name: "Sci-fi-Radio", url: "Sci-fi-Radio.json" },
     8: { name: "lord-of-the-rings", url: "lord-of-the-rings.json" },
