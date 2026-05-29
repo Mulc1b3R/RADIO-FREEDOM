@@ -801,12 +801,64 @@ if (searchInput) searchInput.addEventListener('keyup', (e) => { if (e.key === 'E
         metaBtn.style.transform = 'translateY(2px)';
         metaBtn.style.boxShadow = '0 1px 0 #003300, inset 0 3px 6px rgba(0,0,0,0.8)';
     });
-    metaBtn.addEventListener('mouseup', () => {
+        metaBtn.addEventListener('mouseup', () => {
         metaBtn.style.transform = 'none';
         metaBtn.style.boxShadow = BUTTON_STYLES.boxShadow;
     });
 
+    // ===================================================================
+    // 🚀 INSERT PREVIOUS HARDWARE RETRACTION NODE BUTTON HERE
+    // ===================================================================
+    const prevBtn = document.createElement('button');
+    prevBtn.id = 's23-prev-track-btn';
+    prevBtn.innerHTML = '⏮️ PREVIOUS<br><span style="font-size:8px;color:#008800;">STEP HISTORY</span>';
+    
+    // Copy base terminal button layout styles
+    Object.assign(prevBtn.style, BUTTON_STYLES);
+    
+    // 📐 GEOMETRIC STACK ALIGNMENT
+    prevBtn.style.top = '145px'; 
+
+    // Visual button interaction handlers (Hover/Click physics)
+    prevBtn.addEventListener('mouseenter', () => prevBtn.style.borderColor = '#00ff00');
+    prevBtn.addEventListener('mouseleave', () => prevBtn.style.borderColor = '#005500');
+    prevBtn.addEventListener('mousedown', () => {
+        prevBtn.style.transform = 'translateY(2px)';
+        prevBtn.style.boxShadow = '0 1px 0 #003300, inset 0 3px 6px rgba(0,0,0,0.8)';
+    });
+    prevBtn.addEventListener('mouseup', () => {
+        prevBtn.style.transform = 'none';
+        prevBtn.style.boxShadow = BUTTON_STYLES.boxShadow;
+    });
+
+    // Execution routine: Force step back onto the carrier wave
+    prevBtn.addEventListener('click', () => {
+        if (!window.previouslyPlayedTrack) {
+            console.warn("📡 History Warning: No previous track telemetry recorded in this session.");
+            return;
+        }
+
+        const targetTrack = window.previouslyPlayedTrack;
+        const player = document.getElementById('audioPlayer');
+        const trackInfo = document.getElementById('trackInfo');
+
+        if (player && trackInfo) {
+            player.src = targetTrack.url;
+            player.play();
+            
+            trackInfo.textContent = `Now playing: ${targetTrack.title}\n⏪ [MANUAL HISTORICAL STEP-BACK OVERRIDE]`;
+            
+            window.currentlyPlayingTrack = targetTrack;
+            window.previouslyPlayedTrack = null; 
+            
+            console.log(`⏪ Step-Back Active: Loaded ${targetTrack.title}`);
+        }
+    });
+
+    // Commit both hardware buttons onto the CRT chassis frame
     chassis.appendChild(metaBtn);
+    chassis.appendChild(prevBtn);
+
 
     function extractBaseIdentifiers() {
         const player = document.getElementById('audioPlayer');
