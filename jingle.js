@@ -1,3 +1,8 @@
+// ===================================================================
+// SECTION 26: AUTOMATED BROADCAST JINGLE INTERCEPT SYSTEM
+// Operators: MOJO // MULCIBER -- Modular Deployment Stack
+// ===================================================================
+
 (() => {
     // 📡 MASTER AUDIO & TERMINAL HARDWARE ACCESSORS
     const player = document.getElementById('audioPlayer');
@@ -10,8 +15,10 @@
     // ⏱️ STATE ENGINE VARIABLES
     const TIME_LIMIT_MS = 30 * 60 * 1000;   // Strict 30-minute transitional trigger interval
     let broadcastTimer = null;              // Holds active background interval tracker
-    let jingleBreakPending = false;         // Soft-gate boolean latch flag
-    let savedShowTrack = null;              // State memory buffer to trap the next scheduled show track
+    
+    // 🔓 SCOPE BRIDGE: Bind state flags to global window context so main.js can read them instantly
+    window.jingleBreakPending = false;         
+    window.savedShowTrack = null;              
 
     // 🎲 JINGLE DEPLETION DECK TRACKING CAPACITOR
     let masterJingleLibrary = [];           // Clean raw mirror copy of fetched jingles.json
@@ -57,8 +64,8 @@
         if (broadcastTimer) clearInterval(broadcastTimer);
         
         broadcastTimer = setInterval(() => {
-            if (!jingleBreakPending) {
-                jingleBreakPending = true;
+            if (!window.jingleBreakPending) {
+                window.jingleBreakPending = true;
                 console.log("🛰️ [SYSTEM CRON STATUS ALERT]: 30-Minute Broadcast Cycle Met. Intercept Latch ARMED for track transition.");
             }
         }, TIME_LIMIT_MS);
@@ -66,22 +73,11 @@
         console.log("⏱️ S26 Timing Core Active: Automated background commercial scheduler ticking.");
     }
 
-    // 🔀 FUNCTION 4: The Core Event Intercept Hook Override Matrix
-    function injectAutomatedJingleBreak(event) {
-        // Safe check: If no jingle break is armed or no files exist, skip out and let original scripts play next song
-        if (!jingleBreakPending || masterJingleLibrary.length === 0) return;
+    // 🔀 FUNCTION 4: Exposed Action Routine called natively by main.js on track end
+    window.injectAutomatedJingleBreak = function() {
+        if (!window.jingleBreakPending || masterJingleLibrary.length === 0) return false;
 
-        // 🛑 STOP PREVENTATIVE FALLTHROUGH: Intercept the native HTML5 player trajectory queue
-        event.stopImmediatePropagation();
         console.log("⚡ [TACTICAL INTERCEPT RUNNING]: Overriding native playNextStreamTrack event sequence.");
-
-        // If the main depletion deck has already queued up a song path, trap it in our safety buffer
-        if (player.src && !player.src.includes('jingles.json')) {
-            // Note: If you want to grab the upcoming track out of activeStreamingDeck instead, do it here
-            if (typeof activeStreamingDeck !== 'undefined' && activeStreamingDeck.length > 0) {
-                savedShowTrack = activeStreamingDeck[0]; // Peek at upcoming path
-            }
-        }
 
         // Pull the top asset cleanly out of the active linear memory depletion grid
         if (activeJingleDeck.length === 0) {
@@ -98,9 +94,8 @@
         // Temporarily step down the visualizer buttons or alter tracking indicators if needed
         deactivateTacticalButtons(true);
 
-        // Remove this custom end handler so it doesn't cause loop recursion pile-ups
-        player.removeEventListener('ended', handleJinglePlaythroughComplete);
         // Bind the post-ad restitution protocol directly to the audio card node
+        player.removeEventListener('ended', handleJinglePlaythroughComplete);
         player.addEventListener('ended', handleJinglePlaythroughComplete);
 
         // Slam jingle directly into carrier wave channels and force immediate play sequence
@@ -108,8 +103,9 @@
         player.play().catch(e => console.warn("S23 Audio Context buffer lock handled."));
 
         // Clear the switch so the clock tracking algorithm resets for the next 30-minute block loop
-        jingleBreakPending = false;
-    }
+        window.jingleBreakPending = false;
+        return true; // Confirms the intercept successfully fired
+    };
 
     // 🔄 FUNCTION 5: Restitution Protocol (Snapping Back to Master Show Timeline)
     function handleJinglePlaythroughComplete() {
@@ -123,16 +119,9 @@
         display.textContent = "📡 Re-syncing master station transmission node sequence...";
 
         // If the master player script block functions exist, trigger them natively to restore playlist state
-        if (typeof playNextStreamTrack === 'function') {
+        if (typeof window.playNextStreamTrack === 'function') {
             console.log("🔌 Re-linking to main depletion deck sequencer...");
-            playNextStreamTrack();
-        } else {
-            // Hard fallback if the standard app thread was broken or lost trace coordinates
-            if (savedShowTrack) {
-                player.src = savedShowTrack;
-                player.play().catch(e => {});
-                savedShowTrack = null;
-            }
+            window.playNextStreamTrack();
         }
     }
 
@@ -150,10 +139,6 @@
         }
     }
 
-    // 🔗 DYNAMIC HIGH-PRIORITY TERMINAL INTERCEPT INJECTION POINT
-    // We attach this directly onto the player audio end node so it listens BEFORE original loop handlers
-    player.addEventListener('ended', injectAutomatedJingleBreak, true);
-
-    // Boot the async database synchronization compiler process
-    initializeJingleSystem();
+    // Boot system matrix components on load initialization
+    document.addEventListener("DOMContentLoaded", initializeJingleSystem);
 })();
