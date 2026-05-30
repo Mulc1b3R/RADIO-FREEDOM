@@ -74,11 +74,27 @@
                 })
         );
 
-        // Wait for all network threads to resolve completely into a stable list of counts
+       
+                // Wait for all network threads to resolve completely into a stable list of counts
         const trackCountsArray = await Promise.all(scanPromises);
 
         // Calculate absolute total tracks in one single, isolated math block
         const absoluteTotalTracks = trackCountsArray.reduce((sum, count) => sum + count, 0);
+
+        // 🎛️ STEP 3: Print the compiled tally to the HUD display pane
+        const formattedTotal = absoluteTotalTracks.toLocaleString();
+        counterBadge.innerHTML = `📦 MATRIX VOL: <span style="color:#ffffff; text-shadow: 0 0 6px #00ff00;">${formattedTotal}</span> TOTAL LNKS`;
+        console.log(`⚡ S27 Inventory Core Finalized: ${absoluteTotalTracks} total active links verified.`);
+    } // ◄ This closes the calculateGlobalMatrixVolume function cleanly. Zero code can float directly below this except the boot trigger.
+
+    // Trigger the scanner immediately at cold boot sequence
+    if (document.readyState === 'complete') {
+        calculateGlobalMatrixVolume();
+    } else {
+        window.addEventListener('load', calculateGlobalMatrixVolume);
+    }
+})();
+
 
         // 🎛️ STEP 3: Print the compiled tally to the HUD display pane
         const formattedTotal = absoluteTotalTracks.toLocaleString();
