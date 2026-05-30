@@ -178,29 +178,52 @@
     
  
 	    <!-- Main Horizontal Transport Controls -->
+    <!-- Main Horizontal Transport Controls -->
     <div class="control-deck">
         <button id="playButton" class="power-switch">Connect</button>
         <button id="skipButton" class="power-switch">Skip Track</button>
         <button id="exportLogButton" class="power-switch">Export Log</button>
     </div>
 
-    <!-- ⚡ DEDICATED BALANCED LOWER FLANK ROW WITH RETRO CSS FORCING -->
-    <div class="control-deck" style="margin-top: 12px; display: flex; justify-content: center; width: 100%;">
-        <button id="btnTuner" 
-                class="power-switch" 
-                onclick="window.RadioFreedomGhostDeck.openSelector()" 
-                style="color: #0f0 !important; 
-                       border: 2px solid #0f0 !important; 
-                       background: #000 !important; 
-                       box-shadow: 0 0 10px #040 !important;
-                       width: 100% !important; 
-                       max-width: 260px !important; 
-                       padding: 8px 16px !important;
-                       text-shadow: 0 0 5px #0f0 !important;
-                       cursor: pointer;">
+    <!-- ⚡ RETRO MATRIX FORCED ALIGNMENT LAYER -->
+    <style>
+        .tuner-row-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+        button.tuner-matrix-hardware {
+            background-color: #000000 !important;
+            color: #00ff00 !important;
+            border: 2px solid #00ff00 !important;
+            font-family: 'Courier New', Courier, monospace !important;
+            font-size: 14px !important;
+            font-weight: bold !important;
+            padding: 10px 24px !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            text-shadow: 0 0 5px #00ff00 !important;
+            box-shadow: 0 0 10px #004400 !important;
+            cursor: pointer !important;
+            min-width: 180px !important;
+            transition: all 0.2s ease-in-out !important;
+        }
+        button.tuner-matrix-hardware:hover {
+            background-color: #00ff00 !important;
+            color: #000000 !important;
+            box-shadow: 0 0 15px #00ff00 !important;
+        }
+    </style>
+
+    <div class="tuner-row-container">
+        <button id="btnTuner" class="tuner-matrix-hardware" onclick="window.RadioFreedomGhostDeck.openSelector()">
             Tuner Matrix
         </button>
     </div>
+
 
 
     <!-- ⚡ DEDICATED LOWER FLANK ROW FOR THE GHOST MATRIX GATEWAY -->
