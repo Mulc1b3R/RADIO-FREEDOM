@@ -176,17 +176,32 @@
     <p style="font-size: 11px; color: #00aa00;">AUTONOMOUS AUDIO SUBVERSION STREAM</p>
     <br>
     
-       <!-- Main Horizontal Transport Controls -->
+ 
+	    <!-- Main Horizontal Transport Controls -->
     <div class="control-deck">
         <button id="playButton" class="power-switch">Connect</button>
         <button id="skipButton" class="power-switch">Skip Track</button>
         <button id="exportLogButton" class="power-switch">Export Log</button>
-    
-	<!-- The Tuner Matrix translates to clean buttons like this: -->
-<button onclick="window.location.href='test.html'">[ 2000 Plus ]</button>
-<button onclick="window.location.href='Suspense.json'">[ Suspense ]</button>
-<button onclick="window.location.href='infected.json'">[ Infected ]</button>
- </div>
+    </div>
+
+    <!-- ⚡ DEDICATED BALANCED LOWER FLANK ROW WITH RETRO CSS FORCING -->
+    <div class="control-deck" style="margin-top: 12px; display: flex; justify-content: center; width: 100%;">
+        <button id="btnTuner" 
+                class="power-switch" 
+                onclick="window.RadioFreedomGhostDeck.openSelector()" 
+                style="color: #0f0 !important; 
+                       border: 2px solid #0f0 !important; 
+                       background: #000 !important; 
+                       box-shadow: 0 0 10px #040 !important;
+                       width: 100% !important; 
+                       max-width: 260px !important; 
+                       padding: 8px 16px !important;
+                       text-shadow: 0 0 5px #0f0 !important;
+                       cursor: pointer;">
+            Tuner Matrix
+        </button>
+    </div>
+
 
     <!-- ⚡ DEDICATED LOWER FLANK ROW FOR THE GHOST MATRIX GATEWAY -->
     <div class="control-deck" style="margin-top: 10px; display: block; text-align: center;">
