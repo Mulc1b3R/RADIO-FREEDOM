@@ -1,11 +1,33 @@
 /**
  * 📡 RADIO-FREEDOM: GHOST CHANNEL INJECTOR ENGINE (Section 23)
- * Standalone plugin module to hot-swap radio source frequencies grid-free.
+ * Manual Manifest Edition - Clean, zero-collision terminal hotswapping.
  */
 (function() {
-    print("[*] Init Ghost Channel Injector Deck... Awaiting link portal.");
+    print("[*] Init Ghost Channel Injector Deck... Manual manifest portal online.");
 
-    // 🎛️ GATE 1: CREATE CRUCIBLE STYLES DIRECTLY IN MEMORY
+    // ===================================================================
+    // 🕹️ OPERATOR MANUAL REGISTRY CONTROL MATRIX
+    // Add, remove, or edit your channel files here. The layout builds itself!
+    // ===================================================================
+    const STATION_REGISTRY = [
+        { name: "Sci Fi",               file: "Twilight-zone.json" },
+        { name: "Suspense",             file: "Suspense.json" },
+        { name: "Murder By Experts",    file: "Murder_By_Experts.json" },
+        { name: "Mysterious Traveler",  file: "Mysterious-Traveler.json" },
+        { name: "Movies / 2000 Plus",   file: "2000-Plus.json" },
+        { name: "BBC Sci-Fi",           file: "BBC.json" },
+        { name: "Sci-Fi Radio",         file: "Sci-fi-Radio.json" },
+        { name: "Lord of the Rings",    file: "lord-of-the-rings.json" },
+        { name: "Sherlock Holmes",      file: "sherlock.json" },
+        { name: "Haunted BBC",          file: "Haunted-BBC.json" },
+        { name: "Alfred Hitchcock",     file: "Alfred-Hitchcock.json" },
+        { name: "Ray Bradbury",         file: "Ray-Bradbury.json" },
+        
+        // ⚡ PASTE YOUR NEW CHANNEL EXPANSION SLOTS HERE NATIVELY:
+        { name: "Infected Vault",       file: "infected.json" }
+    ];
+
+    // 🗄️ GATE 1: CREATE BOX STYLES IN BROWSER MEMORY
     const styleNode = document.createElement("style");
     styleNode.textContent = `
         /* CRT Ghost Terminal Lightbox */
@@ -41,7 +63,6 @@
             max-height: 300px; overflow-y: auto; margin-bottom: 15px;
             padding-right: 5px;
         }
-        /* Custom CRT Scrollbar */
         .ghost-matrix-grid::-webkit-scrollbar { width: 6px; }
         .ghost-matrix-grid::-webkit-scrollbar-thumb { background: #0f0; }
         .ghost-matrix-row {
@@ -62,7 +83,7 @@
     `;
     document.head.appendChild(styleNode);
 
-    // 🏗️ GATE 2: BUILD DOM OBJECT ELEMENTS
+    // 🏗️ GATE 2: BUILD DOM SECTOR VISUALS
     const overlay = document.createElement("div");
     overlay.className = "ghost-matrix-overlay";
     overlay.id = "ghostMatrixOverlay";
@@ -72,14 +93,14 @@
 
     const header = document.createElement("div");
     header.className = "ghost-matrix-header";
-    header.innerText = "📡 RADIO-FREEDOM: CHANNEL INJECTOR";
+    header.innerText = "📡 RADIO-FREEDOM: STATIONS MATRIX";
 
     const grid = document.createElement("div");
     grid.className = "ghost-matrix-grid";
 
     const closeBtn = document.createElement("button");
     closeBtn.className = "ghost-matrix-close";
-    closeBtn.innerText = "[ CLOSE TERMINAL ]";
+    closeBtn.innerText = "[ CLOSE OVERRIDE PANEL ]";
     closeBtn.onclick = hideMatrix;
 
     box.appendChild(header);
@@ -88,24 +109,18 @@
     overlay.appendChild(box);
     document.body.appendChild(overlay);
 
-    // 🎛️ CONTROLLER SECTOR INTERFACES
+    // 🎛️ CONTROLLER FUNCTION BLOCKS
     function showMatrix() {
-        // Clear previous rows to handle updates cleanly
-        grid.innerHTML = "";
+        grid.innerHTML = ""; // Clear active array data out completely
         
-        // Dynamically compile slots straight out of the universal window pool
-        if (window.PRESET_CHANNELS) {
-            Object.keys(window.PRESET_CHANNELS).forEach(key => {
-                const chan = window.PRESET_CHANNELS[key];
-                const row = document.createElement("div");
-                row.className = "ghost-matrix-row";
-                row.innerHTML = `[${key}] ${chan.name}`;
-                row.onclick = () => injectChannelPayload(chan.url, chan.name);
-                grid.appendChild(row);
-            });
-        } else {
-            grid.innerHTML = "<div style='color:#f00; grid-column: 1/3;'>ERROR: PRESET MATRIX LOCKED</div>";
-        }
+        // Loop through the manual Top Registry array
+        STATION_REGISTRY.forEach((chan, index) => {
+            const row = document.createElement("div");
+            row.className = "ghost-matrix-row";
+            row.innerHTML = `[${index + 1}] ${chan.name}`;
+            row.onclick = () => injectChannelPayload(chan.file, chan.name);
+            grid.appendChild(row);
+        });
         
         overlay.classList.add("active");
     }
@@ -116,14 +131,13 @@
 
     // 🚀 THE OVERRIDE INJECTION CORE MECHANISM
     function injectChannelPayload(targetJsonUrl, channelName) {
-        console.log(`📡 Ghost Intercept: Injecting source stream -> ${targetJsonUrl}`);
+        console.log(`📡 Ghost Intercept: Forcing source stream to -> ${targetJsonUrl}`);
         hideMatrix();
 
-        // Target alert element to inform operator of flash sequence
         const monitor = document.getElementById("trackTitle") || document.getElementById("stationLabel");
-        if (monitor) monitor.innerText = `[ INJECTING FREQUENCY: ${channelName.toUpperCase()} ]`;
+        if (monitor) monitor.innerText = `[ LOADING PORTAL: ${channelName.toUpperCase()} ]`;
 
-        // Execute background fetch routine
+        // Connect with the repository JSON file string data array
         fetch(targetJsonUrl)
             .then(response => {
                 if (!response.ok) throw new Error(`HTTP rejection code ${response.status}`);
@@ -131,38 +145,43 @@
             })
             .then(data => {
                 if (data && Array.isArray(data.mp3s)) {
-                    // Lock global stream variables down tightly
-                    // Assumes main.js tracks active playlist array via standard naming
-                    if (typeof window.activeStreamingDeck !== 'undefined') {
-                        window.activeStreamingDeck = [...data.mp3s];
-                    } else if (typeof window.playlist !== 'undefined') {
-                        window.playlist = [...data.mp3s];
-                    }
                     
-                    // Reset matrix indices tracking loops
-                    if (typeof window.currentTrackIndex !== 'undefined') window.currentTrackIndex = 0;
+                    // 🛡️ FLOOD EVERY POSSIBLE MEMORY SLOT VARIABLE NAME AT THE SAME TIME
+                    window.mp3List = [...data.mp3s];
+                    window.activeStreamingDeck = [...data.mp3s];
+                    window.playlist = [...data.mp3s];
+                    if (typeof window.tracks !== 'undefined') window.tracks = [...data.mp3s];
 
-                    // Trigger direct audio hardware playback kickstart loop inside main.js
-                    if (typeof window.playNextStreamTrack === 'function') {
+                    // Reset track index loops
+                    window.currentTrackIndex = 0;
+                    if (typeof window.currentTrack !== 'undefined') window.currentTrack = 0;
+
+                    // ⚡ FORCE IMMEDATE CORE PLAYBACK EVENTS INSIDE main.js
+                    if (typeof window.loadPlaylist === 'function') {
+                        window.loadPlaylist(data.mp3s);
+                    } else if (typeof window.playNextStreamTrack === 'function') {
                         window.playNextStreamTrack();
                     } else if (typeof window.playTrack === 'function') {
                         window.playTrack(0);
-                    } else if (typeof window.loadAndPlay !== 'undefined') {
-                        // Adaptive safety fallback configurations
-                        console.log("⚡ Carrier wave reassigned. Awaiting manual transport click.");
+                    } else {
+                        // Force a click on the base Connect hardware toggle button if play matches a user interaction flag
+                        const trigger = document.getElementById("playButton");
+                        if (trigger) trigger.click();
                     }
+                    
                     console.log(`✅ [SUCCESS] Frequency lock stable on channel: ${channelName}`);
                 }
             })
             .catch(err => {
-                console.error("❌ Injection Matrix Collapse: Failed to parse cloud track index.", err);
+                console.error("❌ Injection Matrix Collapse: Failed to parse target playlist.", err);
                 if (monitor) monitor.innerText = "[ SOURCE FREQUENCY OFFLINE ]";
             });
     }
 
-    // 🔒 MOUNT GLOBAL CONTEXT CONTROLS FOR HTML HARDWARE INTERFACE BUTTON
+    // Mount to window object context to handle button interaction events
     window.RadioFreedomGhostDeck = {
         openSelector: showMatrix,
         closeSelector: hideMatrix
     };
 })();
+
