@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Section 23 // Pirate Radio Terminal</title>
+    <style>
+               /* Phosphor Terminal Grid Layout Matrix */
+        body {
+            background-color: #000000;
+            color: #33ff33;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 5px #33ff33;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* 🔒 FIXED: Changed from hidden to auto so you can scroll down to your tools */
+            overflow-y: auto; 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+
+        .crt-chassis {
+            border: 2px solid #33ff33;
+            background: rgba(0, 15, 0, 0.9);
+            box-shadow: 0 0 20px #005500, inset 0 0 15px #003300;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Console Control Deck Button Container */
+        .control-deck {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        /* 1990s Arcade Tactile Push Button Style */
+        .power-switch {
+            background: #000000;
+            border: 2px solid #33ff33;
+            color: #33ff33;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 12px 5px;
+            cursor: pointer;
+            box-shadow: 0 0 10px #005500;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            flex: 1;
+            min-width: 105px;
+            text-shadow: none;
+        }
+
+        .power-switch:hover {
+            background: #33ff33;
+            color: #000000;
+            box-shadow: 0 0 20px #33ff33;
+        }
+
+        /* Responsive Dashboard text readout window */
+        #trackInfo {
+            font-size: 13px;
+            margin: 25px 0;
+            height: 60px;
+            overflow: hidden;
+            border: 1px solid #005500;
+            padding: 10px;
+            background: #000500;
+            border-radius: 4px;
+            text-align: left;
+            line-height: 1.4;
+            word-break: break-all;
+        }
+
+        /* HTML5 Native Component Coloring Overrides */
+        audio {
+            width: 100%;
+            margin-top: 15px;
+            filter: invert(1) hue-rotate(90deg) saturate(1.5); 
+        }
+
+        .terminal-specs {
+    font-size: 11px;
+    color: #008800;
+    margin-top: 12px;
+    line-height: 1.6 !important;  /* Stops text letters from clipping vertically */
+    padding-bottom: 5px;          /* Safely extends the interior border space */
+}
+
+		/* =================================================================== */
+/* SECTION 23: TACTICAL SIDEBAR PRESET CONSOLE                         */
+/* =================================================================== */
+
+/* Retro Mechanical Sidebar Console Container */
+.s23-sidebar-preset-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 15px;
+    width: 70px;
+    background: #080808;
+    border: 2px solid #00ff00;
+    border-radius: 5px;
+    padding: 15px 6px;
+    box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.2);
+    margin-right: 15px; /* Creates a clean gap before the main terminal elements */
+}
+
+/* Tactile Push-Button Matrices */
+.s23-preset-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 55px;
+    background: #111;
+    color: #00ff00;
+    border: 2px solid #005500;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    text-shadow: 0 0 4px rgba(0, 255, 0, 0.6);
+    box-shadow: 0 4px 0 #003300, inset 0 2px 3px rgba(255, 255, 255, 0.1);
+    transition: all 0.05s ease;
+}
+
+.s23-preset-btn span {
+    font-size: 9px;
+    color: #008800;
+    margin-top: 2px;
+}
+
+/* Active Mechanical Compression Styles */
+.s23-preset-btn:hover {
+    background: #151515;
+    border-color: #00ff00;
+}
+
+.s23-preset-btn:active, .s23-preset-btn.tuning-active {
+    background: #001100;
+    border-color: #00ff00;
+    box-shadow: 0 1px 0 #003300, inset 0 4px 8px rgba(0, 0, 0, 0.8);
+    transform: translateY(3px);
+    color: #fff;
+    text-shadow: 0 0 8px #00ff00;
+}
+
+    </style>
+</head>
+<body>
+	<!-- =================================================================== -->
+<!-- SECTION 23: TAB TELEMETRY SIGNATURE & FAVICON MATRIX                 -->
+<!-- =================================================================== -->
+
+<!-- 🚀 DROP HISTORY MODULE HERE (Must load before main player engine) -->
+<script src="history.js"></script>
+<script src="favicon.js"></script>
+<div class="crt-chassis">
+    <h2> SECTION 23 NODE</h2>
+    <p style="font-size: 11px; color: #00aa00;">AUTONOMOUS AUDIO SUBVERSION STREAM</p>
+    <br>
+    
+       <!-- Main Horizontal Transport Controls -->
+    <div class="control-deck">
+        <button id="playButton" class="power-switch">Connect</button>
+        <button id="skipButton" class="power-switch">Skip Track</button>
+        <button id="exportLogButton" class="power-switch">Export Log</button>
+    </div>
+	<!-- The Tuner Matrix translates to clean buttons like this: -->
+<button onclick="window.location.href='2000-Plus.json'">[ 2000 Plus ]</button>
+<button onclick="window.location.href='Suspense.json'">[ Suspense ]</button>
+<button onclick="window.location.href='infected.json'">[ Infected ]</button>
+
+
+    <!-- ⚡ DEDICATED LOWER FLANK ROW FOR THE GHOST MATRIX GATEWAY -->
+    <div class="control-deck" style="margin-top: 10px; display: block; text-align: center;">
+        <button id="btnTuner" class="power-switch" onclick="window.RadioFreedomGhostDeck.openSelector()" style="color: #0f0; border-color: #0f0; width: 100%; max-width: 200px;">Tuner Matrix</button>
+    </div>
+
+
+    <!-- ⚙️ THE CHASSIS SKIN INTERFACE DROPDOWN -->
+    <div style="margin: 15px 0 15px 0; text-align: left;">
+        <label for="skinSelect" style="font-size: 11px; color: #008800; letter-spacing: 1px;">CONSOLE SKIN:</label>
+        <select id="skinSelect" style="background: #000000; border: 1px solid #33ff33; color: #33ff33; font-family: 'Courier New', monospace; font-size: 12px; width: 100%; padding: 8px; margin-top: 5px; cursor: pointer; border-radius: 4px; text-shadow: none;">
+            <option value="radar">TACTICAL RADAR SCOPE</option>
+            <option value="matrix">DIGITAL CODE WATERFALL</option>
+            <option value="oscilloscope">LASER OSCILLOSCOPE</option>
+        </select>
+    </div>
+
+        <!-- 🟢 MONITOR CANVAS SCREEN -->
+    <canvas id="visualizerGrid" style="width: 100%; height: 260px; border: 1px solid #005500; background: #000500; margin-bottom: 15px; border-radius: 4px;"></canvas>
+    
+    <!-- 🕵️ COCKPIT SEARCH INTERFACE INJECTED DIRECTLY INTO THE SEAM -->
+    <div style="margin: 0 0 15px 0; text-align: left;">
+        <label for="trackSearchInput" style="font-size: 11px; color: #008800; letter-spacing: 1px;">SEARCH MATRIX DATA:</label>
+        <div style="display: flex; gap: 10px; margin-top: 5px;">
+            <input type="text" id="trackSearchInput" placeholder="Enter keyword / series..." style="background: #000500; border: 1px solid #005500; color: #33ff33; font-family: 'Courier New', monospace; font-size: 13px; padding: 10px; flex: 1; border-radius: 4px; box-shadow: inset 0 0 5px #003300;">
+            <button id="searchMatrixBtn" class="power-switch" style="padding: 10px 15px; min-width: 80px; margin: 0; text-shadow: none;">SCAN</button>
+        </div>
+        <!-- Interactive results drawer overlay -->
+        <div id="searchResultsDisplay" style="font-size: 11px; color: #00bb00; margin-top: 8px; max-height: 120px; overflow-y: auto; border: 1px dashed #003300; padding: 5px; display: none; background: rgba(0,5,0,0.8); border-radius: 4px; line-height: 1.4;"></div>
+    </div>
+
+    <!-- YOUR EXISTING TRACK INFO PANEL RESUMES IMMEDIATELY BELOW -->
+    <div id="trackInfo">Awaiting connection tracking initialization...</div>
+
+
+    <audio id="audioPlayer" controls></audio>
+
+    <div class="terminal-specs">
+        NODE ADDR: 0x63673528404C9B9394d4Ec6FA037ED825c8b0faa<br>
+        SYS STATUS: <span id="specsCount">0</span> LINKS HARVESTED // WEB 1.0 LEECHING LIVE<br>
+        Copyright © 2026 Psico Communications
+    </div>
+</div>
+<script src="main.js"></script>
+<script src="s23-metadata-sandbox.js"></script>	
+<script src="s23-radar-finder-node.js"></script>	
+<script src="jingle.js"></script>
+<script src="s23-global-matrix-counter.js"></script>	
+<script src="s23-ghost-channel-injector.js"></script>
+
+
+
+
+</body>
+</html>
+ 
+
+
+</body>
+</html>
