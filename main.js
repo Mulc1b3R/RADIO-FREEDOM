@@ -202,8 +202,16 @@
         }
     }
 
-  audioPlayer.addEventListener('playing', () => {
-    let collectionName = "alanwattscollection"; // Default fallback
+  // Initialize the global channel pointer at the very top of main.js if not already set
+if (!window.currentCollection) {
+    window.currentCollection = "alanwattscollection"; // Default startup channel
+}
+
+audioPlayer.addEventListener('playing', () => {
+    // 📡 DYNAMIC OVERRIDE LOCK: Reads whatever channel you tuned via your keyboard
+    let collectionName = window.currentCollection;
+    // ... leave the rest of your original loop code exactly as it was!
+
 
     try {
         const currentUrl = audioPlayer.src;
