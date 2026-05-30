@@ -44,14 +44,14 @@
     counterBadge.innerHTML = `📦 MATRIX VOL: <span style="color:#ffff33;">SCANNING...</span>`;
     document.body.appendChild(counterBadge);
 
-    // 📡 STEP 2: Asynchronous Multi-Channel Summation Engine
+      // 📡 STEP 2: Asynchronous Multi-Channel Summation Engine [STABLE ARCHITECTURE]
     async function calculateGlobalMatrixVolume() {
         console.log("📡 S27 Counter Node: Commencing global network inventory scan...");
-        let absoluteTotalTracks = 0;
 
         // Spin up parallel fetch queries to hit all server endpoints at once
         const scanPromises = DATABASE_ROSTER.map(fileUrl => 
-            fetch(fileUrl)
+            // Cache-buster added here to smash GitHub CDN latency loops (?t=)
+            fetch(`${fileUrl}?t=${new Date().getTime()}`)
                 .then(res => {
                     if (!res.ok) throw new Error(`Node offline: ${fileUrl}`);
                     return res.json();
@@ -66,13 +66,25 @@
                         }
                     }
                     console.log(`📊 Node Scan Completed: ${fileUrl} -> ${entriesCount} tracks.`);
-                    absoluteTotalTracks += entriesCount;
+                    return entriesCount; // Return the local integer safely to the thread bucket
                 })
                 .catch(err => {
-                    // Silent fail safety: If a specific show JSON isn't deployed yet, skip it gracefully
                     console.warn(`⚠️ S27 Scan Note: Skipping inactive matrix path: ${fileUrl}`);
+                    return 0; // Return zero if node fails to prevent total calculator collapse
                 })
         );
+
+        // Wait for all network threads to resolve completely into a stable list of counts
+        const trackCountsArray = await Promise.all(scanPromises);
+
+        // Calculate absolute total tracks in one single, isolated math block
+        const absoluteTotalTracks = trackCountsArray.reduce((sum, count) => sum + count, 0);
+
+        // 🎛️ STEP 3: Print the compiled tally to the HUD display pane
+        const formattedTotal = absoluteTotalTracks.toLocaleString();
+        counterBadge.innerHTML = `📦 MATRIX VOL: <span style="color:#ffffff; text-shadow: 0 0 6px #00ff00;">${formattedTotal}</span> TOTAL LNKS`;
+        console.log(`⚡ S27 Inventory Core Finalized: ${absoluteTotalTracks} total active links verified.`);
+    }
 
         // Wait for all network threads to resolve completely
         await Promise.all(scanPromises);
