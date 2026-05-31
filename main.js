@@ -431,24 +431,24 @@ if (searchInput) searchInput.addEventListener('keyup', (e) => { if (e.key === 'E
 (() => {
     // 📡 SCOPE BRIDGE: Local block queries directly off the universal window configuration layout
     const PRESET_CHANNELS = window.PRESET_CHANNELS || {
-        1:  { name: "Sci Fi",  url: "Twilight-zone.json" },
-        2:  { name: "Suspense",  url: "Suspense.json" },
-        3: { name: "Podcasts", url: "Murder_By_Experts.json" },
-        4:  { name: "Mysterious-Traveler",  url: "Mysterious-Traveler.json" },
-        5:  { name: "2000_Plus",   url: "2000-Plus.json" },
-        6:  { name: "BBC-sci fi",  url: "BBC.json" },
-        7:  { name: "Sci-fi-Radio",  url: "Sci-fi-Radio.json" },
-        8:  { name: "lord-of-the-rings",  url: "lord-of-the-rings.json" },
-        9:  { name: "Sherlock Holmes",  url: "sherlock.json" },
-        10: { name: "Haunted-BBC",  url: "Haunted-BBC.json" },
-        11: { name: "Alfred-Hitchcock",  url: "Alfred-Hitchcock.json" },
-        12: { name: "Ray-Bradbury",  url: "Ray-Bradbury.json" },
-        
-         // ⚡ ADD THE NEW 13TH EXPANSION NODE HERE:
+     1: { name: "Sci Fi", url: "Twilight-zone.json" },
+    2: { name: "Suspense", url: "Suspense.json" },
+    3: { name: "Podcasts", url: "Murder_By_Experts.json" },
+    4: { name: "Mysterious-Traveler", url: "Mysterious-Traveler.json" },
+    5: { name: "Movies", url: "2000-Plus.json" },
+    6: { name: "BBC-sci fi", url: "BBC.json" },
+    7: { name: "Sci-fi-Radio", url: "Sci-fi-Radio.json" },
+    8: { name: "lord-of-the-rings", url: "lord-of-the-rings.json" },
+    9: { name: "Sherlock Holmes", url: "sherlock.json" },
+    10: { name: "Haunted-BBC", url: "Haunted-BBC.json" },
+    11: { name: "Alfred-Hitchcock", url: "Alfred-Hitchcock.json" },
+    12: { name: "Ray-Bradbury", url: "Ray-Bradbury.json" },
+	 // ⚡ ADD THE NEW 13TH EXPANSION NODE HERE:
     13: { name: "old time radio-1", url: "Film-Noir.json" },
 	 // ⚡ ADD THE NEW 13TH EXPANSION NODE HERE:
     14: { name: "Old Time Radio-2", url: "test.json" }
-    };
+	
+};
 
 
     const chassis = document.querySelector('.crt-chassis');
