@@ -10,6 +10,7 @@
             font-family: 'Courier New', monospace;
             padding: 20px;
             margin: 0;
+            overflow-x: hidden;
         }
         h3 {
             border-bottom: 1px solid #005500;
@@ -43,21 +44,27 @@
             box-shadow: 0 0 8px #003300;
         }
         .status-terminal {
-            font-size: 10px;
+            font-size: 11px;
             color: #008800;
             margin-top: 15px;
             text-align: center;
             border-top: 1px dashed #003300;
             padding-top: 10px;
+            line-height: 1.5;
         }
         .tag-preset { color: #33ff33; font-weight: bold; }
         .tag-extra { color: #ffcc00; font-weight: bold; }
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
 
     <h3>📡 STATION MASTER REGISTRY DIRECTORY</h3>
-    <div id="directoryGrid" class="grid-container"></div>
+    <div id="directoryGrid" class="grid-container">📥 Initialising data pipeline...</div>
     <div class="status-terminal" id="terminalStatus">OFFLINE STATIC MATRIX MODE // STABLE</div>
 
 <script>
@@ -71,8 +78,7 @@
             return;
         }
 
-        // 🗄️ LIVE REPOSITORY SNAPSHOT MATRIX MAP
-        // Every single JSON file sitting in your GitHub directory, pre-compiled here
+        // 🗄️ LIVE REPOSITORY SNAPSHOT MATRIX MAP (73,000 File Fleet)
         const masterPlaylistFiles = [
             "2000-Plus.json", 
             "Alfred-Hitchcock.json", 
@@ -96,12 +102,11 @@
             "wise-crack-dictionary.json"
         ];
 
-          // Read parent settings to figure out what is currently tied to a keyboard preset
-              // Read parent settings to figure out what is currently tied to a keyboard preset
-              // Read parent settings to figure out what is currently tied to a keyboard preset
         const presetFiles = [];
         if (mainWin.PRESET_CHANNELS) {
-            Object.values(mainWin.PRESET_CHANNELS).forEach(ch => presetFiles.push(ch.url));
+            Object.values(mainWin.PRESET_CHANNELS).forEach(ch => {
+                if (ch && ch.url) presetFiles.push(ch.url);
+            });
         }
 
         statusText.innerText = `TOTAL MANIFESTS LOADED: ${masterPlaylistFiles.length} ACTIVE PIPES`;
@@ -122,16 +127,22 @@
             
             // 🚀 INTERCEPT PLAYER CARRIER OVERRIDE LOOP
             row.addEventListener("click", async () => {
+                // Set tactical loading border state
                 row.style.borderColor = "#ffcc00";
                 
-                // Web-safe space translation conversion block for "bbc comedy.json"
-                const webSafeFileName = encodeURIComponent(fileName);
-                
                 try {
-                    const fileResponse = await fetch(webSafeFileName);
+                    // Direct fetch pass to match your raw repository string layouts natively
+                    const fileResponse = await fetch(fileName);
+                    
+                    if (!fileResponse.ok) {
+                        throw new Error(`HTTP network fault code: ${fileResponse.status}`);
+                    }
+                    
                     const data = await fileResponse.json();
                     
-                    if (data && Array.isArray(data.mp3s)) {
+                    if (data && Array.isArray(data.mp3s) && data.mp3s.length > 0) {
+                        // 🔒 SAFETY DECK VALIDATION GATE
+                        // Only touch parent scope variables if we verified valid audio tracks exist
                         mainWin.masterLibrary = data.mp3s.slice();
                         mainWin.searchMasterMatrix = data.mp3s.slice();
                         
@@ -162,25 +173,25 @@
                             mainWin.window.playNextStreamTrack();
                         }
                         
+                        // Green light verification confirmation clear
                         row.style.borderColor = "#33ff33";
 
-                        // ===================================================================
                         // ⚠️ OPERATOR OVERRIDE WARNING PROMPT INJECTION
-                        // ===================================================================
-                        // Overwrites the popup's status header to warn that an override is active
                         statusText.innerHTML = `
-                            <span style="color:#ffcc00; font-weight:bold; animation:blink 1.5s infinite;">
+                            <span style="color:#ffcc00; font-weight:bold; animation: blink 1.5s infinite;">
                                 ⚠️ [OVERRIDE ACTIVE ON COCKPIT]
                             </span><br>
                             <span style="font-size:10px; color:#888;">
-                                TO RESTORE BASELINE TUNER STACK: CLICK REFRESH (F5)
+                                TO RESTORE BASELINE TUNER STACK: REFRESH PLAYER (F5)
                             </span>
                         `;
-                        // ===================================================================
+                    } else {
+                        throw new Error("Target file container data structure corrupted or empty.");
                     }
                 } catch (err) {
                     console.error("❌ Override Execution Fault:", err);
                     row.style.borderColor = "red";
+                    statusText.innerHTML = `<span style="color:red; font-weight:bold;">❌ INGESTION CRASH: ${fileName} NOT FOUND OR UNREADABLE</span>`;
                 }
             });
             
@@ -190,3 +201,4 @@
 </script>
 </body>
 </html>
+
