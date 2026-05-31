@@ -418,6 +418,9 @@ if (searchInput) searchInput.addEventListener('keyup', (e) => { if (e.key === 'E
 // ===================================================================
 // SECTION 24: SIDEBAR PRESET CONSOLE (DYNAMIC LOCALIZED ENGINE)       
 // =================================================================== 
+// ===================================================================
+// SECTION 24: SIDEBAR PRESET CONSOLE (DYNAMIC LOCALIZED ENGINE)       
+// =================================================================== 
 (() => {
     // 📡 SCOPE BRIDGE: Local block queries directly off the universal window configuration layout
     const PRESET_CHANNELS = window.PRESET_CHANNELS || {
@@ -432,8 +435,13 @@ if (searchInput) searchInput.addEventListener('keyup', (e) => { if (e.key === 'E
         9:  { name: "Sherlock Holmes",  url: "sherlock.json" },
         10: { name: "Haunted-BBC",  url: "Haunted-BBC.json" },
         11: { name: "Alfred-Hitchcock",  url: "Alfred-Hitchcock.json" },
-        12: { name: "Ray-Bradbury",  url: "Ray-Bradbury.json" }
+        12: { name: "Ray-Bradbury",  url: "Ray-Bradbury.json" },
+        
+        // ⚡ UPDATE THIS FALLBACK ARRAY SO THE DYNAMIC LOOPER CAN SEE THEM:
+        13: { name: "Film Noir",  url: "Film-Noir.json" },
+        14: { name: "Test Node",  url: "test.json" }
     };
+
 
     const chassis = document.querySelector('.crt-chassis');
     if (!chassis) return;
