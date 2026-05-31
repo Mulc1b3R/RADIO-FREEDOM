@@ -14,7 +14,11 @@
         "sherlock.json",
         "Haunted-BBC.json",
         "Alfred-Hitchcock.json",
-        "Ray-Bradbury.json"
+        "Ray-Bradbury.json",
+        "test.json",
+        "Film-Noir.json"
+        
+        
     ];
 
     // 🔨 STEP 1: Dynamically mount the tracking HUD overlay element into the DOM
