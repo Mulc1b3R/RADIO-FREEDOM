@@ -59,7 +59,9 @@
         "BBC": { genre: "BRITISH HERITAGE DRAMA", searchKey: "BBC" },
         "LOTR": { genre: "EPIC LITERARY FANTASY", searchKey: "lord-of-the-rings" },
         "ALFRED": { genre: "MACABRE MYSTERY AUDIO", searchKey: "Alfred" },
-        "RAY": { genre: "SPECULATIVE LITERARY SCI-FI", searchKey: "Ray" }
+        "RAY": { genre: "SPECULATIVE LITERARY SCI-FI", searchKey: "Ray" },
+        "OTRB": { genre: "SANDBOX TELEMETRY NODE", searchKey: "OTRB" }
+
     };
 
     function analyzeActiveStream() {
