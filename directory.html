@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>RADIO-FREEDOM // STATIC VAULT DIRECTORY</title>
+    <title>RADIO-FREEDOM // STATIC MASTER DIRECTORY</title>
     <style>
         body {
             background: #000500;
@@ -127,7 +127,6 @@
             
             // 🚀 INTERCEPT PLAYER CARRIER OVERRIDE LOOP
             row.addEventListener("click", async () => {
-                // Set tactical loading border state
                 row.style.borderColor = "#ffcc00";
                 
                 try {
@@ -141,8 +140,7 @@
                     const data = await fileResponse.json();
                     
                     if (data && Array.isArray(data.mp3s) && data.mp3s.length > 0) {
-                        // 🔒 SAFETY DECK VALIDATION GATE
-                        // Only touch parent scope variables if we verified valid audio tracks exist
+                        // 🔒 1. LOCK PARENT ENGINE VARIABLES
                         mainWin.masterLibrary = data.mp3s.slice();
                         mainWin.searchMasterMatrix = data.mp3s.slice();
                         
@@ -152,10 +150,11 @@
                             mainWin.window.activeStreamingDeck = data.mp3s.slice();
                         }
                         
+                        // Update links harvested spec counter layout widget
                         const specsCounter = mainWin.document.getElementById('specsCount');
                         if (specsCounter) specsCounter.textContent = mainWin.masterLibrary.length;
                         
-                        // 🧼 AUTOMATED SEARCH SCRUBBER RESET
+                        // 🧼 2. AUTOMATED SEARCH SCRUBBER RESET
                         const searchInput = mainWin.document.getElementById('trackSearchInput');
                         const searchDisplay = mainWin.document.getElementById('searchResultsDisplay');
                         if (searchInput) searchInput.value = "";
@@ -164,19 +163,47 @@
                             searchDisplay.style.display = "none"; 
                         }
 
-                        // 🚀 TRIPLE-LOCK OVERRIDE INJECTION SECURED
+                        // 🚀 3. THE ABSOLUTE OVERRIDE SECURITY FORCE
+                        // Hard-assigns the tracking fields to protect them from background thread resets
                         mainWin.window.activeTargetFileTrackSignature = fileName;
                         mainWin.window.currentCollection = fileName;
                         mainWin.window.currentChannelIndex = "99"; 
 
-                        if (typeof mainWin.window.playNextStreamTrack === "function") {
-                            mainWin.window.playNextStreamTrack();
+                        // Pull the first track from our new queue right now inside the popup thread
+                        const nextTrackUrl = mainWin.window.activeStreamingDeck.shift();
+                        if (nextTrackUrl) {
+                            const pDom = mainWin.document;
+                            const player = pDom.getElementById('audioPlayer');
+                            const txtPanel = pDom.getElementById('trackInfo');
+                            
+                            if (player) {
+                                // Stop any active player thread audio immediately
+                                player.pause();
+                                
+                                // Directly set the player source bypass, bypassing main.js auto-load constraints
+                                player.src = decodeURIComponent(nextTrackUrl);
+                                
+                                // Clean up the display track panel text manually
+                                const trackTitle = player.src.substring(player.src.lastIndexOf('/') + 1);
+                                if (txtPanel) {
+                                    txtPanel.textContent = `Now playing: ${trackTitle}\n📡 [Queue: ${mainWin.window.activeStreamingDeck.length} tracks remaining]`;
+                                }
+                                
+                                // Log the action into your master Session Telemetry Register
+                                if (mainWin.window.sessionLogRegistry) {
+                                    const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
+                                    mainWin.window.sessionLogRegistry.push(`[${timestamp}] POPUP OVERRIDE LOCKED: ${trackTitle}`);
+                                }
+
+                                // Force the hardware audio engine to play immediately
+                                player.play().catch(e => console.warn("Context hold handled safely."));
+                            }
                         }
                         
                         // Green light verification confirmation clear
                         row.style.borderColor = "#33ff33";
 
-                        // ⚠️ OPERATOR OVERRIDE WARNING PROMPT INJECTION
+                        // ⚠️ 4. FORCE OPERATOR OVERRIDE WARNING SCREEN INJECTION
                         statusText.innerHTML = `
                             <span style="color:#ffcc00; font-weight:bold; animation: blink 1.5s infinite;">
                                 ⚠️ [OVERRIDE ACTIVE ON COCKPIT]
@@ -191,8 +218,8 @@
                 } catch (err) {
                     console.error("❌ Override Execution Fault:", err);
                     row.style.borderColor = "red";
-                    statusText.innerHTML = `<span style="color:red; font-weight:bold;">❌ INGESTION CRASH: ${fileName} NOT FOUND OR UNREADABLE</span>`;
-                }
+
+                     }
             });
             
             grid.appendChild(row);
@@ -201,4 +228,5 @@
 </script>
 </body>
 </html>
+
 
