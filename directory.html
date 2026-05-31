@@ -71,12 +71,17 @@
             return;
         }
 
-        // 🔓 RE-WELDED SYSTEM PORTALS BY Operator COMMAND
-        const GITHUB_TOKEN = "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";
+        // ===================================================================
+        // 🔒 SCOPE MATRIX DEFINITIONS
+        // ===================================================================
+        const GITHUB_TOKEN = "github_pat_11BF2HAKQ08jWWZWgLorpabT2Pd2tKHsLCBGKFM2kETdZ4k7";
         const GITHUB_REPO  = "Mulc1b3R/RADIO-FREEDOM";
-        const githubApiTreeUrl = `https://api.github.com/repos/{GITHUB_REPO}/contents/{file_path}`;  
+        const file_path    = ""; // Blank string forces a full scan of the root directory tree
 
-        // Cross-examine whatever is currently typed into index.html keyboard presets
+        // 🎯 YOUR EXACT RE-WELDED PATHWAY NODE LOGIC
+        const githubApiTreeUrl = `https://github.com{GITHUB_REPO}/contents/${file_path}`;
+
+        // Gather parent definitions to cross-reference keyboard presets
         const presetFiles = [];
         if (mainWin.PRESET_CHANNELS) {
             Object.values(mainWin.PRESET_CHANNELS).forEach(ch => presetFiles.push(ch.url));
@@ -102,7 +107,7 @@
                 return;
             }
 
-            grid.innerHTML = ""; // Clear loader text
+            grid.innerHTML = ""; 
             statusText.innerText = `TOTAL MANIFESTS FOUND: ${jsonFiles.length} FILES LOADED`;
 
             jsonFiles.forEach(file => {
@@ -127,8 +132,11 @@
                 row.addEventListener("click", async () => {
                     row.style.borderColor = "#ffcc00";
                     
+                    // Web-safe space translation conversion block for "bbc comedy.json"
+                    const webSafeFileName = encodeURIComponent(fileName);
+                    
                     try {
-                        const fileResponse = await fetch(fileName);
+                        const fileResponse = await fetch(webSafeFileName);
                         const data = await fileResponse.json();
                         
                         if (data && Array.isArray(data.mp3s)) {
@@ -171,4 +179,5 @@
 </script>
 </body>
 </html>
+
 
