@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>RADIO-FREEDOM // MASTER VAULT SCANNER</title>
+    <title>RADIO-FREEDOM // STATIC VAULT DIRECTORY</title>
     <style>
         body {
             background: #000500;
@@ -56,12 +56,12 @@
 </head>
 <body>
 
-    <h3>📡 SCANNING REPOSITORY VAULT...</h3>
-    <div id="directoryGrid" class="grid-container">📥 Querying cloud tree registry...</div>
-    <div class="status-terminal" id="terminalStatus">OPERATOR CONSOLE MODE // ACTIVE SCAN</div>
+    <h3>📡 STATION MASTER REGISTRY DIRECTORY</h3>
+    <div id="directoryGrid" class="grid-container"></div>
+    <div class="status-terminal" id="terminalStatus">OFFLINE STATIC MATRIX MODE // STABLE</div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", async () => {
+    document.addEventListener("DOMContentLoaded", () => {
         const grid = document.getElementById("directoryGrid");
         const statusText = document.getElementById("terminalStatus");
         const mainWin = window.opener;
@@ -71,113 +71,98 @@
             return;
         }
 
-        // ===================================================================
-        // 🔒 SCOPE MATRIX DEFINITIONS
-        // ===================================================================
-        const GITHUB_TOKEN = "github_pat_11BF2HAKQ08jWWZWgLorpabT2Pd2tKHsLCBGKFM2kETdZ4k7";
-        const GITHUB_REPO  = "Mulc1b3R/RADIO-FREEDOM";
-        const file_path    = ""; // Blank string forces a full scan of the root directory tree
+        // 🗄️ LIVE REPOSITORY SNAPSHOT MATRIX MAP
+        // Every single JSON file sitting in your GitHub directory, pre-compiled here
+        const masterPlaylistFiles = [
+            "2000-Plus.json", 
+            "Alfred-Hitchcock.json", 
+            "BBC.json", 
+            "Drone-Zone.json",
+            "Exploring-Tomororw.json", 
+            "Film-Noir.json", 
+            "Haunted-BBC.json",
+            "Murder_By_Experts.json", 
+            "Mysterious-Traveler.json", 
+            "Ray-Bradbury.json",
+            "Sci-fi-Radio.json", 
+            "Suspense.json", 
+            "The-Shadow.json", 
+            "Twilight-zone.json",
+            "X-Minus-One.json", 
+            "bbc comedy.json", 
+            "beyond-tomorrow.json", 
+            "infected.json", 
+            "test.json", 
+            "wise-crack-dictionary.json"
+        ];
 
-        // 🎯 YOUR EXACT RE-WELDED PATHWAY NODE LOGIC
-        const githubApiTreeUrl = `https://github.com{GITHUB_REPO}/contents/${file_path}`;
-
-        // Gather parent definitions to cross-reference keyboard presets
+        // Read parent settings to figure out what is currently tied to a keyboard preset
         const presetFiles = [];
         if (mainWin.PRESET_CHANNELS) {
             Object.values(mainWin.PRESET_CHANNELS).forEach(ch => presetFiles.push(ch.url));
         }
 
-        // Configure authenticated headers to securely clear rate limit gates
-        const headers = {
-            "Accept": "application/vnd.github.v3+json",
-            "User-Agent": "Radio-Freedom-App",
-            "Authorization": `token ${GITHUB_TOKEN}`
-        };
+        statusText.innerText = `TOTAL MANIFESTS LOADED: ${masterPlaylistFiles.length} ACTIVE PIPES`;
+        grid.innerHTML = ""; 
 
-        try {
-            const response = await fetch(githubApiTreeUrl, { headers: headers });
-            if (!response.ok) throw new Error(`Cloud tree payload rejected with status ${response.status}`);
-            const items = await response.json();
-
-            // Filter out everything except files ending with .json
-            const jsonFiles = items.filter(item => item.type === "file" && item.name.toLowerCase().endsWith(".json"));
-
-            if (jsonFiles.length === 0) {
-                grid.innerHTML = "<p style='color:#ffcc00;'>⚠️ Notice: No JSON database arrays detected in repository root.</p>";
-                return;
+        masterPlaylistFiles.forEach(fileName => {
+            const isPreset = presetFiles.includes(fileName);
+            const cleanName = fileName.replace(".json", "").replace(/[-_]/g, " ").toUpperCase();
+            
+            const row = document.createElement("div");
+            row.className = "channel-row";
+            
+            if (isPreset) {
+                row.innerHTML = `<span>[⚙️ PRESET] ${cleanName}</span> <span class="tag-preset">${fileName}</span>`;
+            } else {
+                row.innerHTML = `<span>[📂 EXTRA] ${cleanName}</span> <span class="tag-extra">${fileName}</span>`;
             }
-
-            grid.innerHTML = ""; 
-            statusText.innerText = `TOTAL MANIFESTS FOUND: ${jsonFiles.length} FILES LOADED`;
-
-            jsonFiles.forEach(file => {
-                const fileName = file.name;
+            
+            // 🚀 INTERCEPT PLAYER CARRIER OVERRIDE LOOP
+            row.addEventListener("click", async () => {
+                row.style.borderColor = "#ffcc00";
                 
-                // Exclude system configs or audioVault definitions
-                if (fileName === "jingles.json" || fileName === "package.json") return;
-
-                const isPreset = presetFiles.includes(fileName);
-                const cleanName = fileName.replace(".json", "").replace(/[-_]/g, " ").toUpperCase();
+                // Web-safe space translation conversion block for "bbc comedy.json"
+                const webSafeFileName = encodeURIComponent(fileName);
                 
-                const row = document.createElement("div");
-                row.className = "channel-row";
-                
-                if (isPreset) {
-                    row.innerHTML = `<span>[⚙️ PRESET] ${cleanName}</span> <span class="tag-preset">${fileName}</span>`;
-                } else {
-                    row.innerHTML = `<span>[📂 EXTRA] ${cleanName}</span> <span class="tag-extra">${fileName}</span>`;
-                }
-                
-                // 🚀 HIGH-SPEED CLOUD OVERRIDE EVENT TRIGGER
-                row.addEventListener("click", async () => {
-                    row.style.borderColor = "#ffcc00";
+                try {
+                    const fileResponse = await fetch(webSafeFileName);
+                    const data = await fileResponse.json();
                     
-                    // Web-safe space translation conversion block for "bbc comedy.json"
-                    const webSafeFileName = encodeURIComponent(fileName);
-                    
-                    try {
-                        const fileResponse = await fetch(webSafeFileName);
-                        const data = await fileResponse.json();
+                    if (data && Array.isArray(data.mp3s)) {
+                        mainWin.window.activeTargetFileTrackSignature = fileName;
+                        mainWin.window.currentCollection = fileName;
                         
-                        if (data && Array.isArray(data.mp3s)) {
-                            // Synchronize parent state parameters dynamically
-                            mainWin.window.activeTargetFileTrackSignature = fileName;
-                            mainWin.window.currentCollection = fileName;
-                            
-                            mainWin.masterLibrary = data.mp3s.slice();
-                            mainWin.searchMasterMatrix = data.mp3s.slice();
-                            
-                            if (typeof mainWin.shuffleBroadcastDeck === "function") {
-                                mainWin.window.activeStreamingDeck = mainWin.shuffleBroadcastDeck([...mainWin.masterLibrary]);
-                            } else {
-                                mainWin.window.activeStreamingDeck = data.mp3s.slice();
-                            }
-                            
-                            const specsCounter = mainWin.document.getElementById('specsCount');
-                            if (specsCounter) specsCounter.textContent = mainWin.masterLibrary.length;
-                            
-                            if (typeof mainWin.window.playNextStreamTrack === "function") {
-                                mainWin.window.playNextStreamTrack();
-                            }
-                            
-                            row.style.borderColor = "#33ff33";
+                        mainWin.masterLibrary = data.mp3s.slice();
+                        mainWin.searchMasterMatrix = data.mp3s.slice();
+                        
+                        if (typeof mainWin.shuffleBroadcastDeck === "function") {
+                            mainWin.window.activeStreamingDeck = mainWin.shuffleBroadcastDeck([...mainWin.masterLibrary]);
+                        } else {
+                            mainWin.window.activeStreamingDeck = data.mp3s.slice();
                         }
-                    } catch (err) {
-                        console.error("❌ Override Execution Fault:", err);
-                        row.style.borderColor = "red";
+                        
+                        const specsCounter = mainWin.document.getElementById('specsCount');
+                        if (specsCounter) specsCounter.textContent = mainWin.masterLibrary.length;
+                        
+                        if (typeof mainWin.window.playNextStreamTrack === "function") {
+                            mainWin.window.playNextStreamTrack();
+                        }
+                        
+                        row.style.borderColor = "#33ff33";
                     }
-                });
-                
-                grid.appendChild(row);
+                } catch (err) {
+                    console.error("❌ Override Execution Fault:", err);
+                    row.style.borderColor = "red";
+                }
             });
-
-        } catch (err) {
-            console.error("❌ Repository Scanner Collapse:", err);
-            grid.innerHTML = "<p style='color:red;'>❌ ERROR: Rate limit cleared but handshake failed. Check connectivity.</p>";
-        }
+            
+            grid.appendChild(row);
+        });
     });
 </script>
 </body>
 </html>
+
 
 
