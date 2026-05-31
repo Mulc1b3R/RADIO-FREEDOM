@@ -97,6 +97,7 @@
         ];
 
           // Read parent settings to figure out what is currently tied to a keyboard preset
+              // Read parent settings to figure out what is currently tied to a keyboard preset
         const presetFiles = [];
         if (mainWin.PRESET_CHANNELS) {
             Object.values(mainWin.PRESET_CHANNELS).forEach(ch => presetFiles.push(ch.url));
@@ -143,6 +144,17 @@
                         if (specsCounter) specsCounter.textContent = mainWin.masterLibrary.length;
                         
                         // ===================================================================
+                        // 🧼 AUTOMATED SEARCH SCRUBBER RESET
+                        // ===================================================================
+                        const searchInput = mainWin.document.getElementById('trackSearchInput');
+                        const searchDisplay = mainWin.document.getElementById('searchResultsDisplay');
+                        if (searchInput) searchInput.value = "";
+                        if (searchDisplay) { 
+                            searchDisplay.innerHTML = ""; 
+                            searchDisplay.style.display = "none"; 
+                        }
+
+                        // ===================================================================
                         // 🚀 TRIPLE-LOCK OVERRIDE INJECTION SECURED
                         // ===================================================================
                         mainWin.window.activeTargetFileTrackSignature = fileName;
@@ -167,7 +179,3 @@
 </script>
 </body>
 </html>
-
-
-
-
