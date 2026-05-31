@@ -147,33 +147,43 @@
         }
     }
 
-    // --- COMPREHENSIVE STREAM SEQUENCER ---
+    // --- COMPREHENSIVE STREAM SEQUENCER (UNIVERSAL PATH CORRECTION) ---
     async function playNextStreamTrack() {
         initVisualizerEngine();
 
-        if (masterLibrary.length === 0) {
-            try {
-                trackInfo.textContent = '📡 Syncing master manifest database node...';
-                const response = await fetch('load.json');
-                const data = await response.json();
-                masterLibrary = data.mp3s.slice();
-			    searchMasterMatrix = data.mp3s.slice(); // ⚡ Lock baseline tracks into search memory bank
-                isConnected = true; 
+        // 📡 1. DYNAMIC SOURCE RESOLUTION GATE
+        let activeChannelTargetFile = "load.json"; 
+        if (window.currentCollection && window.currentCollection.endsWith('.json')) {
+            activeChannelTargetFile = window.currentCollection;
+        } else if (window.PRESET_CHANNELS && window.PRESET_CHANNELS[window.currentChannelIndex]) {
+            activeChannelTargetFile = window.PRESET_CHANNELS[window.currentChannelIndex].url;
+        }
 
+        // 📡 2. TARGET SWITCH OVERRIDE CHECK
+        if (masterLibrary.length === 0 || window.activeTargetFileTrackSignature !== activeChannelTargetFile) {
+            try {
+                trackInfo.textContent = `📡 Syncing manifest database node: ${activeChannelTargetFile}...`;
+                const response = await fetch(activeChannelTargetFile);
+                const data = await response.json();
                 
+                masterLibrary = data.mp3s.slice();
+                searchMasterMatrix = data.mp3s.slice(); // ⚡ Lock baseline tracks into search memory bank
+                isConnected = true; 
+                
+                window.activeTargetFileTrackSignature = activeChannelTargetFile;
                 document.getElementById('specsCount').textContent = masterLibrary.length;
                 
                 activeStreamingDeck = shuffleBroadcastDeck([...masterLibrary]);
-                console.log(`📦 Broadcast matrix live: ${masterLibrary.length} tracks committed.`);
+                console.log(`📦 Broadcast matrix live: ${masterLibrary.length} tracks committed from [${activeChannelTargetFile}].`);
             } catch (error) {
                 console.error('❌ Error loading transmission node manifest:', error);
-                trackInfo.textContent = 'Connection Error: Unable to read load.json data archive.';
+                trackInfo.textContent = `Connection Error: Unable to read ${activeChannelTargetFile} archive.`;
                 return;
             }
         }
 
         if (activeStreamingDeck.length === 0) {
-            console.log("🔄 Active streaming queue depleted. Reshuffling master matrix...");
+            console.log(`🔄 Active streaming queue depleted. Reshuffling current channel matrix [${activeChannelTargetFile}]...`);
             activeStreamingDeck = shuffleBroadcastDeck([...masterLibrary]);
         }
 
@@ -181,17 +191,17 @@
         const decodedUrl = decodeURIComponent(targetTrackUrl);
         const rawFileName = decodedUrl.substring(decodedUrl.lastIndexOf('/') + 1);
 
-		// 🚀 INSERT TELEMETRY CAPTURE HERE
-        // Pack the data string or object into history variables before changing the player source
+        // 🚀 INSERT TELEMETRY CAPTURE HERE
         if (typeof trackTelemetryUpdate === "function") {
             trackTelemetryUpdate({ url: decodedUrl, title: rawFileName });
         }
+        
         audioPlayer.src = decodedUrl;
         trackInfo.textContent = `Now playing: ${rawFileName}\n📡 [Queue: ${activeStreamingDeck.length} tracks remaining]`;
-		// ⚡ SECTION 23 TELEMETRY LOGGER LOGIC
+        
+        // ⚡ SECTION 23 TELEMETRY LOGGER LOGIC (Forces whatever URL plays into the export text file)
         const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
         window.sessionLogRegistry.push(`[${timestamp}] TERMINAL NODE STREAM LOCKED: ${rawFileName}`);
-
 
         try {
             await audioPlayer.play();
@@ -202,42 +212,39 @@
         }
     }
 
-  // Initialize the global channel pointer at the very top of main.js if not already set
-if (!window.currentCollection) {
-    window.currentCollection = "alanwattscollection"; // Default startup channel
-}
-
-audioPlayer.addEventListener('playing', () => {
-    // 📡 DYNAMIC OVERRIDE LOCK: Reads whatever channel you tuned via your keyboard
-    let collectionName = window.currentCollection;
-    // ... leave the rest of your original loop code exactly as it was!
-
-
-    try {
-        const currentUrl = audioPlayer.src;
-        // Strip out any trailing query strings or hash markers before parsing the segments
-        const cleanUrlString = currentUrl.split('?')[0].split('#')[0];
-        const parsedUrl = new URL(cleanUrlString);
-        
-        const pathSegments = parsedUrl.pathname.split('/').filter(seg => seg.length > 0);
-        
-        // Grab the directory segment right before the MP3 filename
-        if (pathSegments.length >= 2) {
-            // Added decodeURIComponent to resolve percent-encoding issues safely
-            collectionName = decodeURIComponent(pathSegments[pathSegments.length - 2]);
-        }
-    } catch(e) {
-        console.warn("⚠ Engine URL Parsing dropped, deploying storage matrix structural bypass.");
+    // Initialize the global channel pointer at the very top of main.js if not already set
+    if (!window.currentCollection) {
+        window.currentCollection = "alanwattscollection"; // Default startup channel
     }
 
-    // Constructs the exact URL string structure using the variable token template
-    const targetWallpaperUrl = `https://archive.org/download/${collectionName}/__ia_thumb.jpg`;
-    
-    // Deploys the constructed string directly to the interface wallpaper matrix
-    document.body.style.backgroundImage = `url('${targetWallpaperUrl}')`;
-    document.body.style.backgroundSize = "cover";
-});
+    audioPlayer.addEventListener('playing', () => {
+        // 📡 DYNAMIC OVERRIDE LOCK: Reads whatever channel you tuned via your keyboard
+        let collectionName = window.currentCollection;
 
+        try {
+            const currentUrl = audioPlayer.src;
+            // Strip out any trailing query strings or hash markers before parsing the segments
+            const cleanUrlString = currentUrl.split('?')[0].split('#')[0];
+            const parsedUrl = new URL(cleanUrlString);
+            
+            const pathSegments = parsedUrl.pathname.split('/').filter(seg => seg.length > 0);
+            
+            // Grab the directory segment right before the MP3 filename
+            if (pathSegments.length >= 2) {
+                // Added decodeURIComponent to resolve percent-encoding issues safely
+                collectionName = decodeURIComponent(pathSegments[pathSegments.length - 2]);
+            }
+        } catch(e) {
+            console.warn("⚠ Engine URL Parsing dropped, deploying storage matrix structural bypass.");
+        }
+
+        // Constructs the exact URL string structure using the variable token template
+        const targetWallpaperUrl = `https://archive.org/download/${collectionName}/__ia_thumb.jpg`;
+        
+        // Deploys the constructed string directly to the interface wallpaper matrix
+        document.body.style.backgroundImage = `url('${targetWallpaperUrl}')`;
+        document.body.style.backgroundSize = "cover";
+    });
 
     // --- EXCEPTION INTERCEPT / DEAD LINK SYSTEM AUTO SKIPPER ---
     audioPlayer.addEventListener('error', function() {
