@@ -314,7 +314,12 @@ window.PRESET_CHANNELS = {
     9: { name: "Sherlock Holmes", url: "sherlock.json" },
     10: { name: "Haunted-BBC", url: "Haunted-BBC.json" },
     11: { name: "Alfred-Hitchcock", url: "Alfred-Hitchcock.json" },
-    12: { name: "Ray-Bradbury", url: "Ray-Bradbury.json" }
+    12: { name: "Ray-Bradbury", url: "Ray-Bradbury.json" },
+	 // ⚡ ADD THE NEW 13TH EXPANSION NODE HERE:
+    13: { name: "Film Noir", url: "Film-Noir.json" },
+	 // ⚡ ADD THE NEW 13TH EXPANSION NODE HERE:
+    14: { name: "test", url: "test.json" }
+	
 };
 
 // ===================================================================
