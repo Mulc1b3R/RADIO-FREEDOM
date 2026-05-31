@@ -312,7 +312,7 @@ let isConnected = false;
 window.PRESET_CHANNELS = {
     1: { name: "Sci Fi", url: "Twilight-zone.json" },
     2: { name: "Suspense", url: "Suspense.json" },
-    3: { name: "Murder_By_Experts", url: "Murder_By_Experts.json" },
+    3: { name: "Podcasts", url: "Murder_By_Experts.json" },
     4: { name: "Mysterious-Traveler", url: "Mysterious-Traveler.json" },
     5: { name: "Movies", url: "2000-Plus.json" },
     6: { name: "BBC-sci fi", url: "BBC.json" },
@@ -323,9 +323,9 @@ window.PRESET_CHANNELS = {
     11: { name: "Alfred-Hitchcock", url: "Alfred-Hitchcock.json" },
     12: { name: "Ray-Bradbury", url: "Ray-Bradbury.json" },
 	 // ⚡ ADD THE NEW 13TH EXPANSION NODE HERE:
-    13: { name: "Film Noir", url: "Film-Noir.json" },
+    13: { name: "old time radio-1", url: "Film-Noir.json" },
 	 // ⚡ ADD THE NEW 13TH EXPANSION NODE HERE:
-    14: { name: "test", url: "test.json" }
+    14: { name: "Old Time Radio-2", url: "test.json" }
 	
 };
 
@@ -433,7 +433,7 @@ if (searchInput) searchInput.addEventListener('keyup', (e) => { if (e.key === 'E
     const PRESET_CHANNELS = window.PRESET_CHANNELS || {
         1:  { name: "Sci Fi",  url: "Twilight-zone.json" },
         2:  { name: "Suspense",  url: "Suspense.json" },
-        3:  { name: "Murder_By_Experts",  url: "Murder_By_Experts.json" },
+        3: { name: "Podcasts", url: "Murder_By_Experts.json" },
         4:  { name: "Mysterious-Traveler",  url: "Mysterious-Traveler.json" },
         5:  { name: "2000_Plus",   url: "2000-Plus.json" },
         6:  { name: "BBC-sci fi",  url: "BBC.json" },
@@ -444,9 +444,10 @@ if (searchInput) searchInput.addEventListener('keyup', (e) => { if (e.key === 'E
         11: { name: "Alfred-Hitchcock",  url: "Alfred-Hitchcock.json" },
         12: { name: "Ray-Bradbury",  url: "Ray-Bradbury.json" },
         
-        // ⚡ UPDATE THIS FALLBACK ARRAY SO THE DYNAMIC LOOPER CAN SEE THEM:
-        13: { name: "Film Noir",  url: "Film-Noir.json" },
-        14: { name: "Test Node",  url: "test.json" }
+         // ⚡ ADD THE NEW 13TH EXPANSION NODE HERE:
+    13: { name: "old time radio-1", url: "Film-Noir.json" },
+	 // ⚡ ADD THE NEW 13TH EXPANSION NODE HERE:
+    14: { name: "Old Time Radio-2", url: "test.json" }
     };
 
 
