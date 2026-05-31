@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RADIO-FREEDOM // MASTER VAULT SCANNER</title>
+    <style>
+        body {
+            background: #000500;
+            color: #33ff33;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            margin: 0;
+        }
+        h3 {
+            border-bottom: 1px solid #005500;
+            padding-bottom: 8px;
+            letter-spacing: 2px;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 0;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .channel-row {
+            background: #000c00;
+            border: 1px solid #004400;
+            padding: 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .channel-row:hover {
+            background: #002200;
+            border-color: #33ff33;
+            box-shadow: 0 0 8px #003300;
+        }
+        .status-terminal {
+            font-size: 10px;
+            color: #008800;
+            margin-top: 15px;
+            text-align: center;
+            border-top: 1px dashed #003300;
+            padding-top: 10px;
+        }
+        .tag-preset { color: #33ff33; font-weight: bold; }
+        .tag-extra { color: #ffcc00; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h3>📡 SCANNING REPOSITORY VAULT...</h3>
+    <div id="directoryGrid" class="grid-container">📥 Querying cloud tree registry...</div>
+    <div class="status-terminal" id="terminalStatus">OPERATOR CONSOLE MODE // ACTIVE SCAN</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+        const grid = document.getElementById("directoryGrid");
+        const statusText = document.getElementById("terminalStatus");
+        const mainWin = window.opener;
+        
+        if (!mainWin) {
+            grid.innerHTML = "<p style='color:red;'>❌ ERROR: Main transmission cockpit link offline.</p>";
+            return;
+        }
+
+        // 🌐 AUTO-DETECT WORKFLOW PARAMETERS
+        // Safely crawls your real live repo structure over public endpoints
+        const repoUser = "Mulc1b3R";
+        const repoName = "RADIO-FREEDOM";
+        const githubApiTreeUrl = `https://github.com{repoUser}/${repoName}/contents/`;
+
+        // Grab any pre-defined mappings so we can cross-reference them
+        const presetFiles = [];
+        if (mainWin.PRESET_CHANNELS) {
+            Object.values(mainWin.PRESET_CHANNELS).forEach(ch => presetFiles.push(ch.url));
+        }
+
+        try {
+            const response = await fetch(githubApiTreeUrl);
+            if (!response.ok) throw new Error("Cloud tree payload rejected.");
+            const items = await response.json();
+
+            // Filter out everything except files ending with .json
+            const jsonFiles = items.filter(item => item.type === "file" && item.name.toLowerCase().endsWith(".json"));
+
+            if (jsonFiles.length === 0) {
+                grid.innerHTML = "<p style='color:#ffcc00;'>⚠️ Notice: No JSON database arrays detected in repository root.</p>";
+                return;
+            }
+
+            grid.innerHTML = ""; // Clear loader text
+            statusText.innerText = `TOTAL MANIFESTS FOUND: ${jsonFiles.length} FILES LOADED`;
+
+            // Process every JSON file discovered in your live directory tree
+            jsonFiles.forEach((file, index) => {
+                const fileName = file.name;
+                
+                // Exclude system files that aren't playlists
+                if (fileName === "jingles.json" || fileName == "package.json") return;
+
+                const isPreset = presetFiles.includes(fileName);
+                const cleanName = fileName.replace(".json", "").replace(/[-_]/g, " ").toUpperCase();
+                
+                const row = document.createElement("div");
+                row.className = "channel-row";
+                
+                // Add a bright visual indicator tag to instantly spot un-hooked "extra" files
+                if (isPreset) {
+                    row.innerHTML = `<span>[⚙️ PRESET] ${cleanName}</span> <span class="tag-preset">${fileName}</span>`;
+                } else {
+                    row.innerHTML = `<span>[📂 EXTRA] ${cleanName}</span> <span class="tag-extra">${fileName}</span>`;
+                }
+                
+                // 🚀 HIGH-SPEED CLOUD OVERRIDE EVENT TRIGGER
+                row.addEventListener("click", async () => {
+                    row.style.borderColor = "#ffcc00";
+                    
+                    try {
+                        const fileResponse = await fetch(fileName);
+                        const data = await fileResponse.json();
+                        
+                        if (data && Array.isArray(data.mp3s)) {
+                            // Override parent process scope states dynamically
+                            mainWin.window.activeTargetFileTrackSignature = fileName;
+                            mainWin.window.currentCollection = fileName;
+                            
+                            mainWin.masterLibrary = data.mp3s.slice();
+                            mainWin.searchMasterMatrix = data.mp3s.slice();
+                            
+                            if (typeof mainWin.shuffleBroadcastDeck === "function") {
+                                mainWin.window.activeStreamingDeck = mainWin.shuffleBroadcastDeck([...mainWin.masterLibrary]);
+                            } else {
+                                mainWin.window.activeStreamingDeck = data.mp3s.slice();
+                            }
+                            
+                            const specsCounter = mainWin.document.getElementById('specsCount');
+                            if (specsCounter) specsCounter.textContent = mainWin.masterLibrary.length;
+                            
+                            if (typeof mainWin.window.playNextStreamTrack === "function") {
+                                mainWin.window.playNextStreamTrack();
+                            }
+                            
+                            row.style.borderColor = "#33ff33";
+                        }
+                    } catch (err) {
+                        console.error("❌ Override Execution Fault:", err);
+                        row.style.borderColor = "red";
+                    }
+                });
+                
+                grid.appendChild(row);
+            });
+
+        } catch (err) {
+            console.error("❌ Repository Scanner Collapse:", err);
+            grid.innerHTML = "<p style='color:red;'>❌ ERROR: Unable to pull directory indexes from GitHub Pages tree.</p>";
+        }
+    });
+</script>
+</body>
+</html>
