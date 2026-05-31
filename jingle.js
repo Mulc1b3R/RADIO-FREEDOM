@@ -1,5 +1,5 @@
 // ===================================================================
-// SECTION 26: AUTOMATED BROADCAST JINGLE INTERCEPT SYSTEM
+// SECTION 26: AUTOMATED BROADCAST JINGLE INTERCEPT SYSTEM (RE-WELDED)
 // Operators: MOJO // MULCIBER -- Modular Deployment Stack
 // ===================================================================
 
@@ -79,32 +79,28 @@
 
         console.log("⚡ [TACTICAL INTERCEPT RUNNING]: Overriding native playNextStreamTrack event sequence.");
 
-        // Pull the top asset cleanly out of the active linear memory depletion grid
         if (activeJingleDeck.length === 0) {
             replenishAndShuffleJingleDeck();
         }
         const targetJingle = activeJingleDeck.shift();
 
-        // Parse a highly descriptive label tracking filename attributes out of the raw link slug
         const filename = decodeURIComponent(targetJingle).split('/').pop().replace(/\.[^/.]+$/, "").replace(/[_-]/g, ' ');
 
         // 🎛️ INJECT COMPOSITE STATE INTO MAIN TERMINAL
         display.innerHTML = `<span style="color:#ffcc00; animation: blink 1.5s infinite;">📡 [COMMERCIAL INTERCEPT INTERMISSION]</span><br><span style="font-size:11px;color:#888;">MID-CENTURY ADVERTISING ARCHIVE VINTAGE RETROSPECTIVE:</span><br><span style="color:#ffffff;">${filename.toUpperCase()}</span>`;
         
-        // Temporarily step down the visualizer buttons or alter tracking indicators if needed
+        // Temporarily step down console navigation buttons to secure the stream during commercial slots
         deactivateTacticalButtons(true);
 
         // Bind the post-ad restitution protocol directly to the audio card node
         player.removeEventListener('ended', handleJinglePlaythroughComplete);
         player.addEventListener('ended', handleJinglePlaythroughComplete);
 
-        // Slam jingle directly into carrier wave channels and force immediate play sequence
         player.src = targetJingle;
         player.play().catch(e => console.warn("S23 Audio Context buffer lock handled."));
 
-        // Clear the switch so the clock tracking algorithm resets for the next 30-minute block loop
         window.jingleBreakPending = false;
-        return true; // Confirms the intercept successfully fired
+        return true; 
     };
 
     // 🔄 FUNCTION 5: Restitution Protocol (Snapping Back to Master Show Timeline)
@@ -112,33 +108,32 @@
         console.log("🔄 S26 Restitution Routine Active: Commercial break completed. Retracting intercept gates.");
         player.removeEventListener('ended', handleJinglePlaythroughComplete);
 
-        // Restore operational state permissions to right-flank hardware selectors
+        // Restore operational state permissions to console layout controls
         deactivateTacticalButtons(false);
 
-        // Re-align display terminal text feedback parameters
         display.textContent = "📡 Re-syncing master station transmission node sequence...";
 
-        // If the master player script block functions exist, trigger them natively to restore playlist state
         if (typeof window.playNextStreamTrack === 'function') {
             console.log("🔌 Re-linking to main depletion deck sequencer...");
             window.playNextStreamTrack();
         }
     }
 
-    // 🎚️ AUXILIARY HELPER: Protects Metadata / Like Radar tracking states during commercial slots
+    // 🎚️ FIXED AUXILIARY HELPER: Maps exactly to your production index.html button IDs
     function deactivateTacticalButtons(lockActive) {
-        const metaBtn = document.getElementById('s23-meta-probe-btn');
-        const radarBtn = document.getElementById('s25-radar-find-btn');
+        const skipBtn = document.getElementById('skipButton');
+        const exportBtn = document.getElementById('exportLogButton');
         
         if (lockActive) {
-            if (metaBtn) { metaBtn.style.opacity = "0.3"; metaBtn.style.pointerEvents = "none"; }
-            if (radarBtn) { radarBtn.style.opacity = "0.3"; radarBtn.style.pointerEvents = "none"; }
+            if (skipBtn) { skipBtn.style.opacity = "0.3"; skipBtn.style.pointerEvents = "none"; }
+            if (exportBtn) { exportBtn.style.opacity = "0.3"; exportBtn.style.pointerEvents = "none"; }
         } else {
-            if (metaBtn) { metaBtn.style.opacity = "1"; metaBtn.style.pointerEvents = "auto"; }
-            if (radarBtn) { radarBtn.style.opacity = "1"; radarBtn.style.pointerEvents = "auto"; }
+            if (skipBtn) { skipBtn.style.opacity = "1"; skipBtn.style.pointerEvents = "auto"; }
+            if (exportBtn) { exportBtn.style.opacity = "1"; exportBtn.style.pointerEvents = "auto"; }
         }
     }
 
     // Boot system matrix components on load initialization
     document.addEventListener("DOMContentLoaded", initializeJingleSystem);
 })();
+
