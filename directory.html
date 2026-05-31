@@ -98,6 +98,7 @@
 
           // Read parent settings to figure out what is currently tied to a keyboard preset
               // Read parent settings to figure out what is currently tied to a keyboard preset
+              // Read parent settings to figure out what is currently tied to a keyboard preset
         const presetFiles = [];
         if (mainWin.PRESET_CHANNELS) {
             Object.values(mainWin.PRESET_CHANNELS).forEach(ch => presetFiles.push(ch.url));
@@ -143,9 +144,7 @@
                         const specsCounter = mainWin.document.getElementById('specsCount');
                         if (specsCounter) specsCounter.textContent = mainWin.masterLibrary.length;
                         
-                        // ===================================================================
                         // 🧼 AUTOMATED SEARCH SCRUBBER RESET
-                        // ===================================================================
                         const searchInput = mainWin.document.getElementById('trackSearchInput');
                         const searchDisplay = mainWin.document.getElementById('searchResultsDisplay');
                         if (searchInput) searchInput.value = "";
@@ -154,9 +153,7 @@
                             searchDisplay.style.display = "none"; 
                         }
 
-                        // ===================================================================
                         // 🚀 TRIPLE-LOCK OVERRIDE INJECTION SECURED
-                        // ===================================================================
                         mainWin.window.activeTargetFileTrackSignature = fileName;
                         mainWin.window.currentCollection = fileName;
                         mainWin.window.currentChannelIndex = "99"; 
@@ -166,6 +163,20 @@
                         }
                         
                         row.style.borderColor = "#33ff33";
+
+                        // ===================================================================
+                        // ⚠️ OPERATOR OVERRIDE WARNING PROMPT INJECTION
+                        // ===================================================================
+                        // Overwrites the popup's status header to warn that an override is active
+                        statusText.innerHTML = `
+                            <span style="color:#ffcc00; font-weight:bold; animation:blink 1.5s infinite;">
+                                ⚠️ [OVERRIDE ACTIVE ON COCKPIT]
+                            </span><br>
+                            <span style="font-size:10px; color:#888;">
+                                TO RESTORE BASELINE TUNER STACK: CLICK REFRESH (F5)
+                            </span>
+                        `;
+                        // ===================================================================
                     }
                 } catch (err) {
                     console.error("❌ Override Execution Fault:", err);
