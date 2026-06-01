@@ -425,18 +425,47 @@ const crawlRoster = [
                 row.style.borderBottom = "1px dashed #003300";
                 row.style.cursor = "pointer";
 
-                const filename = decodeURIComponent(track).split('/').pop().replace(/\.[^/.]+$/, "").replace(/[_-]/g, ' ');
+                               const filename = decodeURIComponent(track).split('/').pop().replace(/\.[^/.]+$/, "").replace(/[_-]/g, ' ');
                 row.innerText = `📡 ${filename.toUpperCase()}`;
 
-                row.addEventListener('click', () => {
-                    audioPlayer.src = track;
-                    audioPlayer.play().catch(e => console.warn("Buffer lock active."));
-                    document.getElementById('trackInfo').innerHTML = `MANUAL OVERRIDE: ${filename.toUpperCase()}<br>[QUEUE PROTECTION ENGAGED]`;
+                // 🛰️ HARDENED UNIVERSAL SEARCH PLAYBACK INTERCEPTOR (PATCHED CHANGE 2)
+                row.addEventListener('click', async () => {
+                    const decodedUrl = decodeURIComponent(track);
                     
                     if (typeof activeStreamingDeck !== 'undefined') {
                         activeStreamingDeck = activeStreamingDeck.filter(item => item !== track);
                     }
                     searchResults.style.display = 'none';
+
+                    document.getElementById('trackInfo').innerHTML = `MANUAL OVERRIDE: ${filename.toUpperCase()}<br>[QUEUE PROTECTION ENGAGED]`;
+
+                    // 📡 OVER-THE-AIR LIVE STREAM DISPATCH ROUTER
+                    if (decodedUrl.includes('.m3u8')) {
+                        if (typeof Hls !== 'undefined' && Hls.isSupported()) {
+                            if (window.activeHlsInstance) {
+                                window.activeHlsInstance.destroy();
+                            }
+                            const hls = new Hls();
+                            window.activeHlsInstance = hls;
+                            hls.loadSource(decodedUrl);
+                            hls.attachMedia(audioPlayer);
+                            hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                                audioPlayer.play().catch(e => console.warn("Search stream playback deferred."));
+                            });
+                        } else if (audioPlayer.canPlayType('application/vnd.apple.mpegurl')) {
+                            // Direct mobile Safari channel mapping hook
+                            audioPlayer.src = decodedUrl;
+                            await audioPlayer.play().catch(e => console.warn("Mobile search stream deferred."));
+                        }
+                    } else {
+                        // 📻 Baseline routine for standard OTRR archival tracks
+                        if (window.activeHlsInstance) {
+                            window.activeHlsInstance.destroy();
+                            window.activeHlsInstance = null;
+                        }
+                        audioPlayer.src = decodedUrl;
+                        await audioPlayer.play().catch(e => console.warn("Buffer lock active."));
+                    }
                 });
 
                 searchResults.appendChild(row);
@@ -452,6 +481,7 @@ const crawlRoster = [
 
 if (searchBtn) searchBtn.addEventListener('click', executeMatrixSearch);
 if (searchInput) searchInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') executeMatrixSearch(); });
+
 // SECTION 24: SIDEBAR PRESET CONSOLE (DYNAMIC LOCALIZED ENGINE)       
 // =================================================================== 
 (() => {
