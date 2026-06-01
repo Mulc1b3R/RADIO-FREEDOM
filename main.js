@@ -354,7 +354,31 @@ async function executeMatrixSearch() {
     searchResults.style.display = 'block';
     searchResults.innerHTML = '<div class="search-row" style="cursor:default;color:#ffff33;padding:8px;border-bottom:1px dashed #003300;">📡 INITIALISING MULTI-CHANNEL CRAWL SEQUENCE...</div>';
 
-    const crawlRoster = ["load.json"];
+    
+	// --- DIRECT COMPREHENSIVE SEARCH ROSTER IN MAIN.JS ---
+const crawlRoster = [
+    "load.json",
+    "2000-Plus.json", 
+    "Alfred-Hitchcock.json", 
+    "BBC.json", 
+    "Drone-Zone.json",
+    "Exploring-Tomororw.json", 
+    "Film-Noir.json", 
+    "Haunted-BBC.json",
+    "Murder_By_Experts.json", 
+    "Mysterious-Traveler.json", 
+    "Ray-Bradbury.json",
+    "Sci-fi-Radio.json", 
+    "Suspense.json", 
+    "The-Shadow.json", 
+    "Twilight-zone.json",
+    "X-Minus-One.json", 
+    "bbc comedy.json", 
+    "beyond-tomorrow.json", 
+    "infected.json", 
+    "test.json", 
+    "wise-crack-dictionary.json"
+];
     for (let ch in window.PRESET_CHANNELS) {
         const fileUrl = window.PRESET_CHANNELS[ch].url;
         if (fileUrl && !crawlRoster.includes(fileUrl)) {
