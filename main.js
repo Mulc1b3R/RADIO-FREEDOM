@@ -377,7 +377,8 @@ const crawlRoster = [
     "beyond-tomorrow.json", 
     "infected.json", 
     "test.json", 
-    "wise-crack-dictionary.json"
+    "wise-crack-dictionary.json",
+	"psychedelia.json"
 ];
     for (let ch in window.PRESET_CHANNELS) {
         const fileUrl = window.PRESET_CHANNELS[ch].url;
