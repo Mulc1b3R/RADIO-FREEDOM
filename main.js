@@ -347,7 +347,7 @@ window.PRESET_CHANNELS = {
     9: { name: "Sherlock Holmes", url: "sherlock.json" },
     10: { name: "Haunted-BBC", url: "Haunted-BBC.json" },
     11: { name: "Alfred-Hitchcock", url: "Alfred-Hitchcock.json" },
-    12: { name: "Ray-Bradbury", url: "Ray-Bradbury.json" },
+   12: { name: "bbc_world_service", url: "bbc_world_service.json" },
 	 // ⚡ ADD THE NEW 13TH EXPANSION NODE HERE:
     13: { name: "old time radio-1", url: "Film-Noir.json" },
 	 // ⚡ ADD THE NEW 13TH EXPANSION NODE HERE:
@@ -524,7 +524,7 @@ if (searchInput) searchInput.addEventListener('keyup', (e) => { if (e.key === 'E
         9: { name: "Sherlock Holmes", url: "sherlock.json" },
         10: { name: "Haunted-BBC", url: "Haunted-BBC.json" },
         11: { name: "Alfred-Hitchcock", url: "Alfred-Hitchcock.json" },
-        12: { name: "Ray-Bradbury", url: "Ray-Bradbury.json" },
+        12: { name: "bbc_world_service", url: "bbc_world_service.json" },
         13: { name: "old time radio-1", url: "Film-Noir.json" },
         14: { name: "Old Time Radio-2", url: "test.json" }
     };
