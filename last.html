@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Station Chassis</title>
+    
+    <!-- 🎨 CSS Stylesheets go here -->
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #000000;
+            color: #33ff33;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+<script src="https://jsdelivr.net"></script>
+<video id="video" controls></video>
+<script>
+  var video = document.getElementById('video');
+  var videoSrc = 'https://lsn.lv/bbcradio.m3u8?station=bbc_1xtra%22&bitrate=320000%22';
+  if (Hls.isSupported()) {
+    var hls = new Hls();
+    hls.loadSource(videoSrc);
+    hls.attachMedia(video);
+  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = videoSrc; // Native support (like Safari)
+  }
+</script>
+
+
+
+
+    <!-- 🏗️ Visible layout elements go here -->
+    <h1>System Boot Active</h1>
+    <p>Awaiting payload deployment...</p>
+
+    <!-- 🕹️ JavaScript processing engines go here -->
+    <script>
+        console.log("Telemetry initialization complete.");
+    </script>
+    
+</body>
+</html>
