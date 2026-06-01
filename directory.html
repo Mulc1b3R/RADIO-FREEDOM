@@ -67,6 +67,15 @@
     <div id="directoryGrid" class="grid-container">📥 Initialising data pipeline...</div>
     <div class="status-terminal" id="terminalStatus">OFFLINE STATIC MATRIX MODE // STABLE</div>
 
+    <script>
+// Inside directory.html (right under your masterPlaylistFiles array declaration)
+if (window.opener && !window.opener.closed) {
+    // Expose the popup's files globally to the main console cockpit
+    window.opener.window.extendedVaultRegistry = masterPlaylistFiles;
+    console.log(`📡 Vault matrix registered to main cockpit: ${masterPlaylistFiles.length} files shared.`);
+}
+    </script>
+    
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const grid = document.getElementById("directoryGrid");
