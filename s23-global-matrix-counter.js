@@ -3,7 +3,6 @@
     const DATABASE_ROSTER = [
 		// === PY_MATRIX_START ===
     "emptyslot.json",
-    "the-history-of-rome.json",
     // === PY_MATRIX_END ===
 ];
 
