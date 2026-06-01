@@ -452,34 +452,26 @@ const crawlRoster = [
 
 if (searchBtn) searchBtn.addEventListener('click', executeMatrixSearch);
 if (searchInput) searchInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') executeMatrixSearch(); });
-// ===================================================================
-// SECTION 24: SIDEBAR PRESET CONSOLE (DYNAMIC LOCALIZED ENGINE)       
-// =================================================================== 
-// ===================================================================
 // SECTION 24: SIDEBAR PRESET CONSOLE (DYNAMIC LOCALIZED ENGINE)       
 // =================================================================== 
 (() => {
     // 📡 SCOPE BRIDGE: Local block queries directly off the universal window configuration layout
     const PRESET_CHANNELS = window.PRESET_CHANNELS || {
-     1: { name: "Sci Fi", url: "Twilight-zone.json" },
-    2: { name: "Suspense", url: "Suspense.json" },
-    3: { name: "Podcasts", url: "Murder_By_Experts.json" },
-    4: { name: "Mysterious-Traveler", url: "Mysterious-Traveler.json" },
-    5: { name: "Movies", url: "2000-Plus.json" },
-    6: { name: "BBC-sci fi", url: "BBC.json" },
-    7: { name: "Sci-fi-Radio", url: "Sci-fi-Radio.json" },
-    8: { name: "lord-of-the-rings", url: "lord-of-the-rings.json" },
-    9: { name: "Sherlock Holmes", url: "sherlock.json" },
-    10: { name: "Haunted-BBC", url: "Haunted-BBC.json" },
-    11: { name: "Alfred-Hitchcock", url: "Alfred-Hitchcock.json" },
-    12: { name: "Ray-Bradbury", url: "Ray-Bradbury.json" },
-	 // ⚡ ADD THE NEW 13TH EXPANSION NODE HERE:
-    13: { name: "old time radio-1", url: "Film-Noir.json" },
-	 // ⚡ ADD THE NEW 13TH EXPANSION NODE HERE:
-    14: { name: "Old Time Radio-2", url: "test.json" }
-	
-};
-
+        1: { name: "Sci Fi", url: "Twilight-zone.json" },
+        2: { name: "Suspense", url: "Suspense.json" },
+        3: { name: "Podcasts", url: "Murder_By_Experts.json" },
+        4: { name: "Mysterious-Traveler", url: "Mysterious-Traveler.json" },
+        5: { name: "Movies", url: "2000-Plus.json" },
+        6: { name: "BBC-sci fi", url: "BBC.json" },
+        7: { name: "Sci-fi-Radio", url: "Sci-fi-Radio.json" },
+        8: { name: "lord-of-the-rings", url: "lord-of-the-rings.json" },
+        9: { name: "Sherlock Holmes", url: "sherlock.json" },
+        10: { name: "Haunted-BBC", url: "Haunted-BBC.json" },
+        11: { name: "Alfred-Hitchcock", url: "Alfred-Hitchcock.json" },
+        12: { name: "Ray-Bradbury", url: "Ray-Bradbury.json" },
+        13: { name: "old time radio-1", url: "Film-Noir.json" },
+        14: { name: "Old Time Radio-2", url: "test.json" }
+    };
 
     const chassis = document.querySelector('.crt-chassis');
     if (!chassis) return;
@@ -548,6 +540,10 @@ if (searchInput) searchInput.addEventListener('keyup', (e) => { if (e.key === 'E
             btn.style.borderColor = "#00ff00";
 
             try {
+                // Update global tracking index targets cleanly before fetching
+                window.currentChannelIndex = key;
+                window.currentCollection = chData.url;
+
                 const res = await fetch(chData.url);
                 const json = await res.json();
                 
@@ -564,16 +560,47 @@ if (searchInput) searchInput.addEventListener('keyup', (e) => { if (e.key === 'E
                 }
 
                 // Master search matrix intercept and gate unlock
-                searchMasterMatrix = Array.from(new Set([...searchMasterMatrix, ...scrapedMp3Pool]));
+                if (typeof searchMasterMatrix !== 'undefined') {
+                    searchMasterMatrix = Array.from(new Set([...searchMasterMatrix, ...scrapedMp3Pool]));
+                }
                 isConnected = true;
 
+                // Shuffle the channel stack to randomize the listening deck
                 scrapedMp3Pool.sort(() => Math.random() - 0.5);
                 console.log(`🎲 Local Deck Engine Active: Transferred ${scrapedMp3Pool.length} tracks into queue for channel ${key}.`);
 
                 if (typeof activeStreamingDeck !== 'undefined') {
                     activeStreamingDeck = [...scrapedMp3Pool];
-                    audioPlayer.src = activeStreamingDeck.shift();
-                    audioPlayer.play().catch(e => console.warn("Buffer lock active."));
+                    const decodedUrl = decodeURIComponent(activeStreamingDeck.shift());
+                    if (!decodedUrl) return;
+
+                    // 📡 OVER-THE-AIR LIVE STREAM DISPATCH ROUTER
+                    if (decodedUrl.includes('.m3u8')) {
+                        if (typeof Hls !== 'undefined' && Hls.isSupported()) {
+                            if (window.activeHlsInstance) {
+                                window.activeHlsInstance.destroy();
+                            }
+                            const hls = new Hls();
+                            window.activeHlsInstance = hls;
+                            hls.loadSource(decodedUrl);
+                            hls.attachMedia(audioPlayer);
+                            hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                                audioPlayer.play().catch(e => console.warn("Sidebar stream playback deferred."));
+                            });
+                        } else if (audioPlayer.canPlayType('application/vnd.apple.mpegurl')) {
+                            // Direct mobile Safari channel mapping hook
+                            audioPlayer.src = decodedUrl;
+                            audioPlayer.play().catch(e => console.warn("Mobile sidebar stream deferred."));
+                        }
+                    } else {
+                        // 📻 Baseline routine for standard OTRR archival files
+                        if (window.activeHlsInstance) {
+                            window.activeHlsInstance.destroy();
+                            window.activeHlsInstance = null;
+                        }
+                        audioPlayer.src = decodedUrl;
+                        audioPlayer.play().catch(e => console.warn("Buffer lock active."));
+                    }
                 }
             } catch (err) {
                 console.error("PRESET TUNING EXCEPTION:", err);
