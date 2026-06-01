@@ -1,7 +1,8 @@
 (() => {
     // 🧠 CONFIGURATION ROSTER: Compile every single database file in the network
     const DATABASE_ROSTER = [
-         "load.json",
+		// === PY_MATRIX_START ===
+     "load.json",
     "2000-Plus.json", 
     "Alfred-Hitchcock.json", 
     "BBC.json", 
@@ -25,6 +26,7 @@
 	"psychedelia.json",
 	"politicsandprose.json",
 	"the-history-of-rome.json"
+		 // === PY_MATRIX_END ===
 ];
 
     // 🔨 STEP 1: Dynamically mount the tracking HUD overlay element into the DOM
