@@ -357,6 +357,7 @@ async function executeMatrixSearch() {
     
 	// --- DIRECT COMPREHENSIVE SEARCH ROSTER IN MAIN.JS ---
 const crawlRoster = [
+	// === PY_MATRIX_START ===
     "load.json",
     "2000-Plus.json", 
     "Alfred-Hitchcock.json", 
@@ -381,6 +382,7 @@ const crawlRoster = [
 	"psychedelia.json",
 	"politicsandprose.json",
 	"the-history-of-rome.json"
+	 // === PY_MATRIX_END ===
 ];
     for (let ch in window.PRESET_CHANNELS) {
         const fileUrl = window.PRESET_CHANNELS[ch].url;
