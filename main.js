@@ -379,7 +379,8 @@ const crawlRoster = [
     "test.json", 
     "wise-crack-dictionary.json",
 	"psychedelia.json",
-	"politicsandprose.json"
+	"politicsandprose.json",
+	"the-history-of-rome.json"
 ];
     for (let ch in window.PRESET_CHANNELS) {
         const fileUrl = window.PRESET_CHANNELS[ch].url;
