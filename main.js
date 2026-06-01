@@ -196,21 +196,47 @@
             trackTelemetryUpdate({ url: decodedUrl, title: rawFileName });
         }
         
-        audioPlayer.src = decodedUrl;
-        trackInfo.textContent = `Now playing: ${rawFileName}\n📡 [Queue: ${activeStreamingDeck.length} tracks remaining]`;
+               trackInfo.textContent = `Now playing: ${rawFileName}\n📡 [Queue: ${activeStreamingDeck.length} tracks remaining]`;
         
         // ⚡ SECTION 23 TELEMETRY LOGGER LOGIC (Forces whatever URL plays into the export text file)
         const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
         window.sessionLogRegistry.push(`[${timestamp}] TERMINAL NODE STREAM LOCKED: ${rawFileName}`);
 
         try {
-            await audioPlayer.play();
+            // 📡 DYNAMIC OVER-THE-AIR STREAM TRAFFIC CONTROLLER ROUTER (PATCHED CHANGE 3)
+            if (decodedUrl.includes('.m3u8')) {
+                if (typeof Hls !== 'undefined' && Hls.isSupported()) {
+                    if (window.activeHlsInstance) {
+                        window.activeHlsInstance.destroy();
+                    }
+                    const hls = new Hls();
+                    window.activeHlsInstance = hls;
+                    hls.loadSource(decodedUrl);
+                    hls.attachMedia(audioPlayer);
+                    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                        audioPlayer.play().catch(e => console.warn("Live stream playback deferred."));
+                    });
+                } else if (audioPlayer.canPlayType('application/vnd.apple.mpegurl')) {
+                    // Direct native playback fallback loop for mobile iOS/Android Safari engines
+                    audioPlayer.src = decodedUrl;
+                    await audioPlayer.play();
+                }
+            } else {
+                // 📻 Baseline routine for standard OTRR archival files
+                if (window.activeHlsInstance) {
+                    window.activeHlsInstance.destroy();
+                    window.activeHlsInstance = null;
+                }
+                audioPlayer.src = decodedUrl;
+                await audioPlayer.play();
+            }
             console.log(`📡 Streaming node locked: ${rawFileName} (${activeStreamingDeck.length} left)`);
         } catch (playError) {
             console.warn('⚠️ Playback blocked by browser policy. Awaiting manual user interaction.', playError);
             trackInfo.textContent = '⚠️ Click "Connect" or hit the play bar below to force the stream.';
         }
     }
+
 
     // Initialize the global channel pointer at the very top of main.js if not already set
     if (!window.currentCollection) {
