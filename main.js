@@ -409,7 +409,13 @@ const crawlRoster = [
 	"politicsandprose.json",
 	"the-history-of-rome.json",
 	"bbc_world_service.json",
-	"somafmlive.json"
+	"somafmlive.json",
+	"living-the-blues-louisiana-blues-classics.json",
+            "250-years-of-great-music.json",
+            "fm-radio-archive-music-broadcast-collection.json",
+            "bach-the-masterpiece-collection.json",
+            "your-hit-parade-50s-instrumentals.json",
+            "living-the-blues-the-70s-blues-classics.json"
 	 // === PY_MATRIX_END ===
 ];
     for (let ch in window.PRESET_CHANNELS) {
