@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Section 23 // Pirate Radio Terminal</title>
+    <!-- 🛡️ CLEAN RECONNAISSANCE: All external CDN software scripts stripped to bypass GitHub server rules -->
+    <style>
+        body {
+            background-color: #000000;
+            color: #33ff33;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 5px #33ff33;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-y: auto; 
+        }
+        .bbc-satellite-bay {
+            border: 2px solid #00ff00;
+            background: rgba(5, 5, 5, 0.95);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3), inset 0 0 10px rgba(0, 255, 0, 0.2);
+            padding: 20px;
+            border-radius: 6px;
+            max-width: 480px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 15px;
+        }
+        .satellite-header {
+            font-size: 12px;
+            font-weight: bold;
+            color: #00ff00;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed #005500;
+            padding-bottom: 8px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        .satellite-scroll-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            height: auto;       
+            max-height: 1600px;  
+            overflow-y: auto;   
+            padding-right: 5px;
+        }
+        .bbc-stream-link-btn {
+            display: inline-block;
+            padding: 12px 15px;
+            background: #111;
+            color: #00ff00;
+            border: 2px solid #005500;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: bold;
+            text-decoration: none;
+            word-break: break-all;
+            box-shadow: 0 3px 0 #003300;
+            transition: all 0.05s ease;
+            cursor: pointer;
+            margin-top: 5px;
+            text-align: left;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .bbc-stream-link-btn:hover {
+            background: #33ff33;
+            color: #000000;
+            border-color: #33ff33;
+            box-shadow: 0 3px 0 #005500, 0 0 8px rgba(0, 255, 0, 0.4);
+        }
+        .bbc-stream-link-btn.active-carrier {
+            background: #001100;
+            border-color: #00ff00;
+            box-shadow: 0 1px 0 #003300;
+            transform: translateY(2px);
+            color: #ffffff;
+        }
+        a { color: #33ff33; }
+        h3 { color: #00ff00; border-bottom: 1px solid #003300; padding-bottom: 4px; margin-top: 25px; }
+        ul, ol { padding-left: 20px; }
+        li { margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+    <!-- 📻 THE RAW NATIVE HTML5 PLAYER EMBED LAYER -->
+    <div style="width:100%; max-width:480px; margin-bottom:15px; text-align:center;">
+        <audio id="terminalAudioEngine" controls style="width:100%; filter:invert(1) hue-rotate(90deg);"></audio>
+    </div>
+
+    <div class="bbc-satellite-bay">
+        <div id="statusReadout" class="satellite-header">📡 AWAITING CARRIER MATRIX INPUT...</div>
+        <div class="satellite-scroll-grid">
+            
+            <ol>
+                <li>BBC Newcastle<br />
+                    <!-- 🔒 THE EXACT UNCUT ORIGINAL WORKING ROUTE -->
+                    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_derby%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+                        NEWCASTLE LIVE RELAY
+                    </a>
+                </li>
+            </ol>
+
+            <hr style="border:0; border-top:1px dashed #005500; margin:25px 0;">
+            <p style="text-align: center;"><a href="https://garfnet.org.uk">Home</a> | <a href="https://garfnet.org.uktables/">Tables</a> | <a href="https://garfnet.org.uktables/radio-frequencies/">Radio</a>&nbsp;| <a href="https://garfnet.org.uktables/radio-frequencies/internet-radio-player/">Internet Radio</a></p>
+
+        </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- 🕹️ NATIVE STREAM ROUTER (ZERO EXTENSIONS / ZERO DOWNLOADS)          -->
+    <!-- =================================================================== -->
+    <script>
+        "use strict";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const audio = document.getElementById("terminalAudioEngine");
+            const statusReadout = document.getElementById("statusReadout");
+
+            document.querySelectorAll(".bbc-stream-link-btn").forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    // 🛑 FORCE TERMINATE DEFAULT DOWNLINKS
+                    e.preventDefault(); 
+
+                    document.querySelectorAll(".bbc-stream-link-btn").forEach(b => b.classList.remove("active-carrier"));
+                    btn.classList.add("active-carrier");
+
+                    // Extract the raw URL string completely untouched
+                    const rawUrl = btn.getAttribute("href");
+                    statusReadout.textContent = "📡 CONNECTING SUB-CARRIER WAVE...";
+                    console.log("📡 Intercepted vector: " + rawUrl);
+
+                    // Pass the raw .m3u8 stream string directly to the native browser engine
+                    audio.src = rawUrl;
+                    audio.load();
+                    
+                    audio.play()
+                        .then(() => {
+                            statusReadout.textContent = "📡 TUNED // SUB-CARRIER WAVE LIVE";
+                        })
+                        .catch(err => {
+                            console.warn("Playback delayed or blocked.", err);
+                            statusReadout.textContent = "❌ LINK BLOCKED BY LIVE SERVER POLICY";
+                        });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
