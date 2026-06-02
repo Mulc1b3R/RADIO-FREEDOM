@@ -409,7 +409,7 @@ const crawlRoster = [
 	"politicsandprose.json",
 	"the-history-of-rome.json",
 	"bbc_world_service.json",
-	"SomaFM live.json"
+	"somafmlive.json"
 	 // === PY_MATRIX_END ===
 ];
     for (let ch in window.PRESET_CHANNELS) {
