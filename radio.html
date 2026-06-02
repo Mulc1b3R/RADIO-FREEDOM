@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Section 23 // Pirate Radio Terminal</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #33ff33;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 5px #33ff33;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-y: auto; 
+        }
+        .bbc-satellite-bay {
+            border: 2px solid #00ff00;
+            background: rgba(5, 5, 5, 0.95);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3), inset 0 0 10px rgba(0, 255, 0, 0.2);
+            padding: 20px;
+            border-radius: 6px;
+            max-width: 480px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 15px;
+        }
+        .satellite-header {
+            font-size: 12px;
+            font-weight: bold;
+            color: #00ff00;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed #005500;
+            padding-bottom: 8px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        .satellite-scroll-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            height: auto;       
+            max-height: 1600px;  
+            overflow-y: auto;   
+            padding-right: 5px;
+        }
+        .bbc-stream-link-btn {
+            display: inline-block;
+            padding: 12px 15px;
+            background: #111;
+            color: #00ff00;
+            border: 2px solid #005500;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: bold;
+            text-decoration: none;
+            word-break: break-all;
+            box-shadow: 0 3px 0 #003300;
+            transition: all 0.05s ease;
+            cursor: pointer;
+            margin-top: 5px;
+            text-align: left;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .bbc-stream-link-btn:hover {
+            background: #33ff33;
+            color: #000000;
+            border-color: #33ff33;
+            box-shadow: 0 3px 0 #005500, 0 0 8px rgba(0, 255, 0, 0.4);
+        }
+        .bbc-stream-link-btn.active-carrier {
+            background: #001100;
+            border-color: #00ff00;
+            box-shadow: 0 1px 0 #003300;
+            transform: translateY(2px);
+            color: #ffffff;
+        }
+        a { color: #33ff33; }
+        h3 { color: #00ff00; border-bottom: 1px solid #003300; padding-bottom: 4px; margin-top: 25px; }
+        ul, ol { padding-left: 20px; }
+        li { margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+    <!-- 🟢 THE RESPONSIVE UTC TIMELINE TRACKER DISPLAY -->
+    <div style="width: 100%; max-width: 480px; text-align: center; margin-bottom: 10px;">
+        <span id="clocktext" style="font-family: monospace; font-weight: bold; color: #33ff33; white-space: nowrap;"></span>
+    </div>
+
+    <div class="bbc-satellite-bay">
+        <div id="statusReadout" class="satellite-header">📡 SATELLITE POPUP LAUNCH PANEL ONLINE</div>
+        <div class="satellite-scroll-grid">
+            
+            <ol>
+                <li>BBC Newcastle<br />
+                    <!-- 🔒 THE FIXED LIVE HANDSHAKE PATHWAY -->
+                    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_derby%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+                        LAUNCH NEWCASTLE SATELLITE POPUP
+                    </a>
+                </li>
+            </ol>
+
+            <hr style="border:0; border-top:1px dashed #005500; margin:25px 0;">
+            <p style="text-align: center;"><a href="https://garfnet.org.uk">Home</a> | <a href="https://garfnet.org.uktables/">Tables</a> | <a href="https://garfnet.org.uktables/radio-frequencies/">Radio</a>&nbsp;| <a href="https://garfnet.org.uktables/radio-frequencies/internet-radio-player/">Internet Radio</a></p>
+
+        </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- 🕹️ OVER-THE-AIR POPUP CONTROLLER ENGINE SCRIPT                      -->
+    <!-- =================================================================== -->
+    <script>
+        "use strict";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const statusReadout = document.getElementById("statusReadout");
+
+            document.querySelectorAll(".bbc-stream-link-btn").forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    // 🛑 BLOCK STANDARD DOWNLOADS & REDIRECTS
+                    e.preventDefault(); 
+
+                    document.querySelectorAll(".bbc-stream-link-btn").forEach(b => b.classList.remove("active-carrier"));
+                    btn.classList.add("active-carrier");
+
+                    const rawUrl = btn.getAttribute("href");
+                    const stationName = btn.textContent.trim().toUpperCase();
+                    statusReadout.textContent = `🚀 POPUP SPAWNED: ${stationName}`;
+                    console.log("📡 Spawning dedicated link context for: " + rawUrl);
+
+                    // 🛠️ HIGH-PRECISION TERMINAL WINDOW POPUP CONFIGURATION MATRIX
+                    // Defines a sleek, narrow popup block container positioned in the upper center coordinates
+                    const popupWidth = 460;
+                    const popupHeight = 180;
+                    const leftCoordinate = (screen.width / 2) - (popupWidth / 2);
+                    const topCoordinate = (screen.height / 2) - (popupHeight / 2);
+
+                    // Deploys a rigid sub-window that commands the native OS browser to stream audio securely
+                    window.open(
+                        rawUrl, 
+                        "_blank", 
+                        `width=${popupWidth},height=${popupHeight},left=${leftCoordinate},top=${topCoordinate},resizable=yes,scrollbars=no,status=no,toolbar=no,menubar=no,location=no`
+                    );
+                });
+            });
+
+            // ⚡ SUB-SYSTEM B: UNIVERSAL RESPONSIVE CLOCK MODULE
+            let textElem = document.getElementById("clocktext");
+            const targetWidth = 0.8;  
+            let curFontSize = 20;  
+            
+            function updateClock() {
+                const d = new Date();
+                let s = "Date: ";
+                s += d.getUTCFullYear() + "-";
+                const month = d.getUTCMonth() + 1;
+                s += (month < 10 ? "0" : "") + month + "-";
+                const day = d.getUTCDate();
+                s += (day < 10 ? "0" : "") + day + " Time: ";
+                s += (10 > d.getUTCHours  () ? "0" : "") + d.getUTCHours  () + ":";
+                s += (10 > d.getUTCMinutes() ? "0" : "") + d.getUTCMinutes() + ":";
+                s += (10 > d.getUTCSeconds() ? "0" : "") + d.getUTCSeconds() + " UTC";
+                if(textElem) textElem.textContent = s;
+                setTimeout(updateClock, 1000 - d.getTime() % 1000 + 20);
+            }
+            
+            function updateTextSize() {
+                if(!textElem || !textElem.parentNode) return;
+                for (let i = 0; 3 > i; i++) {  
+                    curFontSize *= targetWidth / (textElem.offsetWidth / textElem.parentNode.offsetWidth);
+                    textElem.style.fontSize = curFontSize + "pt";
+                }
+            }
+            
+            updateClock();
+            updateTextSize();
+            window.addEventListener("resize", updateTextSize);
+        });
+    </script>
+</body>
+</html>
