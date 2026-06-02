@@ -115,8 +115,8 @@
         </div>
     </div>
 
-    <!-- =================================================================== -->
-    <!-- 🕹️ OVER-THE-AIR POPUP CONTROLLER ENGINE SCRIPT                      -->
+       <!-- =================================================================== -->
+    <!-- 🕹️ HARDENED CLOUD POPUP MEDIA MATRIX INTERCEPTOR SCRIPT             -->
     <!-- =================================================================== -->
     <script>
         "use strict";
@@ -126,7 +126,7 @@
 
             document.querySelectorAll(".bbc-stream-link-btn").forEach(btn => {
                 btn.addEventListener("click", (e) => {
-                    // 🛑 BLOCK STANDARD DOWNLOADS & REDIRECTS
+                    // 🛑 BLOCK ALL AUTOMATIC DOWNLOAD PROTOCOLS
                     e.preventDefault(); 
 
                     document.querySelectorAll(".bbc-stream-link-btn").forEach(b => b.classList.remove("active-carrier"));
@@ -134,22 +134,64 @@
 
                     const rawUrl = btn.getAttribute("href");
                     const stationName = btn.textContent.trim().toUpperCase();
-                    statusReadout.textContent = `🚀 POPUP SPAWNED: ${stationName}`;
-                    console.log("📡 Spawning dedicated link context for: " + rawUrl);
+                    statusReadout.textContent = `🚀 SPAWNING HARDENED INTERCEPT PANEL...`;
 
-                    // 🛠️ HIGH-PRECISION TERMINAL WINDOW POPUP CONFIGURATION MATRIX
-                    // Defines a sleek, narrow popup block container positioned in the upper center coordinates
-                    const popupWidth = 460;
-                    const popupHeight = 180;
+                    // Dimensions for a clean terminal popup console box
+                    const popupWidth = 480;
+                    const popupHeight = 260;
                     const leftCoordinate = (screen.width / 2) - (popupWidth / 2);
                     const topCoordinate = (screen.height / 2) - (popupHeight / 2);
 
-                    // Deploys a rigid sub-window that commands the native OS browser to stream audio securely
-                    window.open(
-                        rawUrl, 
+                    // 🛰️ SPAWN AN EMPTY TRUSTED WINDOW OVER THE SERVER SUITE
+                    const popupWindow = window.open(
+                        "", 
                         "_blank", 
                         `width=${popupWidth},height=${popupHeight},left=${leftCoordinate},top=${topCoordinate},resizable=yes,scrollbars=no,status=no,toolbar=no,menubar=no,location=no`
                     );
+
+                    if (popupWindow) {
+                        // 🏗️ INJECT A SELF-CONTAINED NATIVE PLAYBACK HOUSING CARD
+                        // This uses an inline video element layout which forces mobile and desktop
+                        // browsers to treat the .m3u8 parameters as a live film/audio stream, blocking the download.
+                        popupWindow.document.write(`
+                            <!DOCTYPE html>
+                            <html>
+                            <head>
+                                <title>📡 TUNER: ${stationName}</title>
+                                <style>
+                                    body { 
+                                        background: #050505; 
+                                        color: #33ff33; 
+                                        font-family: monospace; 
+                                        text-align: center; 
+                                        padding: 20px; 
+                                        margin: 0;
+                                        overflow: hidden;
+                                        border: 2px solid #00ff00;
+                                        box-sizing: border-box;
+                                        height: 100vh;
+                                    }
+                                    h2 { font-size: 14px; margin-top: 10px; text-transform: uppercase; letter-spacing: 1px; }
+                                    video { width: 100%; max-width: 400px; margin-top: 15px; background: #000; border: 1px solid #005500; }
+                                    .footer { font-size: 10px; color: #008800; margin-top: 15px; }
+                                </style>
+                            </head>
+                            <body>
+                                <h2>📡 LINK MATRIX FIXED: ${stationName}</h2>
+                                <!-- 🎥 Using video tags forces native over-the-air stream tracking -->
+                                <video controls autoplay name="media">
+                                    <source src="${rawUrl}" type="application/x-mpegURL">
+                                    <source src="${rawUrl}" type="application/vnd.apple.mpegurl">
+                                </source></video>
+                                <div class="footer">SECTION 23 // LIVE SUB-CARRIER RELAY FEED</div>
+                            </body>
+                            </html>
+                        `);
+                        popupWindow.document.close();
+                        statusReadout.textContent = `🟢 TUNED LIVE: ${stationName}`;
+                    } else {
+                        statusReadout.textContent = `❌ POPUP BLOCKED BY BROWSER ENGINE`;
+                    }
                 });
             });
 
@@ -186,5 +228,3 @@
             window.addEventListener("resize", updateTextSize);
         });
     </script>
-</body>
-</html>
