@@ -289,6 +289,51 @@
     });
 </script>
 <script src="drag.js"></script>
+	<!-- STANDALONE WALLPAPER INTERCEPTOR ENGINE -->
+<script>
+(function initCustomWallpaperEngine() {
+    // Core function to check and apply backgrounds dynamically
+    window.updateTerminalWallpaper = async function(trackUrl) {
+        if (!trackUrl) return;
+        
+        const bodyElement = document.body;
+        const cleanUrl = trackUrl.trim();
+
+        // 1. If it's a standard Archive.org link, bypass this script and let your old engine run
+        if (cleanUrl.startsWith("https://archive.org") || cleanUrl.startsWith("http://archive.org")) {
+            console.log("Archive.org asset detected. Passing tracking to native engine.");
+            return; 
+        }
+
+        // 2. Fallback execution: Extract filename out of the streaming path
+        // e.g., "https://somafm.com" becomes "lush-128-mp3"
+        const streamFileName = cleanUrl.split('/').pop();
+
+        // 3. Query the local JSON file asset to retrieve the matching artwork URL
+        try {
+            const response = await fetch('wallpaper-registry.json');
+            if (!response.ok) throw new Error("Registry file missing or inaccessible");
+            
+            const registry = await response.json();
+            const matchedWallpaperUrl = registry[streamFileName];
+
+            // 4. Ingest and render background if match is successfully verified
+            if (matchedWallpaperUrl) {
+                bodyElement.style.backgroundImage = `url('${matchedWallpaperUrl}')`;
+                bodyElement.style.backgroundSize = "cover";
+                bodyElement.style.backgroundPosition = "center";
+                bodyElement.style.backgroundAttachment = "fixed";
+                console.log(`Wallpaper Interceptor: Successfully injected ${streamFileName}`);
+            } else {
+                console.warn(`Wallpaper Interceptor: No matching key found for ${streamFileName}`);
+            }
+        } catch (error) {
+            console.error("Wallpaper Interceptor Matrix Failure:", error);
+        }
+    };
+})();
+</script>
+
 
 
 
