@@ -27,7 +27,7 @@
 	"politicsandprose.json",
 	"the-history-of-rome.json",
 	"bbc_world_service.json",
-	"SomaFM live.json"	
+	"somafmlive.json"	
    
 ];
 
