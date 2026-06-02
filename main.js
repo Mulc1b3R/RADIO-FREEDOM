@@ -415,7 +415,14 @@ const crawlRoster = [
             "fm-radio-archive-music-broadcast-collection.json",
             "bach-the-masterpiece-collection.json",
             "your-hit-parade-50s-instrumentals.json",
-            "living-the-blues-the-70s-blues-classics.json"
+            "living-the-blues-the-70s-blues-classics.json",
+	"ivoox.com.json",
+"boxcars711.json",
+"old-time-radio-christmas-shows.json",
+"Mystery-Shows.json",
+"choice-classic-radio.json",
+"acast-com.json"
+
 	 // === PY_MATRIX_END ===
 ];
     for (let ch in window.PRESET_CHANNELS) {
