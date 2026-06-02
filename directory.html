@@ -244,6 +244,61 @@ if (window.opener && !window.opener.closed) {
         });
     });
 </script>
+    <script>
+(function initCustomWallpaperEngine() {
+    // 1. Core wallpaper lookup matrix function
+    window.updateTerminalWallpaper = async function(trackUrl) {
+        if (!trackUrl) return;
+        
+        const bodyElement = document.body;
+        const cleanUrl = trackUrl.trim();
+
+        // If it's a standard Archive.org link, abort execution and let the native engine handle it on line 217
+        if (cleanUrl.startsWith("https://archive.org") || cleanUrl.startsWith("http://archive.org")) {
+            console.log("Archive.org asset detected. Passing tracking to native engine.");
+            return; 
+        }
+
+        // Extract streaming filename out of the active path
+        // e.g., "https://somafm.com" -> "lush-128-mp3"
+        const streamFileName = cleanUrl.split('/').pop();
+
+        try {
+            const response = await fetch('wallpaper-registry.json');
+            if (!response.ok) throw new Error("Registry file missing or inaccessible");
+            
+            const registry = await response.json();
+            const matchedWallpaperUrl = registry[streamFileName];
+
+            if (matchedWallpaperUrl) {
+                bodyElement.style.backgroundImage = `url('${matchedWallpaperUrl}')`;
+                bodyElement.style.backgroundSize = "cover";
+                bodyElement.style.backgroundPosition = "center";
+                bodyElement.style.backgroundAttachment = "fixed";
+                console.log(`Wallpaper Interceptor: Injected ${streamFileName}`);
+            } else {
+                console.warn(`Wallpaper Interceptor: No matching key found for ${streamFileName}`);
+            }
+        } catch (error) {
+            console.error("Wallpaper Interceptor Failure:", error);
+        }
+    };
+
+    // 2. Automated Event Interceptor: Binds cleanly to your main.js player variable
+    // This runs completely independently from inside index.html without modifying main.js
+    const targetPlayer = document.getElementById('audioPlayer');
+    if (targetPlayer) {
+        targetPlayer.addEventListener('loadstart', () => {
+            if (window.updateTerminalWallpaper) {
+                window.updateTerminalWallpaper(targetPlayer.src);
+            }
+        });
+        console.log("📡 Background interceptor actively tracking 'audioPlayer' pipeline.");
+    } else {
+        console.error("❌ Critical: Could not lock onto 'audioPlayer' node. Check element loading order.");
+    }
+})();
+</script>
 </body>
 </html>
 
