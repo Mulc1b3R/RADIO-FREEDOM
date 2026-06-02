@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Section 23 // Pirate Radio Terminal</title>
+    
+    <!-- 📡 MANDATORY STREAM DECODER ENGINE LIBRARY -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+    <style>
+        /* Phosphor Terminal Grid Layout Matrix */
+        body {
+            background-color: #000000;
+            color: #33ff33;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 5px #33ff33;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            overflow-y: auto; 
+        }
+
+        .bbc-satellite-bay {
+            border: 2px solid #00ff00;
+            background: rgba(5, 5, 5, 0.95);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3), inset 0 0 10px rgba(0, 255, 0, 0.2);
+            padding: 20px;
+            border-radius: 6px;
+            max-width: 480px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 15px;
+        }
+
+        .satellite-header {
+            font-size: 12px;
+            font-weight: bold;
+            color: #00ff00;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed #005500;
+            padding-bottom: 8px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .satellite-scroll-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            height: auto;       
+            max-height: 1600px;  
+            overflow-y: auto;   
+            padding-right: 5px;
+        }
+
+        /* 📻 Dynamic Interceptor Target Style Class */
+        .bbc-stream-link-btn {
+            display: inline-block;
+            padding: 12px 15px;
+            background: #111;
+            color: #00ff00;
+            border: 2px solid #005500;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: bold;
+            text-decoration: none;
+            word-break: break-all;
+            box-shadow: 0 3px 0 #003300;
+            transition: all 0.05s ease;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        .bbc-stream-link-btn:hover {
+            background: #33ff33;
+            color: #000000;
+            border-color: #33ff33;
+            box-shadow: 0 3px 0 #005500, 0 0 8px rgba(0, 255, 0, 0.4);
+        }
+
+        .bbc-stream-link-btn:active, .bbc-stream-link-btn.active-carrier {
+            background: #001100;
+            border-color: #00ff00;
+            box-shadow: 0 1px 0 #003300;
+            transform: translateY(2px);
+            color: #ffffff;
+        }
+
+        a {
+            color: #33ff33;
+        }
+        h3 {
+            color: #00ff00;
+            border-bottom: 1px solid #003300;
+            padding-bottom: 4px;
+            margin-top: 25px;
+        }
+        ul, ol {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 📻 HIDDEN AUDIO HARDWARE CORE TERMINAL LAYER -->
+    <audio id="terminalAudioEngine" controls style="display: none;"></audio>
+
+    <!-- 📡 OVER-THE-AIR LIVE DECK SATELLITE BAY CASE -->
+    <div class="bbc-satellite-bay">
+        <div id="statusReadout" class="satellite-header">📡 AWAITING CARRIER MATRIX INPUT...</div>
+        <div class="satellite-scroll-grid">
+            
+            <ol>
+                <li>BBC World Service<br />
+                    <!-- 🔒 THE AMENDED INTERCEPT LINK FRAME (Fixed &amp; parameter query syntax) -->
+                    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_world_service%22&bitrate=320000%22" class="bbc-stream-link-btn">
+                        World
+                    </a>
+                </li>
+           
+			<li>BBC 1Xtra<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_1xtra%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        1Xtra
+    </a>
+</li>
+<li>BBC Radio 1<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_one%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Radio 1
+    </a>
+</li>
+<li>BBC Radio 1 Dance<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_one_dance%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Radio 1 Dance
+    </a>
+</li>
+<li>BBC Radio 2<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_two%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Radio 2
+    </a>
+</li>
+<li>BBC Radio 3<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_three%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Radio 3
+    </a>
+</li>
+<li>BBC Radio 4 FM<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_fourfm%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Radio 4 FM
+    </a>
+</li>
+<li>BBC Radio 4 Extra<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_four_extra%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Radio 4 Extra
+    </a>
+</li>
+<li>BBC Radio 5 live<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_five_live%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Radio 5 Live
+    </a>
+</li>
+<li>BBC Radio 6 Music<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_6music%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        6 Music
+    </a>
+</li>
+<li>BBC Radio Asian Network<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_asian_network%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Asian Network
+    </a>
+</li>
+<li>BBC Radio Berkshire<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_berkshire%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Berkshire
+    </a>
+</li>
+<li>BBC Radio Bristol<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_bristol%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Bristol
+    </a>
+</li>
+<li>BBC Radio Cambridge<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_cambridge%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Cambridge
+    </a>
+</li>
+<li>BBC Radio Cornwall<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_cornwall%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Cornwall
+    </a>
+</li>
+<li>BBC Radio Coventry and Warwickshire<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_coventry_warwickshire%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Coventry & Warks
+    </a>
+</li>
+<li>BBC Radio Cumbria<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_cumbria%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Cumbria
+    </a>
+</li>
+<li>BBC Radio Cymru<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_cymru%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Cymru
+    </a>
+</li>
+<li>BBC Radio Cymru 2<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_cymru_2%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Cymru 2
+    </a>
+</li>
+<li>BBC Radio Derby<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_derby%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Derby
+    </a>
+</li>
+<li>BBC Radio Devon<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_devon%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Devon
+    </a>
+</li>
+<li>BBC Radio Essex<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_essex%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Essex
+    </a>
+</li>
+<li>BBC Radio Foyle<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_foyle%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Foyle
+    </a>
+</li>
+<li>BBC BBC Hereford Worcester<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_hereford_worcester%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Hereford & Worcs
+    </a>
+</li>
+<li>BBC Radio Gloucestershire<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_gloucestershire%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Gloucestershire
+    </a>
+</li>
+<li>BBC Radio Guernsey<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_guernsey%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Guernsey
+    </a>
+</li>
+<li>BBC Radio Humberside<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_humberside%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Humberside
+    </a>
+</li>
+<li>BBC Radio Jersey<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_jersey%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Jersey
+    </a>
+</li>
+<li>BBC Radio Kent<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_kent%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Kent
+    </a>
+</li>
+<li>BBC Radio Lancashire<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_lancashire%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Lancashire
+    </a>
+</li>
+<li>BBC Radio Leeds<br />
+    <a href="https://lsn.lv" class="bbc-stream-link-btn">
+        Leeds
+    </a>
+</li>
+<li>BBC Radio Leicester<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_leicester%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Leicester
+    </a>
+</li>
+<li>BBC Radio Lincolnshire<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_lincolnshire%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Lincolnshire
+    </a>
+</li>
+<li>BBC Radio London<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_london%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        London
+    </a>
+</li>
+<li>BBC Radio Manchester<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_manchester%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Manchester
+    </a>
+</li>
+<li>BBC Radio Merseyside<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_merseyside%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Merseyside
+    </a>
+</li>
+<li>BBC Radio nan Gaidheal<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_nan_gaidheal%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        nan Gaidheal
+    </a>
+</li>
+<li>BBC Radio Newcastle<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_newcastle%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Newcastle
+    </a>
+</li>
+<li>BBC Radio Norfolk<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_norfolk%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Norfolk
+    </a>
+</li>
+<li>BBC Radio Northampton<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_northampton%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Northampton
+    </a>
+</li>
+<li>BBC Radio Nottingham<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_nottingham%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Nottingham
+    </a>
+</li>
+<li>BBC Radio Orkney<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_orkney%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Orkney
+    </a>
+</li>
+<li>BBC Radio Oxford<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_oxford%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Oxford
+    </a>
+</li>
+<li>BBC Radio Scotland FM<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_scotland_fm%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Scotland FM
+    </a>
+</li>
+<li>BBC Radio Scotland MW<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_scotland_mw%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Scotland MW
+    </a>
+</li>
+<li>BBC Radio Sheffield<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_sheffield%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Sheffield
+    </a>
+</li>
+<li>BBC Radio Shetland<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_shetland%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Shetland
+    </a>
+</li>
+<li>BBC Radio Shropshire<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_shropshire%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Shropshire
+    </a>
+</li>
+<li>BBC Radio Solent<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_solent%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Solent
+    </a>
+</li>
+<li>BBC Radio Solent West Dorset<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_solent_west_dorset%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Solent W Dorset
+    </a>
+</li>
+<li>BBC Radio Somerset Sound<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_somerset_sound%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Somerset Sound
+    </a>
+</li>
+<li>BBC Radio Stoke<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_stoke%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Stoke
+    </a>
+</li>
+<li>BBC Radio Suffolk<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_suffolk%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Suffolk
+    </a>
+</li>
+<li>BBC Radio Surrey<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_surrey%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Surrey
+    </a>
+</li>
+<li>BBC Radio Sussex<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_sussex%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Sussex
+    </a>
+</li>
+<li>BBC Radio Tees<br />
+    <a href="https://lsn.lv" class="bbc-stream-link-btn">
+        Tees
+    </a>
+</li>
+<li>BBC Radio Ulster<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_ulster%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Ulster
+    </a>
+</li>
+<li>BBC Radio Wales<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_wales_fm%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Wales
+    </a>
+</li>
+<li>BBC Radio West Midlands<br />
+    <a href="https://lsn.lv" class="bbc-stream-link-btn">
+        West Midlands
+    </a>
+</li>
+<li>BBC Radio Wiltshire<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_wiltshire%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        Wiltshire
+    </a>
+</li>
+<li>BBC Radio York<br />
+    <a href="https://lsn.lv/bbcradio.m3u8?station=bbc_radio_york%22&amp;bitrate=320000%22" class="bbc-stream-link-btn">
+        York
+    </a>
+</li>
+<li>BBC Three Counties Radio<br />
+    <a href="https://lsn.lv" class="bbc-stream-link-btn">
+        3 Counties
+    </a>
+</li>
+
+
+
+
+
+
+</ol>
+
+
+            <h3>About BBC HLS Streams</h3>
+            <p>The BBC’s http://bbcmedia.ic.llnwd.net/ shoutcast type radio streams were discontinued in 2023. Moreover all the old HLS streams have gone too. Seems Aunty Beeb wants folks to use its dreadful website instead. However its HLS streams are still available. These are the BBC’s high quality 320kb/s audio streams, using Apple’s proprietary HLS (hypertext transfer protocol live streaming) format. Basically this chops the stream into tiny files, and stitches them together again once they have got through various firewalls etc. These are particularly appropriate for mobile devices.</p>
+            
+            <ul>
+                <li>More about HLS streaming:-<br />
+                <a href="https://www.dacast.com/blog/hls-streaming-protocol/" target="_blank" rel="noopener noreferrer">https://www.dacast.com/blog/hls-streaming-protocol/</a></li>
+            </ul>
+
+            <h3>BBC radio streams as a VLC/SMPlayer compatible "*.m3u playlist</h3>
+            <ul>
+                <li><a href="https://garfnet.org.uk/download/radio/bbc-radio.m3u" rel="noopener" target="_blank">bbc-radio.m3u</a></li>
+            </ul>
+
+            <h3>BBC radio streams as a simple plain text list</h3>
+            <ul>
+                <li><a href="https://garfnet.org.uk/download/radio/bbc-radio.txt" target="_blank" rel="noopener">bbc-radio.txt</a></li>
+            </ul>
+
+            <hr style="border: 0; border-top: 1px dashed #005500; margin: 20px 0;">
+            <p style="text-align: center;"><a href="https://garfnet.org.uk/cms/">Home</a> | <a href="https://garfnet.org.uk/cms/tables/">Tables</a> | <a href="https://garfnet.org.uk/cms/tables/radio-frequencies/">Radio</a>&nbsp;| <a href="https://garfnet.org.uk/cms/tables/radio-frequencies/internet-radio-player/">Internet Radio</a></p>
+
+        </div><!-- .satellite-scroll-grid -->
+    </div><!-- .bbc-satellite-bay -->
+
+    <!-- =================================================================== -->
+    <!-- 🕹️ DYNAMIC EVENT INTERCEPTOR ENGINE CONTROLLER SCRIPT               -->
+    <!-- =================================================================== -->
+    <script>
+        "use strict";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const audio = document.getElementById("terminalAudioEngine");
+            const statusReadout = document.getElementById("statusReadout");
+            let hlsInstance = null;
+
+            // Target your customized streaming buttons via their class assignment
+            document.querySelectorAll(".bbc-stream-link-btn").forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    // 🛑 FORCE TERMINATE DOWNLOADS: Explicitly blocks browser file downlinks!
+                    e.preventDefault(); 
+
+                    // Clear styling cues across other stream items
+                    document.querySelectorAll(".bbc-stream-link-btn").forEach(b => b.classList.remove("active-carrier"));
+                    btn.classList.add("active-carrier");
+
+                    // Pull the exact, un-truncated href destination path mapping data
+                    const rawUrl = btn.getAttribute("href");
+                    statusReadout.textContent = "📡 CONNECTED // LOCKING CARRIER WAVE...";
+                    console.log("📡 Interceptor locked destination vector: " + rawUrl);
+
+                    // 🚀 Execute over-the-air decoding arrays for desktop environments
+                    if (typeof Hls !== "undefined" && Hls.isSupported()) {
+                        if (hlsInstance) {
+                            hlsInstance.destroy();
+                        }
+                        hlsInstance = new Hls();
+                        hlsInstance.loadSource(rawUrl);
+                        hlsInstance.attachMedia(audio);
+                        hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => {
+                            statusReadout.textContent = "📡 TUNED // BROADCAST LIVE ON AIR";
+                            audio.play().catch(err => console.warn("Buffer lock active.", err));
+                        });
+                    } 
+                    // Direct stream routing fallback loop for mobile devices
+                    else if (audio.canPlayType("application/vnd.apple.mpegurl")) {
+                        audio.src = rawUrl;
+                        statusReadout.textContent = "📡 TUNED // MOBILE SUBCARRIER WAVE LIVE";
+                        audio.play().catch(err => console.warn("Mobile buffer lock active.", err));
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
