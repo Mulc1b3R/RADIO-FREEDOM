@@ -26,9 +26,8 @@
 	"psychedelia.json",
 	"politicsandprose.json",
 	"the-history-of-rome.json",
-	 // === PY_MATRIX_END ===
-    "emptyslot.json",
-	"bbc_world_service.json"	
+	"bbc_world_service.json",
+	"SomaFM live.json"	
    
 ];
 
