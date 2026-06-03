@@ -419,7 +419,8 @@ const crawlRoster = [
 "old-time-radio-christmas-shows.json",
 "Mystery-Shows.json",
 "choice-classic-radio.json",
-"acast-com.json"
+"acast-com.json",
+	"Murder_By_Experts.json"
 
 	 // === PY_MATRIX_END ===
 ];
