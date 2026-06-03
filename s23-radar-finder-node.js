@@ -60,6 +60,10 @@
         "LOTR": { genre: "EPIC LITERARY FANTASY", searchKey: "lord-of-the-rings" },
         "ALFRED": { genre: "MACABRE MYSTERY AUDIO", searchKey: "Alfred" },
         "RAY": { genre: "SPECULATIVE LITERARY SCI-FI", searchKey: "Ray" },
+        "OTRB": { genre: "SANDBOX TELEMETRY NODE", searchKey: "OTRB" },
+        "LOTR": { genre: "EPIC LITERARY FANTASY", searchKey: "lord-of-the-rings" },
+        "WORLD IN ACTION": { genre: "MACABRE MYSTERY AUDIO", searchKey: "Alfred" },
+        "RAY": { genre: "SPECULATIVE LITERARY SCI-FI", searchKey: "Ray" },
         "OTRB": { genre: "SANDBOX TELEMETRY NODE", searchKey: "OTRB" }
 
     };
