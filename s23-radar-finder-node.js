@@ -1,5 +1,5 @@
 <!-- =================================================================== -->
-<!-- SECTION 25: AUXILIARY "LIKE THIS" RADAR SEARCH FINDER               -->
+<!-- SECTION 25: AUXILIARY "LIKE THIS" RADAR SEARCH FINDER (PART 1/2)   -->
 <!-- =================================================================== -->
 
 (() => {
@@ -49,37 +49,78 @@
 
     chassis.appendChild(radarBtn);
 
-    // 🧠 INTELLIGENCE MATRIX: Maps active keywords to related channel search keys
+    // 🧠 INTELLIGENCE MATRIX: Expanded multi-key mapping arrays for bulletproof detection
     const RADAR_DICTIONARY = {
-        "TWILIGHT": { genre: "SCI-FI ANTHOLOGY", searchKey: "Sci Fi" },
-        "SUSPENSE": { genre: "PSYCHOLOGICAL THRILLER", searchKey: "Suspense" },
-        "MURDER": { genre: "DETECTIVE NOIR & MYSTERY", searchKey: "Murder" },
-        "SCOTLAND": { genre: "BRITISH PROCEDURAL MYSTERY", searchKey: "BBC" },
-        "SHERLOCK": { genre: "VICTORIAN DETECTIVE NOIR", searchKey: "Sherlock" },
-        "BBC": { genre: "BRITISH HERITAGE DRAMA", searchKey: "BBC" },
-        "LOTR": { genre: "EPIC LITERARY FANTASY", searchKey: "lord-of-the-rings" },
-        "ALFRED": { genre: "MACABRE MYSTERY AUDIO", searchKey: "Alfred" },
-        "RAY": { genre: "SPECULATIVE LITERARY SCI-FI", searchKey: "Ray" },
-        "OTRB": { genre: "SANDBOX TELEMETRY NODE", searchKey: "OTRB" },
-        "LOTR": { genre: "EPIC LITERARY FANTASY", searchKey: "lord-of-the-rings" },
-        "WORLD IN ACTION": { genre: "MACABRE MYSTERY AUDIO", searchKey: "Alfred" },
-        "RAY": { genre: "SPECULATIVE LITERARY SCI-FI", searchKey: "Ray" },
-        "OTRB": { genre: "SANDBOX TELEMETRY NODE", searchKey: "OTRB" }
-
+        "SCI-FI": { 
+            genre: "SCI-FI ANTHOLOGY", 
+            searchKeys: ["SCI FI", "SCI-FI", "SCIFI", "SCIENCE FICTION", "ANTHOLOGY"] 
+        },
+        "SUSPENSE": { 
+            genre: "PSYCHOLOGICAL THRILLER", 
+            searchKeys: ["SUSPENSE", "THRILLER", "PSYCHOLOGICAL", "MACABRE", "HITCHCOCK"] 
+        },
+        "HISTORY OF ROME": { 
+            genre: "HISTORY", 
+            searchKeys: ["HISTORY", "ROME", "ROMAN", "EMPIRE", "ANTIQUITY"] 
+        },
+        "MOVIES": { 
+            genre: "BRITISH PROCEDURAL MYSTERY", 
+            searchKeys: ["MOVIES", "MYSTERY", "PROCEDURAL", "DETECTIVE", "INSPECTOR"] 
+        },
+        "SHERLOCK": { 
+            genre: "VICTORIAN DETECTIVE NOIR", 
+            searchKeys: ["SHERLOCK", "HOLMES", "WATSON", "BAKER STREET", "CONAN DOYLE"] 
+        },
+        "BBC": { 
+            genre: "BRITISH HERITAGE DRAMA", 
+            searchKeys: ["BBC", "DRAMA", "RADIO PLAY", "CLASSIC SERIAL"] 
+        },
+        "SCI-FI-RADIO": { 
+            genre: "SCI-FI", 
+            searchKeys: ["SCI-FI-RADIO", "SCI-FI", "SCIFI", "DYSTOPIAN", "FUTURE"] 
+        },
+        "LORD-OF-THE-RINGS": { 
+            genre: "MACABRE MYSTERY AUDIO", 
+            searchKeys: ["RING", "TOLKIEN", "FRODO", "GANDALF", "MIDDLE EARTH", "LORD OF THE RINGS"] 
+        },
+        "SHERLOCK HOLMES": { 
+            genre: "SPECULATIVE LITERARY SCI-FI", 
+            searchKeys: ["SHERLOCK HOLMES", "SHERLOCK", "HOLMES", "SPECULATIVE"] 
+        },
+        "HAUNTED-BBC": { 
+            genre: "HORROR", 
+            searchKeys: ["HAUNTED", "BBC HORROR", "GHOST STORY", "SUPERNATURAL"] 
+        },
+        "ALFRED-HITCHCOCK": { 
+            genre: "EPIC LITERARY FANTASY", 
+            searchKeys: ["ALFRED-HITCHCOCK", "HITCHCOCK", "ALFRED", "SUSPENSE"] 
+        },
+        "WORLD IN ACTION": { 
+            genre: "DOCUMENTARY", 
+            searchKeys: ["WORLD IN ACTION", "GRANADA", "INVESTIGATIVE", "1960S", "DOCUMENTARY"] 
+        },
+        "OTRB1": { 
+            genre: "OLD TIME RADIO", 
+            searchKeys: ["OTRB1", "OTRB", "OLD TIME RADIO", "VINTAGE BROADCAST"] 
+        },
+        "OTRB2": { 
+            genre: "OLD TIME RADIO", 
+            searchKeys: ["OTRB2", "OTRB", "OLD TIME RADIO", "VINTAGE BROADCAST"] 
+        }
     };
-
+    // 🔍 ANALYTICAL COGNITION ENGINE: Loops through arrays checking if ANY key matches the URL
     function analyzeActiveStream() {
         const player = document.getElementById('audioPlayer');
         if (!player || !player.src || player.src.includes(window.location.hostname)) return null;
 
         const rawUrl = decodeURIComponent(player.src).toUpperCase();
-        let matchedKey = "DEFAULT";
-        let genreData = { genre: "GENERIC BROADCAST BLOCK", searchKey: "Suspense" };
+        let genreData = { genre: "GENERIC BROADCAST BLOCK", searchKeys: ["SUSPENSE"] };
 
         for (let key in RADAR_DICTIONARY) {
-            if (rawUrl.includes(key)) {
-                matchedKey = key;
-                genreData = RADAR_DICTIONARY[key];
+            const currentItem = RADAR_DICTIONARY[key];
+            const hasMatch = currentItem.searchKeys.some(keyword => rawUrl.includes(keyword.toUpperCase()));
+            if (hasMatch) {
+                genreData = currentItem;
                 break;
             }
         }
@@ -88,7 +129,7 @@
         const urlFilename = rawUrl.split('/').pop().replace(/\.[^/.]+$/, "").replace(/[_-]/g, ' ');
         if (urlFilename) extractedTitle = urlFilename;
 
-        return { title: extractedTitle, genre: genreData.genre, searchKey: genreData.searchKey };
+        return { title: extractedTitle, genre: genreData.genre, searchKeys: genreData.searchKeys };
     }
 
     function launchRadarMonitor() {
@@ -152,13 +193,16 @@
         const box = radarWindow.document.getElementById('displayBox');
         if (!box) return;
 
+        // Visual format for array overview on telemetry interface
+        const displayKeysString = analysis.searchKeys.join(', ');
+
         box.innerHTML = `
             <div class="header">🛰️ SECTION 25 AUXILIARY RADAR CROSS-REFERENCE</div>
             <div class="meta-block">
                 <span class="label">PROBED TRACK:</span><br>
                 <span style="color:#ffffff; font-size:10px;">${analysis.title.toUpperCase()}</span><br>
-                <span class="label">RADAR TARGET MATCH KEY:</span><br>
-                <span style="color:#ffff33;">${analysis.searchKey.toUpperCase()} [${analysis.genre}]</span>
+                <span class="label">RADAR TARGET MATCH KEYS:</span><br>
+                <span style="color:#ffff33; font-size:10px;">[${displayKeysString}] [${analysis.genre}]</span>
             </div>
             <div class="label" style="margin-bottom: -5px;">AUTO-COMPILING CROSS-CHANNEL MATCHES:</div>
             <div class="vector-list-box" id="vectorList">
@@ -178,7 +222,10 @@
                 const tracks = Array.isArray(data) ? data : (data.mp3s || []);
                 
                 tracks.forEach(t => {
-                    if (decodeURIComponent(t).toUpperCase().includes(analysis.searchKey.toUpperCase())) {
+                    const decodedTrack = decodeURIComponent(t).toUpperCase();
+                    // Multi-keyword check inside repository maps
+                    const isSisterSignal = analysis.searchKeys.some(key => decodedTrack.includes(key.toUpperCase()));
+                    if (isSisterSignal) {
                         matchedTracks.push(t);
                     }
                 });
@@ -202,25 +249,25 @@
                 `;
 
                 row.querySelector('.scan-trigger-btn').addEventListener('click', () => {
+                    const mainPlayer = window.document.getElementById('audioPlayer');
+                    const mainInfo = window.document.getElementById('trackInfo');
+                    
+                    if (mainPlayer && mainInfo) {
+                        mainPlayer.src = track;
+                        mainPlayer.play().catch(e => console.warn("Lock active"));
+                        mainInfo.innerHTML = `MANUAL OVERRIDE: ${tName.toUpperCase()}<br>[RADAR INTERCEPT ACTIVE]`;
+                        row.style.background = '#003300';
+                    }
+                });
 
-                            const mainPlayer = window.document.getElementById('audioPlayer');
-                const mainInfo = window.document.getElementById('trackInfo');
-                
-                if (mainPlayer && mainInfo) {
-                    mainPlayer.src = track;
-                    mainPlayer.play().catch(e => console.warn("Lock active"));
-                    mainInfo.innerHTML = `MANUAL OVERRIDE: ${tName.toUpperCase()}<br>[RADAR INTERCEPT ACTIVE]`;
-                    row.style.background = '#003300';
-                }
+                listContainer.appendChild(row);
             });
 
-            listContainer.appendChild(row);
-        });
-
-    } catch (err) {
-        listContainer.innerHTML = `<div style="color:#ff3333; padding:10px;">Crawl failed.</div>`;
+        } catch (err) {
+            listContainer.innerHTML = `<div style="color:#ff3333; padding:10px;">Crawl failed.</div>`;
+        }
     }
-}
 
-radarBtn.addEventListener('click', launchRadarMonitor);
+    radarBtn.addEventListener('click', launchRadarMonitor);
 })();
+       
