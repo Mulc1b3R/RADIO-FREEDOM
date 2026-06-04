@@ -422,7 +422,8 @@ const crawlRoster = [
 "acast-com.json",
 	"Murder_By_Experts.json",
 	"78rpm_shira-berk.json",
-"wwIIarchive-audio.json"
+"wwIIarchive-audio.json,
+	"1950s-mixed.json"
 
 
 	 // === PY_MATRIX_END ===
