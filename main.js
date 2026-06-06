@@ -463,7 +463,8 @@ const crawlRoster = [
     "communistmanifesto.json",
     "ssf088_2210.json",
 	"gunsmoke_radio_show.json",
-	"abbottandcostello.json"
+	"abbottandcostello.json",
+	"Lum-and-Abner-OTR.json"
 	
 
 
