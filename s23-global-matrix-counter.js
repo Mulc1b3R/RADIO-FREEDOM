@@ -43,7 +43,8 @@
 		"Murder_By_Experts.json",
 		"78rpm_shira-berk.json",
 "wwIIarchive-audio.json",
-		"archive.json"
+		"archive.json",
+		"pirateradioairchecks.json"
 		
 
 
