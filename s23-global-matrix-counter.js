@@ -42,11 +42,14 @@
 "acast-com.json",
 		"Murder_By_Experts.json",
 		"78rpm_shira-berk.json",
-"wwIIarchive-audio.json",
+        "wwIIarchive-audio.json",
 		"archive.json",
 		"pirateradioairchecks.json",
 		"Pearl_Jam_Bootleg.json",
-		"GusArnheimCollection.json"
+		"GusArnheimCollection.json",
+		"sonic-youth-1986.json",
+        "communistmanifesto.json",
+        "ssf088_2210.json"
 		
 
 
