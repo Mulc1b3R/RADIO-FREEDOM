@@ -264,13 +264,45 @@
             console.warn("⚠ Engine URL Parsing dropped, deploying storage matrix structural bypass.");
         }
 
-        // Constructs the exact URL string structure using the variable token template
-        const targetWallpaperUrl = `https://archive.org/download/${collectionName}/__ia_thumb.jpg`;
-        
-        // Deploys the constructed string directly to the interface wallpaper matrix
-        document.body.style.backgroundImage = `url('${targetWallpaperUrl}')`;
-        document.body.style.backgroundSize = "cover";
+                // 📡 1. DEFINE YOUR TEMPLATE MATRIX CORRIDORS
+        const wallpaperTemplates = [
+            `https://archive.org/download/${collectionName}/__ia_thumb.jpg`,
+            `https://archive.org/download/${collectionName}/${collectionName}.jpg`,
+            `https://archive.org/download/${collectionName}/thumb.jpg`,
+            `https://archive.org/download/${collectionName}/folder.jpg`,
+            `https://archive.org/download/${collectionName}/cover.jpg`,
+            `https://archive.org/download/${collectionName}/${collectionName}.png`
+        ];
+
+        // 🧠 2. THE SEQUENTIAL LOOKUP MATRIX LATCH
+        function cycleWallpaperTemplates(index) {
+            if (index >= wallpaperTemplates.length) {
+                // Absolute safety baseline: Loads your vintage default background if all else fails
+                document.body.style.backgroundImage = "url('fallback-crt-matrix.jpg')";
+                return;
+            }
+
+            const activeTemplateUrl = wallpaperTemplates[index];
+            const testImg = new Image();
+
+            testImg.onload = () => {
+                document.body.style.backgroundImage = `url('${activeTemplateUrl}')`;
+                document.body.style.backgroundSize = "cover";
+                document.body.style.backgroundPosition = "center center";
+            };
+
+            testImg.onerror = () => {
+                cycleWallpaperTemplates(index + 1);
+            };
+
+            testImg.src = activeTemplateUrl;
+        }
+
+        // 🚀 FIRE TRANSMISSION: Launch the check loop starting at index 0
+        cycleWallpaperTemplates(0);
     });
+
+
 
     // --- EXCEPTION INTERCEPT / DEAD LINK SYSTEM AUTO SKIPPER ---
     audioPlayer.addEventListener('error', function() {
