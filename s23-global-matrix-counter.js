@@ -52,7 +52,8 @@
         "ssf088_2210.json",
 		"gunsmoke_radio_show.json",
 		"abbottandcostello.json",
-		"Lum-and-Abner-OTR.json"
+		"Lum-and-Abner-OTR.json",
+		"Sam_Spade_Singles.json"
 		
 
 
