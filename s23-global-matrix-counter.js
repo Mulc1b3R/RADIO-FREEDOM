@@ -45,7 +45,8 @@
 "wwIIarchive-audio.json",
 		"archive.json",
 		"pirateradioairchecks.json",
-		"Pearl_Jam_Bootleg.json"
+		"Pearl_Jam_Bootleg.json",
+		"GusArnheimCollection.json"
 		
 
 
