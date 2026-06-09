@@ -375,7 +375,7 @@ window.PRESET_CHANNELS = {
         5: { name: "Movies", url: "2000-Plus.json" },
         6: { name: "BBC-sci fi", url: "BBC.json" },
         7: { name: "Sci-fi-Radio", url: "Sci-fi-Radio.json" },
-        8: { name: "lord-of-the-rings", url: "lord-of-the-rings.json" },
+        8: { name: "LIBRIVOX", url: "lord-of-the-rings.json" },
         9: { name: "Sherlock Holmes", url: "sherlock.json" },
         10: { name: "Haunted-BBC", url: "Haunted-BBC.json" },
         11: { name: "Alfred-Hitchcock", url: "Alfred-Hitchcock.json" },
@@ -465,7 +465,8 @@ const crawlRoster = [
 	"gunsmoke_radio_show.json",
 	"abbottandcostello.json",
 	"Lum-and-Abner-OTR.json",
-	"Sam_Spade_Singles.json"
+	"Sam_Spade_Singles.json",
+	"lord-of-the-rings.json"
 	
 
 
@@ -580,7 +581,7 @@ if (searchInput) searchInput.addEventListener('keyup', (e) => { if (e.key === 'E
         5: { name: "Movies", url: "2000-Plus.json" },
         6: { name: "BBC-sci fi", url: "BBC.json" },
         7: { name: "Sci-fi-Radio", url: "Sci-fi-Radio.json" },
-        8: { name: "lord-of-the-rings", url: "lord-of-the-rings.json" },
+         8: { name: "LIBRIVOX", url: "lord-of-the-rings.json" },
         9: { name: "Sherlock Holmes", url: "sherlock.json" },
         10: { name: "Haunted-BBC", url: "Haunted-BBC.json" },
         11: { name: "Alfred-Hitchcock", url: "Alfred-Hitchcock.json" },
