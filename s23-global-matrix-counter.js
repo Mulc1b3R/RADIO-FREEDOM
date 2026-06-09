@@ -55,7 +55,8 @@
 		"Lum-and-Abner-OTR.json",
 		"Sam_Spade_Singles.json",
 		"lord-of-the-rings.json",
-		"OrsonWelles-MercuryTheater.json"
+		"OrsonWelles-MercuryTheater.json",
+		"Tarzan_Singles.json"
 		
 
 
