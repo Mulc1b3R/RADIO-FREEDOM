@@ -56,7 +56,8 @@
 		"Sam_Spade_Singles.json",
 		"lord-of-the-rings.json",
 		"OrsonWelles-MercuryTheater.json",
-		"Tarzan_Singles.json"
+		"Tarzan_Singles.json",
+		"Manly_P.Hall.json"
 		
 
 
