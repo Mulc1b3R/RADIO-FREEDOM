@@ -53,7 +53,8 @@
 		"gunsmoke_radio_show.json",
 		"abbottandcostello.json",
 		"Lum-and-Abner-OTR.json",
-		"Sam_Spade_Singles.json"
+		"Sam_Spade_Singles.json",
+		"lord-of-the-rings.json"
 		
 
 
