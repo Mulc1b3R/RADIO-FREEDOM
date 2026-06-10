@@ -164,7 +164,7 @@
         <a href="index.html" class="return-link">&lt; RETURN TO MAIN PIRATE CHASSIS</a>
     </div>
 
-    <!-- YOUTUBE IFRAME CORE CONTROLLER SCRIPT -->
+     <!-- YOUTUBE IFRAME CORE CONTROLLER SCRIPT -->
     <script>
         let player;
 
@@ -172,7 +172,7 @@
         (function loadYouTubeAPI() {
             let tag = document.createElement('script');
             tag.src = "https://youtube.com";
-            let firstScriptTag = document.getElementsByTagName('script')[0];
+            let firstScriptTag = document.getElementsByTagName('script');
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
         })();
 
@@ -198,11 +198,21 @@
             document.getElementById('trackInfo').innerText = "SYSTEM ONLINE // ENGINE LINK ARMED. READY TO INGEST DECK LINK.";
         }
 
-        // Parse IDs safely from raw strings or complete watch?v= links
+        // 🔒 PATCHED: Bulletproof extraction routing for ALL YouTube variants
         function extractVideoId(input) {
-            let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            let match = input.match(regExp);
-            return (match && match[2].length === 11) ? match[2] : input.trim();
+            const cleanInput = input.trim();
+            
+            // Check if user simply pasted the raw 11-character alphanumeric string
+            if (cleanInput.length === 11 && !cleanInput.includes('/') && !cleanInput.includes('=')) {
+                return cleanInput;
+            }
+
+            // Universal RegEx targeting watch URLs, shares, embeds, shorts, and query properties
+            const regExp = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
+            const match = cleanInput.match(regExp);
+            
+            // Extract the isolated 11-character group match capturing block safely
+            return (match && match[1] && match[1].length === 11) ? match[1] : null;
         }
 
         // Hardware command bindings
@@ -212,6 +222,11 @@
 
             const targetVideoId = extractVideoId(rawInboundValue);
             
+            if (!targetVideoId) {
+                document.getElementById('trackInfo').innerText = "❌ ERROR: INVALID TRAJECTORY IDENTIFIER.\nPROBED STRING COULD NOT BE PARSED.";
+                return;
+            }
+
             if (player && player.loadVideoById) {
                 player.loadVideoById(targetVideoId);
                 document.getElementById('trackInfo').innerText = `BROADCAST ADDR: YT-${targetVideoId}\nSTATUS: STREAMING RAW INTERCEPT DATA`;
@@ -225,5 +240,6 @@
             }
         });
     </script>
+
 </body>
 </html>
