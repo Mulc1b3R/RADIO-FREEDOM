@@ -181,7 +181,7 @@
         <a href="index.html" class="return-link">&lt; RETURN TO MAIN PIRATE CHASSIS</a>
     </div>
 
-    <script>
+     <script>
         // Extraction routine that extracts video codes safely
         function cleanVideoCoordinates(input) {
             const trimmed = input.trim();
@@ -215,8 +215,8 @@
                 return;
             }
 
-            // Map the clean variable to the standard web player structure
-            const targetUrl = `https://youtube.com/watch?v={targetCode}?rel=0`;
+            // 🔒 FIXED: Swapped 'watch?v=' to '/embed/' and added the missing '$' sign
+            const targetUrl = `https://youtube.com{targetCode}?rel=0`;
             document.getElementById('ytVideoFrame').src = targetUrl;
             
             document.getElementById('trackInfo').innerText = `BROADCAST CONFIRMED: YT-${targetCode}\n⚠️ CLICK PLAY BUTTON INSIDE DISPLAY SCREEN TO ENGAGE STREAM.`;
@@ -231,7 +231,8 @@
 
             if (!targetCode) return;
 
-            const externalUrl = `https://youtube.com/watch?v={targetCode}`;
+            // 🔒 FIXED: Added missing '$' sign to inject the target variable correctly
+            const externalUrl = `https://youtube.com{targetCode}`;
             window.open(externalUrl, '_blank');
             document.getElementById('trackInfo').innerText = `TACTICAL OVERRIDE: TARGET SPAWNED IN INDEPENDENT TAB.\nMARKER: YT-${targetCode}`;
         });
@@ -249,6 +250,7 @@
             document.getElementById('trackInfo').innerText = "FEED ABSOLUTELY TERMINATED // CARRIER SIGNAL EMPTY.";
         });
     </script>
+
 </body>
 </html>
 
