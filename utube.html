@@ -168,6 +168,91 @@
         <div class="cockpit-screen" id="viewportScreen">
             <div style="color: #004400; padding: 20px; font-size: 11px;">MONITOR VIEWPORT POWERED DOWN // CARRIER EMPTY</div>
         </div>
+    <!-- STANDALONE ALGORITHM SEARCH ENGINE FACILITY -->
+<div class="crt-chassis" style="margin-top: 25px; border-color: #00aa00; box-shadow: 0 0 15px #003300;">
+    <div style="font-size: 11px; color: #00ff00; font-weight: bold; margin-bottom: 15px; letter-spacing: 1px;">📡 ALGORITHM SEARCH RADAR</div>
+    
+    <!-- Independent Search Box Input -->
+    <input type="text" id="algoSearchInput" class="matrix-input" style="border-color: #006600;" placeholder="ENTER ALGO KEYWORDS..." autocomplete="off">
+    
+    <div class="control-deck">
+        <button class="power-switch" id="executeAlgoSearchBtn" style="border-color: #00aa00; min-width: 100%;">SCAN ALGORITHM</button>
+    </div>
+
+    <!-- Live Dynamic Results Grid Output Box -->
+    <div id="algoResultsGrid" style="margin-top: 15px; text-align: left; max-height: 200px; overflow-y: auto; border: 1px solid #004400; background: #000300; padding: 5px; border-radius: 4px; font-size: 11px; line-height: 1.4;">
+        RADAR IDLE // STANDING BY FOR SCAN PHRASE...
+    </div>
+</div>
+
+<!-- INJECTED SEARCH CONTROLLER LOGIC -->
+<script>
+    // To execute live fetching, you generate a free browser API key inside Google Cloud Console
+    const YT_API_KEY = "YOUR_GOOGLE_CLOUD_API_KEY_HERE"; 
+
+    document.getElementById('executeAlgoSearchBtn').addEventListener('click', () => {
+        const query = document.getElementById('algoSearchInput').value.trim();
+        if (!query) return;
+
+        document.getElementById('algoResultsGrid').innerText = "📡 PROBING ALGORITHM NODES... PLEASE WAIT...";
+
+        // Construct the official secure query string path
+        const apiUrl = `https://googleapis.com{encodeURIComponent(query)}&type=video&key=${YT_API_KEY}`;
+
+        fetch(apiUrl)
+            .then(response => {
+                if (!response.ok) throw new Error("API Connection Rejected (Check API Key Status)");
+                return response.json();
+            })
+            .then(data => {
+                const resultsContainer = document.getElementById('algoResultsGrid');
+                resultsContainer.innerHTML = ''; // Wipe standby status text completely
+
+                if (!data.items || data.items.length === 0) {
+                    resultsContainer.innerText = "❌ NO MATRIX TRAJECTORIES RETURNED From Algorithm.";
+                    return;
+                }
+
+                // Loop through every video block returned by the algorithm
+                data.items.forEach(item => {
+                    const videoId = item.id.videoId;
+                    const videoTitle = item.snippet.title;
+
+                    // Build a tactile green grid selector row string element
+                    const resultRow = document.createElement('div');
+                    resultRow.style.padding = "6px";
+                    resultRow.style.borderBottom = "1px dashed #003300";
+                    resultRow.style.cursor = "pointer";
+                    resultRow.style.color = "#33ff33";
+                    resultRow.innerHTML = `📡 <strong>[YT-${videoId}]</strong> ${videoTitle}`;
+
+                    // ⚡ THE BRIDGE INTERCEPT: Clicking a search row hooks directly into your primary input box!
+                    resultRow.addEventListener('click', () => {
+                        // Drop the isolated code cleanly into your main video entry field
+                        document.getElementById('targetUrlInput').value = videoId;
+                        
+                        // Flash confirmation notification text on the radar readout
+                        document.getElementById('trackInfo').innerText = `RADAR LOCK COMPLETED.\nTARGET: YT-${videoId}\nHIT DYNAMIC INJECT TO EXECUTE FEED.`;
+                    });
+
+                    // Hover illumination metrics
+                    resultRow.addEventListener('mouseover', () => resultRow.style.background = '#001100');
+                    resultRow.addEventListener('mouseout', () => resultRow.style.background = 'transparent');
+
+                    resultsContainer.appendChild(resultRow);
+                });
+            })
+            .catch(error => {
+                console.error(error);
+                document.getElementById('algoResultsGrid').innerHTML = `❌ ERR: NETWORK INTERCEPT BLOCKED.<br><span style="color:#008800; font-size:10px;">${error.message}</span>`;
+            });
+    });
+
+    // Support entering the search via hitting the physical keyboard Enter key
+    document.getElementById('algoSearchInput').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') document.getElementById('executeAlgoSearchBtn').click();
+    });
+</script>
 
         <!-- OVERRIDE CONTROLS -->
         <input type="text" id="targetUrlInput" class="matrix-input" placeholder="PASTE 11-CHAR ID (e.g. p9_LFdp0XLg)" autocomplete="off">
