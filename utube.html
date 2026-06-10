@@ -163,6 +163,9 @@
 </head>
 <body>
 
+    <!-- 🔒 FIXED: Return link extracted and pinned directly to the bottom left edge of the screen viewport -->
+    <a href="index.html" class="return-link" style="position: fixed; bottom: 20px; left: 20px; color: #008800; text-decoration: none; font-size: 11px; z-index: 99999; font-family: 'Courier New', monospace; text-shadow: 0 0 5px #33ff33;" onmouseover="this.style.color='#33ff33'" onmouseout="this.style.color='#008800'">&lt; RETURN TO MAIN PIRATE CHASSIS</a>
+
     <div class="crt-chassis">
         <!-- COCKPIT VIEWPORT SCREEN (Target for hard HTML text injection) -->
         <div class="cockpit-screen" id="viewportScreen">
@@ -192,11 +195,16 @@
             SIGNAL: HARD REWRITE ROUTE PROTOCOL<br>
             STATUS: SECURITY BYPASS RUNNING
         </div>
-
-        <a href="index.html" class="return-link">&lt; RETURN TO MAIN PIRATE CHASSIS</a>
     </div>
 
     <script>
+        // 📡 TIER 2 LOCAL RECORD ENGINES DATABASE MATRIX
+        // Maps words or titles to raw 11-character system slugs safely
+        const localVideoDatabase = [
+            { id: "p9_LFdp0XLg", title: "Infected - 1984 Dark Genesis EP", keywords: ["infected", "1984", "dark genesis", "genesis"] },
+            { id: "b08_M4L1B08", title: "Shortwave Static Numbers Station Loop", keywords: ["shortwave", "static", "numbers", "loop", "background"] }
+        ];
+
         // Extraction block that isolates clean 11-character video tokens safely
         function cleanVideoCoordinates(input) {
             const trimmed = input.trim();
@@ -214,16 +222,40 @@
             return trimmed;
         }
 
-        // Action A: Dynamic Dom HTML String Overwrite Loop
+        // Action A: Dynamic Dom HTML String Overwrite Loop with Integrated Keyword Engine
         document.getElementById('loadPayloadBtn').addEventListener('click', () => {
             const rawInput = document.getElementById('targetUrlInput').value;
             if (!rawInput) return;
 
-            const targetCode = cleanVideoCoordinates(rawInput);
+            // --- STEP 1: TEST TIER 1 INPUT (DIRECT ID OR URL) ---
+            let targetCode = cleanVideoCoordinates(rawInput);
+            let detectionSource = "DIRECT ID LINK CORRELATION";
 
+            // If it is not a direct 11-char sequence, initiate search scanning protocols
             if (!targetCode || targetCode.length !== 11) {
-                document.getElementById('trackInfo').innerText = "❌ ERROR: STRING DEVIATES FROM 11-CHAR CODE SIGNATURE.\nVERIFY TRAJECTORY TARGET.";
-                return;
+                
+                // --- STEP 2: TEST TIER 2 INPUT (LOCAL DATABASE SCANNING) ---
+                const searchPhrase = rawInput.trim().toLowerCase();
+                const localMatch = localVideoDatabase.find(track => 
+                    track.title.toLowerCase().includes(searchPhrase) || 
+                    track.keywords.some(keyword => searchPhrase.includes(keyword))
+                );
+
+                if (localMatch) {
+                    targetCode = localMatch.id;
+                    detectionSource = `LOCAL MATRIX MATCH: "${localMatch.title}"`;
+                } else {
+                    // --- STEP 3: FALLBACK TO TIER 3 (GLOBAL YOUTUBE SEARCH EXTRACTION) ---
+                    const encodedSearchQuery = encodeURIComponent(rawInput.trim());
+                    const globalSearchUrl = `https://youtube.com{encodedSearchQuery}`;
+                    
+                    document.getElementById('generatedUrlLog').innerHTML = `GLOBAL SEARCH LINK: <a href="${globalSearchUrl}" target="_blank" style="color: #33ff33; text-decoration: underline;">${globalSearchUrl}</a>`;
+                    window.open(globalSearchUrl, '_blank');
+                    
+                    document.getElementById('trackInfo').innerText = `❌ NO LOCAL MATCH // DEPLOYING GLOBAL SEARCH ROUTE.\nQUERY: "${rawInput}" OPENED IN NEW TAB.`;
+                    document.getElementById('targetUrlInput').value = '';
+                    return; // Halt layout injection since user is redirected
+                }
             }
 
             // 🛠️ THE STRATEGY: Build your exact required native embed iframe code snippet as a raw text layout string
@@ -237,16 +269,38 @@
             
             // Clean up text input space and update dashboard metrics
             document.getElementById('targetUrlInput').value = ''; 
-            document.getElementById('trackInfo').innerText = `BROADCAST CONFIRMED: YT-${targetCode}\n⚡ HARD DOM REWRITE STABILIZED. CLICK PLAY DIRECTLY INSIDE VIEWPORT screen.`;
+            document.getElementById('trackInfo').innerText = `BROADCAST CONFIRMED: YT-${targetCode} [${detectionSource}]\n⚡ HARD DOM REWRITE STABILIZED. CLICK PLAY DIRECTLY INSIDE VIEWPORT screen.`;
         });
 
-        // Action B: External Tab Deployment Bypass 
+        // Action B: External Tab Deployment Bypass with multi-tier route optimization
         document.getElementById('launchExternalBtn').addEventListener('click', () => {
             const rawInput = document.getElementById('targetUrlInput').value;
             if (!rawInput) return;
 
-            const targetCode = cleanVideoCoordinates(rawInput);
-            if (!targetCode || targetCode.length !== 11) return;
+            let targetCode = cleanVideoCoordinates(rawInput);
+
+            // Run database lookup fallback check if raw input isn't a direct address link
+            if (!targetCode || targetCode.length !== 11) {
+                const searchPhrase = rawInput.trim().toLowerCase();
+                const localMatch = localVideoDatabase.find(track => 
+                    track.title.toLowerCase().includes(searchPhrase) || 
+                    track.keywords.some(keyword => searchPhrase.includes(keyword))
+                );
+                if (localMatch) {
+                    targetCode = localMatch.id;
+                }
+            }
+
+            // If it is still missing or unverified, launch standard global search loop parameters instead
+            if (!targetCode || targetCode.length !== 11) {
+                const encodedSearchQuery = encodeURIComponent(rawInput.trim());
+                const globalSearchUrl = `https://youtube.com{encodedSearchQuery}`;
+                document.getElementById('generatedUrlLog').innerHTML = `GLOBAL SEARCH LINK: <a href="${globalSearchUrl}" target="_blank" style="color: #33ff33; text-decoration: underline;">${globalSearchUrl}</a>`;
+                window.open(globalSearchUrl, '_blank');
+                document.getElementById('trackInfo').innerText = `TACTICAL SEARCH DEPLOYED: MATCH MISSING. GLOBAL TAB OVERRIDE ENGAGED.`;
+                document.getElementById('targetUrlInput').value = '';
+                return;
+            }
 
             const externalUrl = `https://youtube.com/{targetCode}`;
             window.open(externalUrl, '_blank');
@@ -260,9 +314,7 @@
             }
         });
 
-        // Purge cockpit area and restore down-state layout values
-       
-                // Clear display path completely
+        // Clear display path completely
         document.getElementById('killFeedBtn').addEventListener('click', () => {
             document.getElementById('viewportScreen').innerHTML = '<div style="color: #004400; padding: 20px; font-size: 11px;">MONITOR VIEWPORT POWERED DOWN // CARRIER EMPTY</div>';
             document.getElementById('trackInfo').innerText = "FEED ABSOLUTELY TERMINATED // CARRIER SIGNAL EMPTY.";
@@ -271,6 +323,7 @@
 
     </script>
 </body>
+
 </html>
 
 
