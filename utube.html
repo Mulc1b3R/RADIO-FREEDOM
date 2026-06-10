@@ -156,7 +156,7 @@
 
         <!-- HARDWARE FLEET SPECS METRICS -->
         <div class="terminal-specs">
-            SYS: YT-VIEWER ENGINE v1.0<br>
+            SYS: YT-VIEWER ENGINE v1.1<br>
             SIGNAL: UNENCRYPTED CDN ROUTE<br>
             STATUS: ACTIVE DEPLOYMENT NODE
         </div>
@@ -164,14 +164,15 @@
         <a href="index.html" class="return-link">&lt; RETURN TO MAIN PIRATE CHASSIS</a>
     </div>
 
-     <!-- YOUTUBE IFRAME CORE CONTROLLER SCRIPT -->
+    <!-- YOUTUBE IFRAME CORE CONTROLLER SCRIPT -->
     <script>
         let player;
+        let isEngineReady = false;
 
         // Asynchronously request the official API infrastructure
         (function loadYouTubeAPI() {
             let tag = document.createElement('script');
-            tag.src = "https://youtube.com";
+            tag.src = "https://www.youtube.com/iframe_api";
             let firstScriptTag = document.getElementsByTagName('script');
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
         })();
@@ -181,7 +182,7 @@
             player = new YT.Player('ytPlayerEngine', {
                 height: '100%',
                 width: '100%',
-                videoId: 'b08_M4L1B08', // Placeholder initial static coordinate
+                videoId: 'b08_M4L1B08', // Initial visual sync placeholder
                 playerVars: {
                     'autoplay': 0,
                     'controls': 1,
@@ -195,28 +196,34 @@
         }
 
         function onEngineArmed(event) {
+            isEngineReady = true;
             document.getElementById('trackInfo').innerText = "SYSTEM ONLINE // ENGINE LINK ARMED. READY TO INGEST DECK LINK.";
         }
 
-        // 🔒 PATCHED: Bulletproof extraction routing for ALL YouTube variants
+        // 🔒 FIXED: Rock-solid string/link coordinate extraction
         function extractVideoId(input) {
             const cleanInput = input.trim();
             
-            // Check if user simply pasted the raw 11-character alphanumeric string
+            // Standard raw 11-char fallback option check
             if (cleanInput.length === 11 && !cleanInput.includes('/') && !cleanInput.includes('=')) {
                 return cleanInput;
             }
 
-            // Universal RegEx targeting watch URLs, shares, embeds, shorts, and query properties
+            // Universal extraction string covering standard, shared, mobile, and parameters links
             const regExp = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
             const match = cleanInput.match(regExp);
             
-            // Extract the isolated 11-character group match capturing block safely
+            // Return index group 1 where the isolated alphanumeric code is stored
             return (match && match[1] && match[1].length === 11) ? match[1] : null;
         }
 
         // Hardware command bindings
         document.getElementById('loadPayloadBtn').addEventListener('click', () => {
+            if (!isEngineReady) {
+                document.getElementById('trackInfo').innerText = "⚠️ WAIT: ENGINE BOOT SEQUENCE UNDERWAY...";
+                return;
+            }
+
             const rawInboundValue = document.getElementById('targetUrlInput').value;
             if (!rawInboundValue) return;
 
@@ -227,9 +234,18 @@
                 return;
             }
 
+            // Route standard dictionary parameters safely into the active stream deck
             if (player && player.loadVideoById) {
-                player.loadVideoById(targetVideoId);
+                player.loadVideoById({ videoId: targetVideoId });
+                document.getElementById('targetUrlInput').value = ''; // Clean input track line
                 document.getElementById('trackInfo').innerText = `BROADCAST ADDR: YT-${targetVideoId}\nSTATUS: STREAMING RAW INTERCEPT DATA`;
+            }
+        });
+
+        // Enable user to punch the Enter key directly inside input line to execute
+        document.getElementById('targetUrlInput').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('loadPayloadBtn').click();
             }
         });
 
@@ -240,6 +256,6 @@
             }
         });
     </script>
-
 </body>
 </html>
+
