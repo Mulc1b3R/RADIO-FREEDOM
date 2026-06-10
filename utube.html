@@ -272,24 +272,19 @@
             document.getElementById('trackInfo').innerText = `BROADCAST CONFIRMED: YT-${targetCode} [${detectionSource}]\n⚡ HARD DOM REWRITE STABILIZED. CLICK PLAY DIRECTLY INSIDE VIEWPORT screen.`;
         });
 
-        // Action B: External Tab Deployment Bypass with multi-tier route optimization
+               // Action B: External Tab Deployment Bypass 
         document.getElementById('launchExternalBtn').addEventListener('click', () => {
             const rawInput = document.getElementById('targetUrlInput').value;
             if (!rawInput) return;
 
-            let targetCode = cleanVideoCoordinates(rawInput);
+            const targetCode = cleanVideoCoordinates(rawInput);
+            if (!targetCode || targetCode.length !== 11) return;
 
-            // Run database lookup fallback check if raw input isn't a direct address link
-            if (!targetCode || targetCode.length !== 11) {
-                const searchPhrase = rawInput.trim().toLowerCase();
-                const localMatch = localVideoDatabase.find(track => 
-                    track.title.toLowerCase().includes(searchPhrase) || 
-                    track.keywords.some(keyword => searchPhrase.includes(keyword))
-                );
-                if (localMatch) {
-                    targetCode = localMatch.id;
-                }
-            }
+            const externalUrl = `https://youtube.com{targetCode}`;
+            window.open(externalUrl, '_blank');
+            document.getElementById('trackInfo').innerText = `TACTICAL OVERRIDE: SEPARATE WINDOW ASSIGNED.\nMARKER: YT-${targetCode}`;
+        });
+
 
             // If it is still missing or unverified, launch standard global search loop parameters instead
             if (!targetCode || targetCode.length !== 11) {
