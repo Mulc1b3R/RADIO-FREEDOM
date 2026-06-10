@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Section 23 // YouTube Terminal</title>
+    <style>
+        /* Phosphor Terminal Grid Layout Matrix - Identical Twin Profile */
+        body {
+            background-color: #000000;
+            color: #33ff33;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 5px #33ff33;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-y: auto; 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .crt-chassis {
+            border: 2px solid #33ff33;
+            background: rgba(0, 15, 0, 0.9);
+            box-shadow: 0 0 20px #005500, inset 0 0 15px #003300;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Viewport Frame for YouTube Object Mapping */
+        .cockpit-screen {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border: 1px solid #005500;
+            background: #000;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        /* Console Control Deck Button Container */
+        .control-deck {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        /* 1990s Arcade Tactile Push Button Style */
+        .power-switch {
+            background: #000000;
+            border: 2px solid #33ff33;
+            color: #33ff33;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 12px 5px;
+            cursor: pointer;
+            box-shadow: 0 0 10px #005500;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            flex: 1;
+            min-width: 105px;
+            text-shadow: none;
+        }
+
+        .power-switch:hover {
+            background: #33ff33;
+            color: #000000;
+            box-shadow: 0 0 20px #33ff33;
+        }
+
+        /* Tactical Command Input Box */
+        .matrix-input {
+            width: 100%;
+            background: #000500;
+            border: 1px solid #005500;
+            color: #33ff33;
+            font-family: 'Courier New', monospace;
+            padding: 10px;
+            box-sizing: border-box;
+            font-size: 13px;
+            border-radius: 4px;
+            outline: none;
+            text-shadow: 0 0 3px #33ff33;
+        }
+        .matrix-input:focus {
+            border-color: #33ff33;
+            box-shadow: 0 0 8px #005500;
+        }
+
+        /* Responsive Dashboard text readout window */
+        #trackInfo {
+            font-size: 13px;
+            margin: 25px 0;
+            height: 60px;
+            overflow: hidden;
+            border: 1px solid #005500;
+            padding: 10px;
+            background: #000500;
+            border-radius: 4px;
+            text-align: left;
+            line-height: 1.4;
+            word-break: break-all;
+        }
+
+        .terminal-specs {
+            font-size: 11px;
+            color: #008800;
+            margin-top: 12px;
+            line-height: 1.6 !important;
+            padding-bottom: 5px;
+        }
+
+        /* Core Return Link Anchor Style */
+        .return-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #008800;
+            text-decoration: none;
+            font-size: 11px;
+        }
+        .return-link:hover {
+            color: #33ff33;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="crt-chassis">
+        <!-- COCKPIT VIEWPORT SCREEN -->
+        <div class="cockpit-screen">
+            <div id="ytPlayerEngine"></div>
+        </div>
+
+        <!-- OVERRIDE CONTROLS -->
+        <input type="text" id="targetUrlInput" class="matrix-input" placeholder="PASTE YT VIDEO ID OR URL..." autocomplete="off">
+
+        <div class="control-deck">
+            <button class="power-switch" id="loadPayloadBtn">LOAD ADDR</button>
+            <button class="power-switch" id="killFeedBtn">KILL FEED</button>
+        </div>
+
+        <!-- READOUT PANEL -->
+        <div id="trackInfo">TERMINAL READY // STANDING BY FOR YOUTUBE STREAM MATRIX OVERRIDE...</div>
+
+        <!-- HARDWARE FLEET SPECS METRICS -->
+        <div class="terminal-specs">
+            SYS: YT-VIEWER ENGINE v1.0<br>
+            SIGNAL: UNENCRYPTED CDN ROUTE<br>
+            STATUS: ACTIVE DEPLOYMENT NODE
+        </div>
+
+        <a href="index.html" class="return-link">&lt; RETURN TO MAIN PIRATE CHASSIS</a>
+    </div>
+
+    <!-- YOUTUBE IFRAME CORE CONTROLLER SCRIPT -->
+    <script>
+        let player;
+
+        // Asynchronously request the official API infrastructure
+        (function loadYouTubeAPI() {
+            let tag = document.createElement('script');
+            tag.src = "https://youtube.com";
+            let firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        })();
+
+        // Automatically executed upon asset acquisition confirmation
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('ytPlayerEngine', {
+                height: '100%',
+                width: '100%',
+                videoId: 'b08_M4L1B08', // Placeholder initial static coordinate
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 1,
+                    'modestbranding': 1,
+                    'rel': 0
+                },
+                events: {
+                    'onReady': onEngineArmed
+                }
+            });
+        }
+
+        function onEngineArmed(event) {
+            document.getElementById('trackInfo').innerText = "SYSTEM ONLINE // ENGINE LINK ARMED. READY TO INGEST DECK LINK.";
+        }
+
+        // Parse IDs safely from raw strings or complete watch?v= links
+        function extractVideoId(input) {
+            let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            let match = input.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : input.trim();
+        }
+
+        // Hardware command bindings
+        document.getElementById('loadPayloadBtn').addEventListener('click', () => {
+            const rawInboundValue = document.getElementById('targetUrlInput').value;
+            if (!rawInboundValue) return;
+
+            const targetVideoId = extractVideoId(rawInboundValue);
+            
+            if (player && player.loadVideoById) {
+                player.loadVideoById(targetVideoId);
+                document.getElementById('trackInfo').innerText = `BROADCAST ADDR: YT-${targetVideoId}\nSTATUS: STREAMING RAW INTERCEPT DATA`;
+            }
+        });
+
+        document.getElementById('killFeedBtn').addEventListener('click', () => {
+            if (player && player.stopVideo) {
+                player.stopVideo();
+                document.getElementById('trackInfo').innerText = "FEED ABSOLUTELY TERMINATED // CARRIER SIGNAL EMPTY.";
+            }
+        });
+    </script>
+</body>
+</html>
