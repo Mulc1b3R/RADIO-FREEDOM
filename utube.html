@@ -248,7 +248,7 @@
             const targetCode = cleanVideoCoordinates(rawInput);
             if (!targetCode || targetCode.length !== 11) return;
 
-            const externalUrl = `https://youtube.com{targetCode}`;
+            const externalUrl = `https://youtube.com/{targetCode}`;
             window.open(externalUrl, '_blank');
             document.getElementById('trackInfo').innerText = `TACTICAL OVERRIDE: SEPARATE WINDOW ASSIGNED.\nMARKER: YT-${targetCode}`;
         });
