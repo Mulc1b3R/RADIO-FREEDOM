@@ -227,7 +227,7 @@
             }
 
             // 🛠️ THE STRATEGY: Build your exact required native embed iframe code snippet as a raw text layout string
-            const dynamicIframeHtml = `<iframe width="560" height="315" src="https://youtube.com{targetCode}?si=JLfOwnHFl-nygXIK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+            const dynamicIframeHtml = `<iframe width="560" height="315" src="https://youtube.com/{targetCode}?si=JLfOwnHFl-nygXIK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
             
             // Wipe the cockpit area completely clean and smash the brand-new element directly into the DOM
             document.getElementById('viewportScreen').innerHTML = dynamicIframeHtml;
