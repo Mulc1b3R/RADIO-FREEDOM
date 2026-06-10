@@ -47,12 +47,10 @@
             margin-bottom: 15px;
         }
 
-        /* Standard Native HTML Iframe styling */
+        /* Enforce exact dimensional fitting for your custom iframe snippet */
         #ytVideoFrame {
             width: 100%;
             height: 100%;
-            border: none;
-            background: #000;
         }
 
         /* Console Control Deck Button Container */
@@ -127,6 +125,20 @@
             word-break: break-all;
         }
 
+        /* Terminal Logging Box Readout Window */
+        #generatedUrlLog {
+            font-size: 11px; 
+            color: #00aa00; 
+            margin: 15px 0; 
+            padding: 8px; 
+            background: #000a00; 
+            border: 1px dashed #004400; 
+            border-radius: 4px; 
+            text-align: left; 
+            word-break: break-all; 
+            font-family: monospace;
+        }
+
         .terminal-specs {
             font-size: 11px;
             color: #008800;
@@ -153,12 +165,12 @@
     <div class="crt-chassis">
         <!-- COCKPIT VIEWPORT SCREEN -->
         <div class="cockpit-screen">
-            <!-- Uses a clean web baseline template that handles raw video references natively -->
-            <iframe id="ytVideoFrame" src="about:blank" allow="autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <!-- ⚡ MOUNTED: Your exact required embed code layout template -->
+            <iframe id="ytVideoFrame" width="560" height="315" src="about:blank" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
 
         <!-- OVERRIDE CONTROLS -->
-        <input type="text" id="targetUrlInput" class="matrix-input" placeholder="PASTE RAW VIDEO ID OR FULL LINK..." autocomplete="off">
+        <input type="text" id="targetUrlInput" class="matrix-input" placeholder="PASTE 11-CHAR VIDEO ID ONLY..." autocomplete="off">
 
         <div class="control-deck">
             <div class="button-row">
@@ -169,85 +181,76 @@
         </div>
 
         <!-- READOUT PANEL -->
-        <div id="trackInfo">TERMINAL ONLINE // INITIALIZED AS SEPARATE FROM CHANNEL MATRIX QUEUE...</div>
+        <div id="trackInfo">TERMINAL READY // INPUT EXCLUSIVELY ACCEPTS RAW 11-CHARACTER CODES...</div>
+
         <!-- REAL-TIME GENERATED LINK SPEC READOUT -->
-        <div id="generatedUrlLog" style="font-size: 11px; color: #00aa00; margin: 15px 0; padding: 8px; background: #000a00; border: 1px dashed #004400; border-radius: 4px; text-align: left; word-break: break-all; font-family: monospace;">
-            GENERATED URL: (EMPTY SIGNAL)
-        </div>
+        <div id="generatedUrlLog">GENERATED URL: (EMPTY SIGNAL)</div>
 
         <!-- HARDWARE FLEET SPECS METRICS -->
         <div class="terminal-specs">
-
-        <!-- HARDWARE FLEET SPECS METRICS -->
-        <div class="terminal-specs">
-            SYS: YT-FAILSAFE TERMINAL v1.4<br>
-            SIGNAL: DUAL INTERCEPT ROUTE ARCHITECTURE<br>
-            STATUS: PIPELINE STABILIZED // STANDING BY
+            SYS: YT-FAILSAFE EMBED v1.5<br>
+            SIGNAL: STRICT DEPLOYMENT EMULATION<br>
+            STATUS: PIPELINE SECURED
         </div>
 
         <a href="index.html" class="return-link">&lt; RETURN TO MAIN PIRATE CHASSIS</a>
     </div>
 
-           <script>
-        // Action A: In-Chassis Internal Loading Execution Loop
+    <script>
+        // Hardware Execution Loop
         document.getElementById('loadPayloadBtn').addEventListener('click', () => {
-            // Read the exact value typed into the terminal box
+            // Read input code directly without risky array-splitting functions
             const targetCode = document.getElementById('targetUrlInput').value.trim();
-            
-            // If empty or incorrect length, throw alert warning panel
+
             if (!targetCode || targetCode.length !== 11) {
-                document.getElementById('trackInfo').innerText = "❌ ERROR: INVALID IDENTIFIER FORM.\nYOU MUST ENTER EXACTLY THE 11-CHARACTER VIDEO ID\nEXAMPLE: p9_LFdp0XLg";
-                document.getElementById('generatedUrlLog').innerText = "GENERATED URL: (ABORTED due to tracking error)";
+                document.getElementById('trackInfo').innerText = "❌ ERROR: SOURCE STRING DEVIATES FROM 11-CHAR LIMIT.\nEXAMPLE ENTRY format: p9_LFdp0XLg";
+                document.getElementById('generatedUrlLog').innerText = "GENERATED URL: (ABORTED)";
                 return;
             }
 
-            // ⚡ GENERATE ABSOLUTELY CLEAN PATHWAYS
-            const targetUrl = `https://youtube.com/watch?v=${targetCode}`;
+            // ⚡ BUILD URL USING ACCURATE TEMPLATE LITERAL SYNTAX
+            const targetUrl = `https://youtube.com{targetCode}?si=CKy04DuKrV80TCt6`;
             
-            // Push directly to the visual frame asset
+            // Push link to iframe src attribute
             document.getElementById('ytVideoFrame').src = targetUrl;
             
-            // 📡 PRINT DIRECT GENERATED ROUTING LOG WINDOW
+            // 📡 OUTPUT TO LIVE DIAGNOSTIC LINK LOG PANEL
             document.getElementById('generatedUrlLog').innerHTML = `GENERATED URL: <a href="${targetUrl}" target="_blank" style="color: #33ff33; text-decoration: underline;">${targetUrl}</a>`;
             
-            // Update HUD console panel readouts
+            // Update UI dashboard readouts
             document.getElementById('targetUrlInput').value = ''; 
-            document.getElementById('trackInfo').innerText = `BROADCAST CONFIRMED: YT-${targetCode}\n📡 SIGNAL CARRIER ENFORCED. CLICK VIDEO SCREEN TO STREAM.`;
+            document.getElementById('trackInfo').innerText = `BROADCAST CONFIRMED: YT-${targetCode}\n📡 SIGNAL CARRIER ENFORCED. CLICK PLAY ON VIDEO CONTAINER SCREEN.`;
         });
 
-        // Action B: External Tab Deployment Bypass 
+        // External Window Deployment Circuit
         document.getElementById('launchExternalBtn').addEventListener('click', () => {
             const targetCode = document.getElementById('targetUrlInput').value.trim();
             if (!targetCode || targetCode.length !== 11) return;
 
-            const externalUrl = `https://youtube.com/watch?v=${targetCode}`;
+            const externalUrl = `https://youtube.com{targetCode}`;
             
-            // Print the external tracking telemetry path log 
             document.getElementById('generatedUrlLog').innerHTML = `GENERATED URL (TAB): <a href="${externalUrl}" target="_blank" style="color: #33ff33; text-decoration: underline;">${externalUrl}</a>`;
-            
             window.open(externalUrl, '_blank');
-            document.getElementById('trackInfo').innerText = `TACTICAL OVERRIDE: TARGET OPENED IN OUTSIDE TAB.\nMARKER: YT-${targetCode}`;
+            document.getElementById('trackInfo').innerText = `TACTICAL OVERRIDE: SEPARATE WINDOW ASSIGNED.\nMARKER: YT-${targetCode}`;
         });
 
-        // Trigger loading when hitting Enter key directly in the entry field
+        // Listen for Enter key shortcut commands inside entry box
         document.getElementById('targetUrlInput').addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 document.getElementById('loadPayloadBtn').click();
             }
         });
 
-        // Clear display path completely
+        // Emergency Clear Command Button
         document.getElementById('killFeedBtn').addEventListener('click', () => {
             document.getElementById('ytVideoFrame').src = 'about:blank';
             document.getElementById('trackInfo').innerText = "FEED ABSOLUTELY TERMINATED // CARRIER SIGNAL EMPTY.";
             document.getElementById('generatedUrlLog').innerText = "GENERATED URL: (EMPTY SIGNAL)";
         });
     </script>
-
-
-
 </body>
 </html>
+
 
 
 
