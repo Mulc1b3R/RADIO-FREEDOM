@@ -202,7 +202,7 @@
             }
 
             // ⚡ GENERATE ABSOLUTELY CLEAN PATHWAYS
-            const targetUrl = `https://youtube.com{targetCode}?rel=0`;
+            const targetUrl = `https://youtube.com/${targetCode}?rel=0`;
             
             // Push directly to the visual frame asset
             document.getElementById('ytVideoFrame').src = targetUrl;
@@ -220,7 +220,7 @@
             const targetCode = document.getElementById('targetUrlInput').value.trim();
             if (!targetCode || targetCode.length !== 11) return;
 
-            const externalUrl = `https://youtube.com{targetCode}`;
+            const externalUrl = `https://youtube.com/${targetCode}`;
             
             // Print the external tracking telemetry path log 
             document.getElementById('generatedUrlLog').innerHTML = `GENERATED URL (TAB): <a href="${externalUrl}" target="_blank" style="color: #33ff33; text-decoration: underline;">${externalUrl}</a>`;
