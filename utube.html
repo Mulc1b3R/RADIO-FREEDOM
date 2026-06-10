@@ -289,7 +289,7 @@
             // If it is still missing or unverified, launch standard global search loop parameters instead
             if (!targetCode || targetCode.length !== 11) {
                 const encodedSearchQuery = encodeURIComponent(rawInput.trim());
-                const globalSearchUrl = `https://youtube.com/${encodedSearchQuery}`;
+                const globalSearchUrl = `https://youtube.com/results?search_query=${encodedSearchQuery}`;
                 document.getElementById('generatedUrlLog').innerHTML = `GLOBAL SEARCH LINK: <a href="https://www.youtube.com/results?${globalSearchUrl}" target="_blank" style="color: #33ff33; text-decoration: underline;">${globalSearchUrl}</a>`;
                 window.open(globalSearchUrl, '_blank');
                 document.getElementById('trackInfo').innerText = `TACTICAL SEARCH DEPLOYED: MATCH MISSING. GLOBAL TAB OVERRIDE ENGAGED.`;
