@@ -215,8 +215,8 @@
                 return;
             }
 
-            // 🔒 FIXED: Swapped 'watch?v=' to '/embed/' and added the missing '$' sign
-            const targetUrl = `https://youtube.com/$ {targetCode}?rel=0`;
+                     // 🔒 CORRECT SYNTAX: The $ sign is tightly welded directly to the opening brace
+            const targetUrl = `https://youtube.com{targetCode}?rel=0`;
             document.getElementById('ytVideoFrame').src = targetUrl;
             
             document.getElementById('trackInfo').innerText = `BROADCAST CONFIRMED: YT-${targetCode}\n⚠️ CLICK PLAY BUTTON INSIDE DISPLAY SCREEN TO ENGAGE STREAM.`;
@@ -231,8 +231,8 @@
 
             if (!targetCode) return;
 
-            // 🔒 FIXED: Added missing '$' sign to inject the target variable correctly
-            const externalUrl = `https://youtube.com/${targetCode}`;
+            // 🔒 CORRECT SYNTAX: The $ sign is tightly welded directly to the opening brace
+            const externalUrl = `https://youtube.com{targetCode}`;
             window.open(externalUrl, '_blank');
             document.getElementById('trackInfo').innerText = `TACTICAL OVERRIDE: TARGET SPAWNED IN INDEPENDENT TAB.\nMARKER: YT-${targetCode}`;
         });
