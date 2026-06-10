@@ -247,7 +247,7 @@
                 } else {
                     // --- STEP 3: FALLBACK TO TIER 3 (GLOBAL YOUTUBE SEARCH EXTRACTION) ---
                     const encodedSearchQuery = encodeURIComponent(rawInput.trim());
-                    const globalSearchUrl = `https://youtube.com/${encodedSearchQuery}`;
+                    const globalSearchUrl = `https://youtube.com/results?search_query=${encodedSearchQuery}`;
                     
                     document.getElementById('generatedUrlLog').innerHTML = `GLOBAL SEARCH LINK: <a href="https://www.youtube.com/results?search_query=${globalSearchUrl}" target="_blank" style="color: #33ff33; text-decoration: underline;">${globalSearchUrl}</a>`;
                     window.open(globalSearchUrl, '_blank');
