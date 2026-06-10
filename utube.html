@@ -47,6 +47,13 @@
             margin-bottom: 15px;
         }
 
+        /* Standard Native HTML Iframe styling */
+        #ytVideoFrame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
         /* Console Control Deck Button Container */
         .control-deck {
             display: flex;
@@ -140,11 +147,12 @@
     <div class="crt-chassis">
         <!-- COCKPIT VIEWPORT SCREEN -->
         <div class="cockpit-screen">
-            <div id="ytPlayerEngine"></div>
+            <!-- 🛠️ FIXED: Embedded a native iframe directly, avoiding JavaScript loading delays -->
+            <iframe id="ytVideoFrame" src="about:blank" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
         </div>
 
         <!-- OVERRIDE CONTROLS -->
-        <input type="text" id="targetUrlInput" class="matrix-input" placeholder="PASTE YT VIDEO ID OR URL..." autocomplete="off">
+        <input type="text" id="targetUrlInput" class="matrix-input" placeholder="PASTE YT ID OR COMPLETE URL..." autocomplete="off">
 
         <div class="control-deck">
             <button class="power-switch" id="loadPayloadBtn">LOAD ADDR</button>
@@ -152,110 +160,84 @@
         </div>
 
         <!-- READOUT PANEL -->
-        <div id="trackInfo">TERMINAL READY // STANDING BY FOR YOUTUBE STREAM MATRIX OVERRIDE...</div>
+        <div id="trackInfo">TERMINAL READY // STANDING BY FOR NATIVE EMULATION OVERRIDE...</div>
 
         <!-- HARDWARE FLEET SPECS METRICS -->
         <div class="terminal-specs">
-            SYS: YT-VIEWER ENGINE v1.1<br>
-            SIGNAL: UNENCRYPTED CDN ROUTE<br>
-            STATUS: ACTIVE DEPLOYMENT NODE
+            SYS: YT-EMULATOR CHASSIS v1.2<br>
+            SIGNAL: STANDALONE DIRECT TUNER<br>
+            STATUS: BYPASS MODE OPERATIONAL
         </div>
 
         <a href="index.html" class="return-link">&lt; RETURN TO MAIN PIRATE CHASSIS</a>
     </div>
 
-    <!-- YOUTUBE IFRAME CORE CONTROLLER SCRIPT -->
+    <!-- CLEAN DIRECT IFRAME ROUTING LOGIC -->
     <script>
-        let player;
-        let isEngineReady = false;
-
-        // Asynchronously request the official API infrastructure
-        (function loadYouTubeAPI() {
-            let tag = document.createElement('script');
-            tag.src = "https://www.youtube.com/iframe_api";
-            let firstScriptTag = document.getElementsByTagName('script');
-            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-        })();
-
-        // Automatically executed upon asset acquisition confirmation
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('ytPlayerEngine', {
-                height: '100%',
-                width: '100%',
-                videoId: 'b08_M4L1B08', // Initial visual sync placeholder
-                playerVars: {
-                    'autoplay': 0,
-                    'controls': 1,
-                    'modestbranding': 1,
-                    'rel': 0
-                },
-                events: {
-                    'onReady': onEngineArmed
-                }
-            });
-        }
-
-        function onEngineArmed(event) {
-            isEngineReady = true;
-            document.getElementById('trackInfo').innerText = "SYSTEM ONLINE // ENGINE LINK ARMED. READY TO INGEST DECK LINK.";
-        }
-
-        // 🔒 FIXED: Rock-solid string/link coordinate extraction
+        // 🔒 FIXED: Fallback parser that strips IDs out of full URLs without using a brittle regex match check
         function extractVideoId(input) {
             const cleanInput = input.trim();
             
-            // Standard raw 11-char fallback option check
-            if (cleanInput.length === 11 && !cleanInput.includes('/') && !cleanInput.includes('=')) {
-                return cleanInput;
+            if (!cleanInput) return null;
+
+            // Handle standard watch?v= parameters URL queries
+            if (cleanInput.includes('v=')) {
+                const urlParts = cleanInput.split('v=')[1];
+                const ampersandPosition = urlParts.indexOf('&');
+                if (ampersandPosition !== -1) {
+                    return urlParts.substring(0, ampersandPosition);
+                }
+                return urlParts;
             }
 
-            // Universal extraction string covering standard, shared, mobile, and parameters links
-            const regExp = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
-            const match = cleanInput.match(regExp);
-            
-            // Return index group 1 where the isolated alphanumeric code is stored
-            return (match && match[1] && match[1].length === 11) ? match[1] : null;
+            // Handle short share links (youtu.be/ID)
+            if (cleanInput.includes('youtu.be/')) {
+                return cleanInput.split('youtu.be/')[1].split('?')[0];
+            }
+
+            // Handle embedded links (://youtube.com)
+            if (cleanInput.includes('embed/')) {
+                return cleanInput.split('embed/')[1].split('?')[0];
+            }
+
+            // Fallback: assume the input is already a raw 11-character video ID slug
+            return cleanInput;
         }
 
-        // Hardware command bindings
+        // Hardware execution routine
         document.getElementById('loadPayloadBtn').addEventListener('click', () => {
-            if (!isEngineReady) {
-                document.getElementById('trackInfo').innerText = "⚠️ WAIT: ENGINE BOOT SEQUENCE UNDERWAY...";
-                return;
-            }
-
             const rawInboundValue = document.getElementById('targetUrlInput').value;
             if (!rawInboundValue) return;
 
             const targetVideoId = extractVideoId(rawInboundValue);
             
-            if (!targetVideoId) {
-                document.getElementById('trackInfo').innerText = "❌ ERROR: INVALID TRAJECTORY IDENTIFIER.\nPROBED STRING COULD NOT BE PARSED.";
+            if (!targetVideoId || targetVideoId.length < 5) {
+                document.getElementById('trackInfo').innerText = "❌ ERROR: TRAJECTORY NOT RECOGNIZED.\nVERIFY THE WEB PATH OR VIDEO ID.";
                 return;
             }
 
-            // Route standard dictionary parameters safely into the active stream deck
-            if (player && player.loadVideoById) {
-                player.loadVideoById({ videoId: targetVideoId });
-                document.getElementById('targetUrlInput').value = ''; // Clean input track line
-                document.getElementById('trackInfo').innerText = `BROADCAST ADDR: YT-${targetVideoId}\nSTATUS: STREAMING RAW INTERCEPT DATA`;
-            }
+            // ⚡ DIRECT IFRAME INJECTION: Bypasses API domain restrictions instantly
+            const iframe = document.getElementById('ytVideoFrame');
+            iframe.src = `https://youtube.com{targetVideoId}?autoplay=1&modestbranding=1&rel=0`;
+            
+            document.getElementById('targetUrlInput').value = ''; // Purge input track line
+            document.getElementById('trackInfo').innerText = `BROADCAST ADDR: YT-${targetVideoId}\nSTATUS: TUNED DIRECTLY TO TARGET COORDINATES`;
         });
 
-        // Enable user to punch the Enter key directly inside input line to execute
+        // Bind Enter key inside input line for rapid terminal operation
         document.getElementById('targetUrlInput').addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 document.getElementById('loadPayloadBtn').click();
             }
         });
 
+        // Complete terminal disconnection
         document.getElementById('killFeedBtn').addEventListener('click', () => {
-            if (player && player.stopVideo) {
-                player.stopVideo();
-                document.getElementById('trackInfo').innerText = "FEED ABSOLUTELY TERMINATED // CARRIER SIGNAL EMPTY.";
-            }
+            document.getElementById('ytVideoFrame').src = 'about:blank';
+            document.getElementById('trackInfo').innerText = "FEED ABSOLUTELY TERMINATED // CARRIER SIGNAL EMPTY.";
         });
     </script>
 </body>
 </html>
+
 
