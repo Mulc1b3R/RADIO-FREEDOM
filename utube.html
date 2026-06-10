@@ -249,7 +249,7 @@
                     const encodedSearchQuery = encodeURIComponent(rawInput.trim());
                     const globalSearchUrl = `https://youtube.com{encodedSearchQuery}`;
                     
-                    document.getElementById('generatedUrlLog').innerHTML = `GLOBAL SEARCH LINK: <a href="${globalSearchUrl}" target="_blank" style="color: #33ff33; text-decoration: underline;">${globalSearchUrl}</a>`;
+                    document.getElementById('generatedUrlLog').innerHTML = `GLOBAL SEARCH LINK: <a href="https://www.youtube.com/results?${globalSearchUrl}" target="_blank" style="color: #33ff33; text-decoration: underline;">${globalSearchUrl}</a>`;
                     window.open(globalSearchUrl, '_blank');
                     
                     document.getElementById('trackInfo').innerText = `❌ NO LOCAL MATCH // DEPLOYING GLOBAL SEARCH ROUTE.\nQUERY: "${rawInput}" OPENED IN NEW TAB.`;
