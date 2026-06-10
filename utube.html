@@ -147,7 +147,7 @@
     <div class="crt-chassis">
         <!-- COCKPIT VIEWPORT SCREEN -->
         <div class="cockpit-screen">
-            <!-- 🛠️ FIXED: Embedded a native iframe directly, avoiding JavaScript loading delays -->
+            <!-- 🛠️ OFFICIAL EMBED ENTRY: Native YouTube pipeline framework -->
             <iframe id="ytVideoFrame" src="about:blank" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
         </div>
 
@@ -160,78 +160,85 @@
         </div>
 
         <!-- READOUT PANEL -->
-        <div id="trackInfo">TERMINAL READY // STANDING BY FOR NATIVE EMULATION OVERRIDE...</div>
+        <div id="trackInfo">TERMINAL READY // STANDING BY FOR OFFICIAL EMBED CHANNEL OVERRIDE...</div>
 
         <!-- HARDWARE FLEET SPECS METRICS -->
         <div class="terminal-specs">
-            SYS: YT-EMULATOR CHASSIS v1.2<br>
-            SIGNAL: STANDALONE DIRECT TUNER<br>
-            STATUS: BYPASS MODE OPERATIONAL
+            SYS: YT-EMULATOR CHASSIS v1.3<br>
+            SIGNAL: OFFICIAL IFRAME EMBED METHOD<br>
+            STATUS: PIPELINE ALIGNED AND GREEN
         </div>
 
         <a href="index.html" class="return-link">&lt; RETURN TO MAIN PIRATE CHASSIS</a>
     </div>
 
-    <!-- CLEAN DIRECT IFRAME ROUTING LOGIC -->
+    <!-- CLEAN DIRECT IFRAME EMBED ROUTING LOGIC -->
     <script>
-        // 🔒 FIXED: Fallback parser that strips IDs out of full URLs without using a brittle regex match check
+        // 🔒 FIXED: Bulletproof text extraction that safely isolates 11-character slugs
         function extractVideoId(input) {
             const cleanInput = input.trim();
-            
             if (!cleanInput) return null;
 
-            // Handle standard watch?v= parameters URL queries
+            // Route A: Full URL parsing via 'v=' query anchor parameter matches
             if (cleanInput.includes('v=')) {
-                const urlParts = cleanInput.split('v=')[1];
-                const ampersandPosition = urlParts.indexOf('&');
-                if (ampersandPosition !== -1) {
-                    return urlParts.substring(0, ampersandPosition);
+                let idChunk = cleanInput.split('v=')[1];
+                if (idChunk.includes('&')) {
+                    idChunk = idChunk.split('&')[0];
                 }
-                return urlParts;
+                return idChunk;
             }
 
-            // Handle short share links (youtu.be/ID)
+            // Route B: Mobile share link parsing via 'youtu.be/' path markers
             if (cleanInput.includes('youtu.be/')) {
-                return cleanInput.split('youtu.be/')[1].split('?')[0];
+                let idChunk = cleanInput.split('youtu.be/')[1];
+                if (idChunk.includes('?')) {
+                    idChunk = idChunk.split('?')[0];
+                }
+                return idChunk;
             }
 
-            // Handle embedded links (://youtube.com)
+            // Route C: Existing embed string parsing via 'embed/' segment strings
             if (cleanInput.includes('embed/')) {
-                return cleanInput.split('embed/')[1].split('?')[0];
+                let idChunk = cleanInput.split('embed/')[1];
+                if (idChunk.includes('?')) {
+                    idChunk = idChunk.split('?')[0];
+                }
+                return idChunk;
             }
 
-            // Fallback: assume the input is already a raw 11-character video ID slug
+            // Route D: Raw fallback option assuming text is already the 11-char sequence slug
             return cleanInput;
         }
 
-        // Hardware execution routine
+        // Hardware command bindings
         document.getElementById('loadPayloadBtn').addEventListener('click', () => {
             const rawInboundValue = document.getElementById('targetUrlInput').value;
             if (!rawInboundValue) return;
 
             const targetVideoId = extractVideoId(rawInboundValue);
             
-            if (!targetVideoId || targetVideoId.length < 5) {
-                document.getElementById('trackInfo').innerText = "❌ ERROR: TRAJECTORY NOT RECOGNIZED.\nVERIFY THE WEB PATH OR VIDEO ID.";
+            // Safety confirmation check
+            if (!targetVideoId || targetVideoId.length !== 11) {
+                document.getElementById('trackInfo').innerText = "❌ ERROR: TARGET IDENTIFIER INVALID.\nVERIFY ID LENGTH IS EXACTLY 11 CHARACTERS.";
                 return;
             }
 
-            // ⚡ DIRECT IFRAME INJECTION: Bypasses API domain restrictions instantly
+            // ⚡ DIRECT DEPLOYMENT EMBED PASS: Maps coordinates to frame safely
             const iframe = document.getElementById('ytVideoFrame');
-            iframe.src = `https://youtube.com{targetVideoId}?autoplay=1&modestbranding=1&rel=0`;
+            iframe.src = `https://youtube.com{targetVideoId}?autoplay=1&controls=1`;
             
-            document.getElementById('targetUrlInput').value = ''; // Purge input track line
-            document.getElementById('trackInfo').innerText = `BROADCAST ADDR: YT-${targetVideoId}\nSTATUS: TUNED DIRECTLY TO TARGET COORDINATES`;
+            document.getElementById('targetUrlInput').value = ''; // Purge entry field line
+            document.getElementById('trackInfo').innerText = `BROADCAST ADDR: YT-${targetVideoId}\nSTATUS: TUNED DIRECTLY TO TARGET EMBED HUB`;
         });
 
-        // Bind Enter key inside input line for rapid terminal operation
+        // Bind Enter key inside input line for immediate execution
         document.getElementById('targetUrlInput').addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 document.getElementById('loadPayloadBtn').click();
             }
         });
 
-        // Complete terminal disconnection
+        // Kill feed circuit breaker
         document.getElementById('killFeedBtn').addEventListener('click', () => {
             document.getElementById('ytVideoFrame').src = 'about:blank';
             document.getElementById('trackInfo').innerText = "FEED ABSOLUTELY TERMINATED // CARRIER SIGNAL EMPTY.";
@@ -239,5 +246,6 @@
     </script>
 </body>
 </html>
+
 
 
