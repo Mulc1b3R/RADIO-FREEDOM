@@ -52,14 +52,21 @@
             width: 100%;
             height: 100%;
             border: none;
+            background: #000;
         }
 
         /* Console Control Deck Button Container */
         .control-deck {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             gap: 10px;
             margin: 15px 0;
+        }
+
+        .button-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
         }
 
         /* 1990s Arcade Tactile Push Button Style */
@@ -68,7 +75,7 @@
             border: 2px solid #33ff33;
             color: #33ff33;
             font-family: 'Courier New', monospace;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
             padding: 12px 5px;
             cursor: pointer;
@@ -77,7 +84,6 @@
             transition: all 0.2s ease;
             text-transform: uppercase;
             flex: 1;
-            min-width: 105px;
             text-shadow: none;
         }
 
@@ -96,7 +102,7 @@
             font-family: 'Courier New', monospace;
             padding: 10px;
             box-sizing: border-box;
-            font-size: 13px;
+            font-size: 12px;
             border-radius: 4px;
             outline: none;
             text-shadow: 0 0 3px #33ff33;
@@ -108,9 +114,9 @@
 
         /* Responsive Dashboard text readout window */
         #trackInfo {
-            font-size: 13px;
+            font-size: 12px;
             margin: 25px 0;
-            height: 60px;
+            height: 65px;
             overflow: hidden;
             border: 1px solid #005500;
             padding: 10px;
@@ -147,98 +153,97 @@
     <div class="crt-chassis">
         <!-- COCKPIT VIEWPORT SCREEN -->
         <div class="cockpit-screen">
-            <!-- 🛠️ OFFICIAL EMBED ENTRY: Native YouTube pipeline framework -->
-            <iframe id="ytVideoFrame" src="about:blank" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+            <!-- Uses a clean web baseline template that handles raw video references natively -->
+            <iframe id="ytVideoFrame" src="about:blank" allow="autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
 
         <!-- OVERRIDE CONTROLS -->
-        <input type="text" id="targetUrlInput" class="matrix-input" placeholder="PASTE YT ID OR COMPLETE URL..." autocomplete="off">
+        <input type="text" id="targetUrlInput" class="matrix-input" placeholder="PASTE RAW VIDEO ID OR FULL LINK..." autocomplete="off">
 
         <div class="control-deck">
-            <button class="power-switch" id="loadPayloadBtn">LOAD ADDR</button>
-            <button class="power-switch" id="killFeedBtn">KILL FEED</button>
+            <div class="button-row">
+                <button class="power-switch" id="loadPayloadBtn">LOAD IN-FRAME</button>
+                <button class="power-switch" id="launchExternalBtn">LAUNCH TAB</button>
+            </div>
+            <button class="power-switch" id="killFeedBtn" style="width: 100%;">KILL FEED SIGNAL</button>
         </div>
 
         <!-- READOUT PANEL -->
-        <div id="trackInfo">TERMINAL READY // STANDING BY FOR OFFICIAL EMBED CHANNEL OVERRIDE...</div>
+        <div id="trackInfo">TERMINAL ONLINE // INITIALIZED AS SEPARATE FROM CHANNEL MATRIX QUEUE...</div>
 
         <!-- HARDWARE FLEET SPECS METRICS -->
         <div class="terminal-specs">
-            SYS: YT-EMULATOR CHASSIS v1.3<br>
-            SIGNAL: OFFICIAL IFRAME EMBED METHOD<br>
-            STATUS: PIPELINE ALIGNED AND GREEN
+            SYS: YT-FAILSAFE TERMINAL v1.4<br>
+            SIGNAL: DUAL INTERCEPT ROUTE ARCHITECTURE<br>
+            STATUS: PIPELINE STABILIZED // STANDING BY
         </div>
 
         <a href="index.html" class="return-link">&lt; RETURN TO MAIN PIRATE CHASSIS</a>
     </div>
 
-    <!-- CLEAN DIRECT IFRAME EMBED ROUTING LOGIC -->
     <script>
-        // 🔒 FIXED: Bulletproof text extraction that safely isolates 11-character slugs
-        function extractVideoId(input) {
-            const cleanInput = input.trim();
-            if (!cleanInput) return null;
+        // Extraction routine that extracts video codes safely
+        function cleanVideoCoordinates(input) {
+            const trimmed = input.trim();
+            if (!trimmed) return null;
 
-            // Route A: Full URL parsing via 'v=' query anchor parameter matches
-            if (cleanInput.includes('v=')) {
-                let idChunk = cleanInput.split('v=')[1];
-                if (idChunk.includes('&')) {
-                    idChunk = idChunk.split('&')[0];
-                }
-                return idChunk;
+            // Handle common watch parameters strings
+            if (trimmed.includes('v=')) {
+                return trimmed.split('v=')[1].split('&')[0];
             }
-
-            // Route B: Mobile share link parsing via 'youtu.be/' path markers
-            if (cleanInput.includes('youtu.be/')) {
-                let idChunk = cleanInput.split('youtu.be/')[1];
-                if (idChunk.includes('?')) {
-                    idChunk = idChunk.split('?')[0];
-                }
-                return idChunk;
+            // Handle common share strings
+            if (trimmed.includes('youtu.be/')) {
+                return trimmed.split('youtu.be/')[1].split('?')[0];
             }
-
-            // Route C: Existing embed string parsing via 'embed/' segment strings
-            if (cleanInput.includes('embed/')) {
-                let idChunk = cleanInput.split('embed/')[1];
-                if (idChunk.includes('?')) {
-                    idChunk = idChunk.split('?')[0];
-                }
-                return idChunk;
+            // Handle common embed links
+            if (trimmed.includes('embed/')) {
+                return trimmed.split('embed/')[1].split('?')[0];
             }
-
-            // Route D: Raw fallback option assuming text is already the 11-char sequence slug
-            return cleanInput;
+            // Fallback: assume input is a clean 11-char slug
+            return trimmed;
         }
 
-        // Hardware command bindings
+        // Action A: In-Chassis Internal Loading Execution Loop
         document.getElementById('loadPayloadBtn').addEventListener('click', () => {
-            const rawInboundValue = document.getElementById('targetUrlInput').value;
-            if (!rawInboundValue) return;
+            const rawInput = document.getElementById('targetUrlInput').value;
+            if (!rawInput) return;
 
-            const targetVideoId = extractVideoId(rawInboundValue);
-            
-            // Safety confirmation check
-            if (!targetVideoId || targetVideoId.length !== 11) {
-                document.getElementById('trackInfo').innerText = "❌ ERROR: TARGET IDENTIFIER INVALID.\nVERIFY ID LENGTH IS EXACTLY 11 CHARACTERS.";
+            const targetCode = cleanVideoCoordinates(rawInput);
+
+            if (!targetCode || targetCode.length < 5) {
+                document.getElementById('trackInfo').innerText = "❌ ERROR: SOURCE STRING CORRUPTED.\nCOULD NOT EXTRACT TARGET ALIGNMENT.";
                 return;
             }
 
-            // ⚡ DIRECT DEPLOYMENT EMBED PASS: Maps coordinates to frame safely
-            const iframe = document.getElementById('ytVideoFrame');
-            iframe.src = `https://youtube.com{targetVideoId}?autoplay=1&controls=1`;
+            // Map the clean variable to the standard web player structure
+            const targetUrl = `https://youtube.com{targetCode}?rel=0`;
+            document.getElementById('ytVideoFrame').src = targetUrl;
             
-            document.getElementById('targetUrlInput').value = ''; // Purge entry field line
-            document.getElementById('trackInfo').innerText = `BROADCAST ADDR: YT-${targetVideoId}\nSTATUS: TUNED DIRECTLY TO TARGET EMBED HUB`;
+            document.getElementById('trackInfo').innerText = `BROADCAST CONFIRMED: YT-${targetCode}\n⚠️ CLICK PLAY BUTTON INSIDE DISPLAY SCREEN TO ENGAGE STREAM.`;
         });
 
-        // Bind Enter key inside input line for immediate execution
+        // Action B: External Tab Deployment Bypass (Use if local security layers block the chassis frame)
+        document.getElementById('launchExternalBtn').addEventListener('click', () => {
+            const rawInput = document.getElementById('targetUrlInput').value;
+            if (!rawInput) return;
+
+            const targetCode = cleanVideoCoordinates(rawInput);
+
+            if (!targetCode) return;
+
+            const externalUrl = `https://youtube.com{targetCode}`;
+            window.open(externalUrl, '_blank');
+            document.getElementById('trackInfo').innerText = `TACTICAL OVERRIDE: TARGET SPAWNED IN INDEPENDENT TAB.\nMARKER: YT-${targetCode}`;
+        });
+
+        // Trigger loading when hitting Enter key directly in the entry field
         document.getElementById('targetUrlInput').addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 document.getElementById('loadPayloadBtn').click();
             }
         });
 
-        // Kill feed circuit breaker
+        // Clear display path completely
         document.getElementById('killFeedBtn').addEventListener('click', () => {
             document.getElementById('ytVideoFrame').src = 'about:blank';
             document.getElementById('trackInfo').innerText = "FEED ABSOLUTELY TERMINATED // CARRIER SIGNAL EMPTY.";
@@ -246,6 +251,7 @@
     </script>
 </body>
 </html>
+
 
 
 
