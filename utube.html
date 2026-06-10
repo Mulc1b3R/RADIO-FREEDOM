@@ -181,60 +181,35 @@
         <a href="index.html" class="return-link">&lt; RETURN TO MAIN PIRATE CHASSIS</a>
     </div>
 
-     <script>
-        // Extraction routine that extracts video codes safely
-        function cleanVideoCoordinates(input) {
-            const trimmed = input.trim();
-            if (!trimmed) return null;
-
-            // Handle common watch parameters strings
-            if (trimmed.includes('v=')) {
-                return trimmed.split('v=')[1].split('&')[0];
-            }
-            // Handle common share strings
-            if (trimmed.includes('youtu.be/')) {
-                return trimmed.split('youtu.be/')[1].split('?')[0];
-            }
-            // Handle common embed links
-            if (trimmed.includes('embed/')) {
-                return trimmed.split('embed/')[1].split('?')[0];
-            }
-            // Fallback: assume input is a clean 11-char slug
-            return trimmed;
-        }
-
+        <script>
         // Action A: In-Chassis Internal Loading Execution Loop
         document.getElementById('loadPayloadBtn').addEventListener('click', () => {
-            const rawInput = document.getElementById('targetUrlInput').value;
-            if (!rawInput) return;
-
-            const targetCode = cleanVideoCoordinates(rawInput);
-
-            if (!targetCode || targetCode.length < 5) {
-                document.getElementById('trackInfo').innerText = "❌ ERROR: SOURCE STRING CORRUPTED.\nCOULD NOT EXTRACT TARGET ALIGNMENT.";
+            // Read the exact value typed into the terminal box
+            const targetCode = document.getElementById('targetUrlInput').value.trim();
+            
+            // If empty or incorrect length, throw alert warning panel
+            if (!targetCode || targetCode.length !== 11) {
+                document.getElementById('trackInfo').innerText = "❌ ERROR: INVALID IDENTIFIER FORM.\nYOU MUST ENTER EXACTLY THE 11-CHARACTER VIDEO ID\nEXAMPLE: p9_LFdp0XLg";
                 return;
             }
 
-                     // 🔒 CORRECT SYNTAX: The $ sign is tightly welded directly to the opening brace
+            // ⚡ DIRECT IFRAME INJECTION: No regex, no string splitting, no failure points
             const targetUrl = `https://youtube.com{targetCode}?rel=0`;
             document.getElementById('ytVideoFrame').src = targetUrl;
             
-            document.getElementById('trackInfo').innerText = `BROADCAST CONFIRMED: YT-${targetCode}\n⚠️ CLICK PLAY BUTTON INSIDE DISPLAY SCREEN TO ENGAGE STREAM.`;
+            // Update HUD console panel readouts
+            document.getElementById('targetUrlInput').value = ''; 
+            document.getElementById('trackInfo').innerText = `BROADCAST CONFIRMED: YT-${targetCode}\n📡 SIGNAL CARRIER ENFORCED. CLICK VIDEO SCREEN TO STREAM.`;
         });
 
-        // Action B: External Tab Deployment Bypass (Use if local security layers block the chassis frame)
+        // Action B: External Tab Deployment Bypass (Use if local file security completely freezes frame)
         document.getElementById('launchExternalBtn').addEventListener('click', () => {
-            const rawInput = document.getElementById('targetUrlInput').value;
-            if (!rawInput) return;
+            const targetCode = document.getElementById('targetUrlInput').value.trim();
+            if (!targetCode || targetCode.length !== 11) return;
 
-            const targetCode = cleanVideoCoordinates(rawInput);
-
-            if (!targetCode) return;
-
-            // 🔒 CORRECT SYNTAX: The $ sign is tightly welded directly to the opening brace
             const externalUrl = `https://youtube.com{targetCode}`;
             window.open(externalUrl, '_blank');
-            document.getElementById('trackInfo').innerText = `TACTICAL OVERRIDE: TARGET SPAWNED IN INDEPENDENT TAB.\nMARKER: YT-${targetCode}`;
+            document.getElementById('trackInfo').innerText = `TACTICAL OVERRIDE: TARGET OPENED IN OUTSIDE TAB.\nMARKER: YT-${targetCode}`;
         });
 
         // Trigger loading when hitting Enter key directly in the entry field
@@ -250,6 +225,7 @@
             document.getElementById('trackInfo').innerText = "FEED ABSOLUTELY TERMINATED // CARRIER SIGNAL EMPTY.";
         });
     </script>
+
 
 </body>
 </html>
