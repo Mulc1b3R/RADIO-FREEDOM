@@ -168,91 +168,6 @@
         <div class="cockpit-screen" id="viewportScreen">
             <div style="color: #004400; padding: 20px; font-size: 11px;">MONITOR VIEWPORT POWERED DOWN // CARRIER EMPTY</div>
         </div>
-    <!-- STANDALONE ALGORITHM SEARCH ENGINE FACILITY -->
-<div class="crt-chassis" style="margin-top: 25px; border-color: #00aa00; box-shadow: 0 0 15px #003300;">
-    <div style="font-size: 11px; color: #00ff00; font-weight: bold; margin-bottom: 15px; letter-spacing: 1px;">📡 ALGORITHM SEARCH RADAR</div>
-    
-    <!-- Independent Search Box Input -->
-    <input type="text" id="algoSearchInput" class="matrix-input" style="border-color: #006600;" placeholder="ENTER ALGO KEYWORDS..." autocomplete="off">
-    
-    <div class="control-deck">
-        <button class="power-switch" id="executeAlgoSearchBtn" style="border-color: #00aa00; min-width: 100%;">SCAN ALGORITHM</button>
-    </div>
-
-    <!-- Live Dynamic Results Grid Output Box -->
-    <div id="algoResultsGrid" style="margin-top: 15px; text-align: left; max-height: 200px; overflow-y: auto; border: 1px solid #004400; background: #000300; padding: 5px; border-radius: 4px; font-size: 11px; line-height: 1.4;">
-        RADAR IDLE // STANDING BY FOR SCAN PHRASE...
-    </div>
-</div>
-
-<!-- INJECTED SEARCH CONTROLLER LOGIC -->
-<script>
-    // To execute live fetching, you generate a free browser API key inside Google Cloud Console
-    const YT_API_KEY = "AIzaSyD83e8QajtKREwafyXy6xNjqiVbE0ACjD8"; 
-
-    document.getElementById('executeAlgoSearchBtn').addEventListener('click', () => {
-        const query = document.getElementById('algoSearchInput').value.trim();
-        if (!query) return;
-
-        document.getElementById('algoResultsGrid').innerText = "📡 PROBING ALGORITHM NODES... PLEASE WAIT...";
-
-        // Construct the official secure query string path
-        const apiUrl = `https://googleapis.com{encodeURIComponent(query)}&type=video&key=${YT_API_KEY}`;
-
-        fetch(apiUrl)
-            .then(response => {
-                if (!response.ok) throw new Error("API Connection Rejected (Check API Key Status)");
-                return response.json();
-            })
-            .then(data => {
-                const resultsContainer = document.getElementById('algoResultsGrid');
-                resultsContainer.innerHTML = ''; // Wipe standby status text completely
-
-                if (!data.items || data.items.length === 0) {
-                    resultsContainer.innerText = "❌ NO MATRIX TRAJECTORIES RETURNED From Algorithm.";
-                    return;
-                }
-
-                // Loop through every video block returned by the algorithm
-                data.items.forEach(item => {
-                    const videoId = item.id.videoId;
-                    const videoTitle = item.snippet.title;
-
-                    // Build a tactile green grid selector row string element
-                    const resultRow = document.createElement('div');
-                    resultRow.style.padding = "6px";
-                    resultRow.style.borderBottom = "1px dashed #003300";
-                    resultRow.style.cursor = "pointer";
-                    resultRow.style.color = "#33ff33";
-                    resultRow.innerHTML = `📡 <strong>[YT-${videoId}]</strong> ${videoTitle}`;
-
-                    // ⚡ THE BRIDGE INTERCEPT: Clicking a search row hooks directly into your primary input box!
-                    resultRow.addEventListener('click', () => {
-                        // Drop the isolated code cleanly into your main video entry field
-                        document.getElementById('targetUrlInput').value = videoId;
-                        
-                        // Flash confirmation notification text on the radar readout
-                        document.getElementById('trackInfo').innerText = `RADAR LOCK COMPLETED.\nTARGET: YT-${videoId}\nHIT DYNAMIC INJECT TO EXECUTE FEED.`;
-                    });
-
-                    // Hover illumination metrics
-                    resultRow.addEventListener('mouseover', () => resultRow.style.background = '#001100');
-                    resultRow.addEventListener('mouseout', () => resultRow.style.background = 'transparent');
-
-                    resultsContainer.appendChild(resultRow);
-                });
-            })
-            .catch(error => {
-                console.error(error);
-                document.getElementById('algoResultsGrid').innerHTML = `❌ ERR: NETWORK INTERCEPT BLOCKED.<br><span style="color:#008800; font-size:10px;">${error.message}</span>`;
-            });
-    });
-
-    // Support entering the search via hitting the physical keyboard Enter key
-    document.getElementById('algoSearchInput').addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') document.getElementById('executeAlgoSearchBtn').click();
-    });
-</script>
 
         <!-- OVERRIDE CONTROLS -->
         <input type="text" id="targetUrlInput" class="matrix-input" placeholder="PASTE 11-CHAR ID (e.g. p9_LFdp0XLg)" autocomplete="off">
@@ -280,108 +195,88 @@
 
         <a href="index.html" class="return-link">&lt; RETURN TO MAIN PIRATE CHASSIS</a>
     </div>
-<!-- STANDALONE ZERO-API ALGORITHM BRIDGE FACILITY -->
-<div class="crt-chassis" style="margin-top: 25px; border-color: #008800; box-shadow: 0 0 15px #002200;">
-    <div style="font-size: 11px; color: #00ff00; font-weight: bold; margin-bottom: 10px; letter-spacing: 1px;">📡 ZERO-API SEARCH INTERCEPTOR</div>
-    <div style="font-size: 10px; color: #006600; margin-bottom: 15px; line-height: 1.3;">RUN YOUTUBE IN A SPLIT SCREEN. WHEN YOU COPY ANY VIDEO FROM THE ALGORITHM, CLICK INSIDE THE FIELD BELOW AND PUNCH CONTROLS.</div>
-    
-    <!-- Tactile Capture Dropzone Element Box -->
-    <input type="text" id="zeroApiCatchZone" class="matrix-input" style="border-color: #004400; background: #000300; text-align: center; font-size: 11px;" placeholder="[ CLICK HERE & PRESS CTRL+V ]" autocomplete="off">
-    
-    <div class="control-deck" style="margin-top: 10px; margin-bottom: 0;">
-        <button class="power-switch" id="clearCatchZoneBtn" style="border-color: #006600; min-width: 100%; font-size: 10px; padding: 6px 0;">FLUSH CATCH ZONE</button>
-    </div>
 
-    <!-- Intercept Logging List Feed Panel -->
-    <div id="interceptHistoryGrid" style="margin-top: 15px; text-align: left; max-height: 140px; overflow-y: auto; border: 1px solid #003300; background: #000200; padding: 5px; border-radius: 4px; font-size: 11px; font-family: monospace; color: #00aa00; line-height: 1.4;">
-        BRIDGE IDLE // STANDING BY FOR RADAR CLIPPINGS...
-    </div>
-</div>
+    <script>
+        // Extraction block that isolates clean 11-character video tokens safely
+        function cleanVideoCoordinates(input) {
+            const trimmed = input.trim();
+            if (!trimmed) return null;
 
-<!-- ZERO-API INTERCEPT CONNECTOR LOGIC -->
-<script>
-    // Local memory tracking history array to list caught entries across your session
-    let interceptedTracksRegistry = [];
-
-    // Core extraction utility (Preserves your original file token rules perfectly)
-    function captureIdFromRawString(input) {
-        const trimmed = input.trim();
-        if (!trimmed) return null;
-
-        if (trimmed.includes('v=')) return trimmed.split('v=')[1].split('&')[0];
-        if (trimmed.includes('youtu.be/')) return trimmed.split('youtu.be/')[1].split('?')[0];
-        if (trimmed.includes('embed/')) return trimmed.split('embed/')[1].split('?')[0];
-        
-        // Fallback: If it's already an 11-digit signature string, pass it directly
-        if (trimmed.length === 11 && !trimmed.includes('/') && !trimmed.includes('=')) {
+            if (trimmed.includes('v=')) {
+                return trimmed.split('v=')[1].split('&')[0];
+            }
+            if (trimmed.includes('youtu.be/')) {
+                return trimmed.split('youtu.be/')[1].split('?')[0];
+            }
+            if (trimmed.includes('embed/')) {
+                return trimmed.split('embed/')[1].split('?')[0];
+            }
             return trimmed;
         }
-        return null;
-    }
 
-    // Dynamic Input Listener to catch incoming data streams instantly upon paste execution
-    document.getElementById('zeroApiCatchZone').addEventListener('input', (e) => {
-        const inboundText = e.target.value;
-        const isolatedCode = captureIdFromRawString(inboundText);
+        // Action A: Dynamic Dom HTML String Overwrite Loop
+        document.getElementById('loadPayloadBtn').addEventListener('click', () => {
+            const rawInput = document.getElementById('targetUrlInput').value;
+            if (!rawInput) return;
 
-        if (!isolatedCode || isolatedCode.length !== 11) {
-            document.getElementById('trackInfo').innerText = "⚠️ INTERCEPT WARNING:\nPASTED TEXT COULD NOT BE SOLVED TO AN 11-CHAR CODE.";
-            e.target.value = ''; // Flush malformed garbage data instantly
-            return;
-        }
+            const targetCode = cleanVideoCoordinates(rawInput);
 
-        // ⚡ THE DIRECT INJECTION BRIDGE ROUTE: Smashes the ID straight into your main player entry line!
-        document.getElementById('targetUrlInput').value = isolatedCode;
+            if (!targetCode || targetCode.length !== 11) {
+                document.getElementById('trackInfo').innerText = "❌ ERROR: STRING DEVIATES FROM 11-CHAR CODE SIGNATURE.\nVERIFY TRAJECTORY TARGET.";
+                return;
+            }
 
-        // Force update the main dashboard status readout panels to confirm transmission lock-on
-        document.getElementById('trackInfo').innerText = `RADAR LOCK STABILIZED.\nTARGET CAPTURED: YT-${isolatedCode}\nHIT DYNAMIC INJECT TO EXECUTE FEED.`;
-
-        // Push target to local session logging list feed window array if unique
-        if (!interceptedTracksRegistry.includes(isolatedCode)) {
-            interceptedTracksRegistry.unshift(isolatedCode); // Insert at top of console feed stack
-            updateInterceptHistoryPanel();
-        }
-
-        // Automatically clean the input box so it is instantly primed for your next link paste clipping
-        e.target.value = '';
-    });
-
-    // Rebuild the visible green text log list rows underneath your capture box container
-    function updateInterceptHistoryPanel() {
-        const historyBox = document.getElementById('interceptHistoryGrid');
-        historyBox.innerHTML = ''; // Wipe standby system feedback completely
-
-        interceptedTracksRegistry.forEach((code, index) => {
-            const logRow = document.createElement('div');
-            logRow.style.padding = "4px 2px";
-            logRow.style.borderBottom = "1px dotted #002200";
-            logRow.style.cursor = "pointer";
-            logRow.style.color = "#33ff33";
-            logRow.innerHTML = `⚙️ <strong>[SLOT-${index + 1}]</strong> LOCKED LINK: YT-${code}`;
-
-            // Quick re-injection listener loop: Clicking an old logged slot locks it back to the main console field
-            logRow.addEventListener('click', () => {
-                document.getElementById('targetUrlInput').value = code;
-                document.getElementById('trackInfo').innerText = `RE-TUNED PRESET LOG TARGET.\nTARGET: YT-${code}\nHIT DYNAMIC INJECT TO STREAM.`;
-            });
-
-            logRow.addEventListener('mouseover', () => logRow.style.background = '#001100');
-            logRow.addEventListener('mouseout', () => logRow.style.background = 'transparent');
-            historyBox.appendChild(logRow);
+            // 🛠️ THE STRATEGY: Build your exact required native embed iframe code snippet as a raw text layout string
+            const dynamicIframeHtml = `<iframe width="560" height="315" src="https://youtube.com/embed/${targetCode}?si=rvPpTUoC7V4JefXB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+            
+            // Wipe the cockpit area completely clean and smash the brand-new element directly into the DOM
+            document.getElementById('viewportScreen').innerHTML = dynamicIframeHtml;
+            
+            // 📡 Log the exact raw code being generated for your debugging terminal specs panel
+            document.getElementById('generatedUrlLog').innerText = `INJECTED IFRAME: ${dynamicIframeHtml}`;
+            
+            // Clean up text input space and update dashboard metrics
+            document.getElementById('targetUrlInput').value = ''; 
+            document.getElementById('trackInfo').innerText = `BROADCAST CONFIRMED: YT-${targetCode}\n⚡ HARD DOM REWRITE STABILIZED. CLICK PLAY DIRECTLY INSIDE VIEWPORT screen.`;
         });
-    }
 
-    // Mechanical flush switch connection command binding
-    document.getElementById('clearCatchZoneBtn').addEventListener('click', () => {
-        interceptedTracksRegistry = [];
-        document.getElementById('zeroApiCatchZone').value = '';
-        document.getElementById('interceptHistoryGrid').innerText = "BRIDGE IDLE // STANDING BY FOR RADAR CLIPPINGS...";
-        console.log("[📡 SEARCH TERMINAL]: Clipboard capture registry flushed clear.");
-    });
-</script>
+        // Action B: External Tab Deployment Bypass 
+        document.getElementById('launchExternalBtn').addEventListener('click', () => {
+            const rawInput = document.getElementById('targetUrlInput').value;
+            if (!rawInput) return;
 
+            const targetCode = cleanVideoCoordinates(rawInput);
+            if (!targetCode || targetCode.length !== 11) return;
+
+            const externalUrl = `https://youtube.com/{targetCode}`;
+            window.open(externalUrl, '_blank');
+            document.getElementById('trackInfo').innerText = `TACTICAL OVERRIDE: SEPARATE WINDOW ASSIGNED.\nMARKER: YT-${targetCode}`;
+        });
+
+        // Execute loading loop automatically when user punches Enter inside entry field
+        document.getElementById('targetUrlInput').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('loadPayloadBtn').click();
+            }
+        });
+
+        // Purge cockpit area and restore down-state layout values
+       
+                // Clear display path completely
+        document.getElementById('killFeedBtn').addEventListener('click', () => {
+            document.getElementById('viewportScreen').innerHTML = '<div style="color: #004400; padding: 20px; font-size: 11px;">MONITOR VIEWPORT POWERED DOWN // CARRIER EMPTY</div>';
+            document.getElementById('trackInfo').innerText = "FEED ABSOLUTELY TERMINATED // CARRIER SIGNAL EMPTY.";
+            document.getElementById('generatedUrlLog').innerText = "GENERATED IFRAME STR: (EMPTY SIGNAL)";
+        });
+
+    </script>
 </body>
 </html>
+
+
+
+
+
 
 
 
