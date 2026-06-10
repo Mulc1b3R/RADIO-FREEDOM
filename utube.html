@@ -216,7 +216,7 @@
             }
 
             // Map the clean variable to the standard web player structure
-            const targetUrl = `https://youtube.com{targetCode}?rel=0`;
+            const targetUrl = `https://youtube.com/{targetCode}?rel=0`;
             document.getElementById('ytVideoFrame').src = targetUrl;
             
             document.getElementById('trackInfo').innerText = `BROADCAST CONFIRMED: YT-${targetCode}\n⚠️ CLICK PLAY BUTTON INSIDE DISPLAY SCREEN TO ENGAGE STREAM.`;
@@ -231,7 +231,7 @@
 
             if (!targetCode) return;
 
-            const externalUrl = `https://youtube.com{targetCode}`;
+            const externalUrl = `https://youtube.com/{targetCode}`;
             window.open(externalUrl, '_blank');
             document.getElementById('trackInfo').innerText = `TACTICAL OVERRIDE: TARGET SPAWNED IN INDEPENDENT TAB.\nMARKER: YT-${targetCode}`;
         });
