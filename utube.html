@@ -209,7 +209,7 @@
             }
 
             // ⚡ BUILD URL USING ACCURATE TEMPLATE LITERAL SYNTAX
-            const targetUrl = `https://youtube.com/watch?v=${targetCode}`;
+            const targetUrl = `https://www.youtube.com/watch?v=${targetCode}`;
             
             // Push link to iframe src attribute
             document.getElementById('ytVideoFrame').src = targetUrl;
@@ -227,7 +227,7 @@
             const targetCode = document.getElementById('targetUrlInput').value.trim();
             if (!targetCode || targetCode.length !== 11) return;
 
-            const externalUrl = `https://youtube.com/watch?v=${targetCode}`;
+            const externalUrl = `https://www.youtube.com/watch?v=${targetCode}`;
             
             document.getElementById('generatedUrlLog').innerHTML = `GENERATED URL (TAB): <a href="${externalUrl}" target="_blank" style="color: #33ff33; text-decoration: underline;">${externalUrl}</a>`;
             window.open(externalUrl, '_blank');
