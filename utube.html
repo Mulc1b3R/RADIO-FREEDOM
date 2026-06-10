@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Section 23 // YouTube Terminal</title>
+    <title>Section 23 // YouTube Dynamic Injection Terminal</title>
     <style>
         /* Phosphor Terminal Grid Layout Matrix - Identical Twin Profile */
         body {
@@ -35,7 +35,7 @@
             text-align: center;
         }
 
-        /* Viewport Frame for YouTube Object Mapping */
+        /* Viewport Frame Container for Dynamic Injection */
         .cockpit-screen {
             position: relative;
             width: 100%;
@@ -47,10 +47,11 @@
             margin-bottom: 15px;
         }
 
-        /* Enforce exact dimensional fitting for your custom iframe snippet */
-        #ytVideoFrame {
-            width: 100%;
-            height: 100%;
+        /* Enforce absolute 100% fitting for the dynamically injected snippet */
+        .cockpit-screen iframe {
+            width: 100% !important;
+            height: 100% !important;
+            border: 0 !important;
         }
 
         /* Console Control Deck Button Container */
@@ -163,90 +164,111 @@
 <body>
 
     <div class="crt-chassis">
-        <!-- COCKPIT VIEWPORT SCREEN -->
-        <div class="cockpit-screen">
-            <!-- ⚡ MOUNTED: Your exact required embed code layout template -->
-            <iframe id="ytVideoFrame" width="560" height="315" src="about:blank" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <!-- COCKPIT VIEWPORT SCREEN (Target for hard HTML text injection) -->
+        <div class="cockpit-screen" id="viewportScreen">
+            <div style="color: #004400; padding: 20px; font-size: 11px;">MONITOR VIEWPORT POWERED DOWN // CARRIER EMPTY</div>
         </div>
 
         <!-- OVERRIDE CONTROLS -->
-        <input type="text" id="targetUrlInput" class="matrix-input" placeholder="PASTE 11-CHAR VIDEO ID ONLY..." autocomplete="off">
+        <input type="text" id="targetUrlInput" class="matrix-input" placeholder="PASTE 11-CHAR ID (e.g. p9_LFdp0XLg)" autocomplete="off">
 
         <div class="control-deck">
             <div class="button-row">
-                <button class="power-switch" id="loadPayloadBtn">LOAD IN-FRAME</button>
+                <button class="power-switch" id="loadPayloadBtn">DYNAMIC INJECT</button>
                 <button class="power-switch" id="launchExternalBtn">LAUNCH TAB</button>
             </div>
-            <button class="power-switch" id="killFeedBtn" style="width: 100%;">KILL FEED SIGNAL</button>
+            <button class="power-switch" id="killFeedBtn" style="width: 100%;">PURGE MATRIX NODE</button>
         </div>
 
         <!-- READOUT PANEL -->
-        <div id="trackInfo">TERMINAL READY // INPUT EXCLUSIVELY ACCEPTS RAW 11-CHARACTER CODES...</div>
+        <div id="trackInfo">DYNAMIC ENGINE READY // BYPASSING DYNAMIC IFRAME INTERFACES...</div>
 
         <!-- REAL-TIME GENERATED LINK SPEC READOUT -->
-        <div id="generatedUrlLog">GENERATED URL: (EMPTY SIGNAL)</div>
+        <div id="generatedUrlLog">GENERATED IFRAME STR: (EMPTY SIGNAL)</div>
 
         <!-- HARDWARE FLEET SPECS METRICS -->
         <div class="terminal-specs">
-            SYS: YT-FAILSAFE EMBED v1.5<br>
-            SIGNAL: STRICT DEPLOYMENT EMULATION<br>
-            STATUS: PIPELINE SECURED
+            SYS: YT-DYNAMIC DOM GENERATOR v1.6<br>
+            SIGNAL: HARD REWRITE ROUTE PROTOCOL<br>
+            STATUS: SECURITY BYPASS RUNNING
         </div>
 
         <a href="index.html" class="return-link">&lt; RETURN TO MAIN PIRATE CHASSIS</a>
     </div>
 
     <script>
-        // Hardware Execution Loop
+        // Extraction block that isolates clean 11-character video tokens safely
+        function cleanVideoCoordinates(input) {
+            const trimmed = input.trim();
+            if (!trimmed) return null;
+
+            if (trimmed.includes('v=')) {
+                return trimmed.split('v=')[1].split('&')[0];
+            }
+            if (trimmed.includes('youtu.be/')) {
+                return trimmed.split('youtu.be/')[1].split('?')[0];
+            }
+            if (trimmed.includes('embed/')) {
+                return trimmed.split('embed/')[1].split('?')[0];
+            }
+            return trimmed;
+        }
+
+        // Action A: Dynamic Dom HTML String Overwrite Loop
         document.getElementById('loadPayloadBtn').addEventListener('click', () => {
-            // Read input code directly without risky array-splitting functions
-            const targetCode = document.getElementById('targetUrlInput').value.trim();
+            const rawInput = document.getElementById('targetUrlInput').value;
+            if (!rawInput) return;
+
+            const targetCode = cleanVideoCoordinates(rawInput);
 
             if (!targetCode || targetCode.length !== 11) {
-                document.getElementById('trackInfo').innerText = "❌ ERROR: SOURCE STRING DEVIATES FROM 11-CHAR LIMIT.\nEXAMPLE ENTRY format: p9_LFdp0XLg";
-                document.getElementById('generatedUrlLog').innerText = "GENERATED URL: (ABORTED)";
+                document.getElementById('trackInfo').innerText = "❌ ERROR: STRING DEVIATES FROM 11-CHAR CODE SIGNATURE.\nVERIFY TRAJECTORY TARGET.";
                 return;
             }
 
-            // ⚡ BUILD URL USING ACCURATE TEMPLATE LITERAL SYNTAX
-            const targetUrl = `https://www.youtube.com/watch?v=${targetCode}`;
+            // 🛠️ THE STRATEGY: Build your exact required native embed iframe code snippet as a raw text layout string
+            const dynamicIframeHtml = `<iframe width="560" height="315" src="https://youtube.com{targetCode}?si=JLfOwnHFl-nygXIK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
             
-            // Push link to iframe src attribute
-            document.getElementById('ytVideoFrame').src = targetUrl;
+            // Wipe the cockpit area completely clean and smash the brand-new element directly into the DOM
+            document.getElementById('viewportScreen').innerHTML = dynamicIframeHtml;
             
-            // 📡 OUTPUT TO LIVE DIAGNOSTIC LINK LOG PANEL
-            document.getElementById('generatedUrlLog').innerHTML = `GENERATED URL: <a href="${targetUrl}" target="_blank" style="color: #33ff33; text-decoration: underline;">${targetUrl}</a>`;
+            // 📡 Log the exact raw code being generated for your debugging terminal specs panel
+            document.getElementById('generatedUrlLog').innerText = `INJECTED IFRAME: ${dynamicIframeHtml}`;
             
-            // Update UI dashboard readouts
+            // Clean up text input space and update dashboard metrics
             document.getElementById('targetUrlInput').value = ''; 
-            document.getElementById('trackInfo').innerText = `BROADCAST CONFIRMED: YT-${targetCode}\n📡 SIGNAL CARRIER ENFORCED. CLICK PLAY ON VIDEO CONTAINER SCREEN.`;
+            document.getElementById('trackInfo').innerText = `BROADCAST CONFIRMED: YT-${targetCode}\n⚡ HARD DOM REWRITE STABILIZED. CLICK PLAY DIRECTLY INSIDE VIEWPORT screen.`;
         });
 
-        // External Window Deployment Circuit
+        // Action B: External Tab Deployment Bypass 
         document.getElementById('launchExternalBtn').addEventListener('click', () => {
-            const targetCode = document.getElementById('targetUrlInput').value.trim();
+            const rawInput = document.getElementById('targetUrlInput').value;
+            if (!rawInput) return;
+
+            const targetCode = cleanVideoCoordinates(rawInput);
             if (!targetCode || targetCode.length !== 11) return;
 
-            const externalUrl = `https://www.youtube.com/watch?v=${targetCode}`;
-            
-            document.getElementById('generatedUrlLog').innerHTML = `GENERATED URL (TAB): <a href="${externalUrl}" target="_blank" style="color: #33ff33; text-decoration: underline;">${externalUrl}</a>`;
+            const externalUrl = `https://youtube.com{targetCode}`;
             window.open(externalUrl, '_blank');
             document.getElementById('trackInfo').innerText = `TACTICAL OVERRIDE: SEPARATE WINDOW ASSIGNED.\nMARKER: YT-${targetCode}`;
         });
 
-        // Listen for Enter key shortcut commands inside entry box
+        // Execute loading loop automatically when user punches Enter inside entry field
         document.getElementById('targetUrlInput').addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 document.getElementById('loadPayloadBtn').click();
             }
         });
 
-        // Emergency Clear Command Button
+        // Purge cockpit area and restore down-state layout values
+       
+                // Clear display path completely
         document.getElementById('killFeedBtn').addEventListener('click', () => {
-            document.getElementById('ytVideoFrame').src = 'about:blank';
+            document.getElementById('viewportScreen').innerHTML = '<div style="color: #004400; padding: 20px; font-size: 11px;">MONITOR VIEWPORT POWERED DOWN // CARRIER EMPTY</div>';
             document.getElementById('trackInfo').innerText = "FEED ABSOLUTELY TERMINATED // CARRIER SIGNAL EMPTY.";
-            document.getElementById('generatedUrlLog').innerText = "GENERATED URL: (EMPTY SIGNAL)";
+            document.getElementById('generatedUrlLog').innerText = "GENERATED IFRAME STR: (EMPTY SIGNAL)";
         });
+
     </script>
 </body>
 </html>
