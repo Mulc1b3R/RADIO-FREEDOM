@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Section 23 // YouTube Playlist Terminal</title>
+    <style>
+        /* Phosphor Terminal Grid Layout Matrix - Identical Twin Profile */
+        body {
+            background-color: #000000;
+            color: #33ff33;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 5px #33ff33;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-y: auto; 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .crt-chassis {
+            border: 2px solid #33ff33;
+            background: rgba(0, 15, 0, 0.9);
+            box-shadow: 0 0 20px #005500, inset 0 0 15px #003300;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Viewport Frame for YouTube Object Mapping */
+        .cockpit-screen {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border: 1px solid #005500;
+            background: #000;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        /* Enforce absolute 100% fitting for the dynamically injected snippet */
+        .cockpit-screen iframe {
+            width: 100% !important;
+            height: 100% !important;
+            border: 0 !important;
+        }
+
+        /* Console Control Deck Button Container */
+        .control-deck {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .button-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        /* 1990s Arcade Tactile Push Button Style */
+        .power-switch {
+            background: #000000;
+            border: 2px solid #33ff33;
+            color: #33ff33;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 12px 5px;
+            cursor: pointer;
+            box-shadow: 0 0 10px #005500;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            flex: 1;
+            text-shadow: none;
+        }
+
+        .power-switch:hover {
+            background: #33ff33;
+            color: #000000;
+            box-shadow: 0 0 20px #33ff33;
+        }
+
+        /* Tactical Command Input Box */
+        .matrix-input {
+            width: 100%;
+            background: #000500;
+            border: 1px solid #005500;
+            color: #33ff33;
+            font-family: 'Courier New', monospace;
+            padding: 10px;
+            box-sizing: border-box;
+            font-size: 12px;
+            border-radius: 4px;
+            outline: none;
+            text-shadow: 0 0 3px #33ff33;
+        }
+        .matrix-input:focus {
+            border-color: #33ff33;
+            box-shadow: 0 0 8px #005500;
+        }
+
+        /* Responsive Dashboard text readout window */
+        #trackInfo {
+            font-size: 12px;
+            margin: 25px 0;
+            height: 65px;
+            overflow: hidden;
+            border: 1px solid #005500;
+            padding: 10px;
+            background: #000500;
+            border-radius: 4px;
+            text-align: left;
+            line-height: 1.4;
+            word-break: break-all;
+        }
+
+        /* Terminal Logging Box Readout Window */
+        #generatedUrlLog {
+            font-size: 11px; 
+            color: #00aa00; 
+            margin: 15px 0; 
+            padding: 8px; 
+            background: #000a00; 
+            border: 1px dashed #004400; 
+            border-radius: 4px; 
+            text-align: left; 
+            word-break: break-all; 
+            font-family: monospace;
+        }
+
+        .terminal-specs {
+            font-size: 11px;
+            color: #008800;
+            margin-top: 12px;
+            line-height: 1.6 !important;
+            padding-bottom: 5px;
+        }
+
+        /* 📡 DYNAMIC MATRIX COMPONENT LAYOUT ROW */
+        .channel-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            border: 1px dashed #004400;
+            margin-bottom: 6px;
+            cursor: pointer;
+            color: #33ff33;
+            font-size: 11px;
+            transition: all 0.2s ease;
+        }
+        .channel-row:hover {
+            background: #001100;
+            border-color: #33ff33;
+        }
+
+        .tag-manifest {
+            font-size: 9px;
+            color: #008800;
+            background: #050505;
+            padding: 2px 4px;
+            border: 1px solid #003300;
+            border-radius: 3px;
+        }
+
+        /* Core Return Link Anchor Style */
+        .return-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #008800;
+            text-decoration: none;
+            font-size: 11px;
+        }
+        .return-link:hover {
+            color: #33ff33;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="crt-chassis">
+        <!-- COCKPIT VIEWPORT SCREEN (Target for hard HTML text injection) -->
+        <div class="cockpit-screen" id="viewportScreen">
+            <div style="color: #004400; padding: 20px; font-size: 11px;">MONITOR VIEWPORT POWERED DOWN // CARRIER EMPTY</div>
+        </div>
+
+        <!-- OVERRIDE CONTROLS -->
+        <input type="text" id="targetUrlInput" class="matrix-input" placeholder="PASTE 11-CHAR ID (e.g. p9_LFdp0XLg)" autocomplete="off">
+
+        <div class="control-deck">
+            <!-- SEQUENCER BACK / FORWARD HARDWARE BUTTONS -->
+            <div class="button-row" style="margin-bottom: 10px;">
+                <button class="power-switch" id="prevTrackBtn" style="border-color: #006600; background: #000300;">◀ PREV DECK</button>
+                <button class="power-switch" id="nextTrackBtn" style="border-color: #006600; background: #000300;">NEXT DECK ▶</button>
+            </div>
+            
+            <div class="button-row">
+                <button class="power-switch" id="loadPayloadBtn">DYNAMIC INJECT</button>
+                <button class="power-switch" id="launchExternalBtn">LAUNCH TAB</button>
+            </div>
+            <button class="power-switch" id="killFeedBtn" style="width: 100%;">PURGE MATRIX NODE</button>
+        </div>
+
+        <!-- READOUT PANEL -->
+        <div id="trackInfo">DYNAMIC ENGINE READY // BYPASSING DYNAMIC IFRAME INTERFACES...</div>
+
+        <!-- REAL-TIME GENERATED LINK SPEC READOUT -->
+        <div id="generatedUrlLog">GENERATED IFRAME STR: (EMPTY SIGNAL)</div>
+
+        <!-- HARDWARE FLEET SPECS METRICS -->
+        <div class="terminal-specs" style="margin-bottom: 15px;">
+            SYS: YT-DYNAMIC DOM GENERATOR v1.8<br>
+            SIGNAL: HARD REWRITE ROUTE PROTOCOL<br>
+            STATUS: SECURITY BYPASS RUNNING
+        </div>
+
+        <!-- 📡 STATION MASTER REGISTRY DIRECTORY PANEL -->
+        <div style="font-size: 11px; color: #00ff00; font-weight: bold; text-align: left; margin-bottom: 8px; letter-spacing: 1px;">📥 PLAYLIST MANIFEST DIRECTORY</div>
+        <div id="directoryGrid" style="max-height: 150px; overflow-y: auto; border: 1px solid #004400; background: #000300; padding: 6px; border-radius: 4px; text-align: left;">
+            <!-- Generated rows map here -->
+        </div>
+
+        <a href="index.html" class="return-link">&lt; RETURN TO MAIN PIRATE CHASSIS</a>
+    </div>
+
+    <script>
+        // 🗄️ PLAYLIST MANIFEST REGISTRY (Add your custom local JSON filenames here)
+        const masterPlaylistFiles = [
+            "ambient-static.json",
+            "Big Beat.json"
+        ];
+
+        // Global state capacitors mirroring radio architecture
+        window.activeStreamingDeck = [];
+        window.currentCollection = "NONE";
+        let activeTrackIndex = 0;
+
+        // Core extraction block that isolates clean 11-character video tokens safely
+        function cleanVideoCoordinates(input) {
+            const trimmed = input.trim();
+            if (!trimmed) return null;
+
+            if (trimmed.includes('v=')) {
+                return trimmed.split('v=')[1].split('&')[0];
+            }
+            if (trimmed.includes('youtu.be/')) {
+                return trimmed.split('youtu.be/')[1].split('?')[0];
+            }
+            if (trimmed.includes('embed/')) {
+                return trimmed.split('embed/')[1].split('?')[0];
+            }
+            return trimmed;
+        }
+
+        // MASTER INJECTION TERMINAL COMMAND: Writes the iframe into the viewport screen
+        function executeTargetPlaylistInjection(targetCode, sourceContext) {
+            const dynamicIframeHtml = `<iframe width="560" height="315" src="https://youtube.com{targetCode}?si=rvPpTUoC7V4JefXB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+            
+            document.getElementById('viewportScreen').innerHTML = dynamicIframeHtml;
+            document.getElementById('generatedUrlLog').innerText = `INJECTED IFRAME: ${dynamicIframeHtml}`;
+            document.getElementById('trackInfo').innerText = `BROADCAST CONFIRMED: YT-${targetCode}\n📡 SOURCE: [${sourceContext}]\n⚡ DOM REWRITE COMPLETED. CLICK PLAY WITHIN COCKPIT SCREEN.`;
+        }
+
+        
+		        // Initialize and draw the Radio-style directory grid elements onto the face
+        function initializeDirectoryGrid() {
+            const grid = document.getElementById("directoryGrid");
+            grid.innerHTML = "";
+
+            masterPlaylistFiles.forEach(fileName => {
+                const cleanName = fileName.replace(".json", "").replace(/[-_]/g, " ").toUpperCase();
+                
+                const row = document.createElement("div");
+                row.className = "channel-row";
+                row.innerHTML = `<span>📂 ${cleanName}</span> <span class="tag-manifest">${fileName}</span>`;
+                
+                // 🚀 INTERCEPT CAPACITOR FILE SWAP OVERRIDE LOOP
+                row.addEventListener("click", async () => {
+                    try {
+                        const fileResponse = await fetch(fileName);
+                        if (!fileResponse.ok) throw new Error(`HTTP network fault code: ${fileResponse.status}`);
+                        
+                        const data = await fileResponse.json();
+                        
+                        if (data && Array.isArray(data.videos) && data.videos.length > 0) {
+                            // Lock manifest fields into global window arrays
+                            window.activeStreamingDeck = data.videos.slice();
+                            window.currentCollection = fileName;
+                            activeTrackIndex = 0;
+
+                            // Grab the baseline target track coordinate out of the new queue immediately
+                            const initialTrackId = window.activeStreamingDeck[activeTrackIndex];
+                            const labelContext = `${data.playlistName ? data.playlistName.toUpperCase() : cleanName} - SLOT 1/${window.activeStreamingDeck.length}`;
+                            
+                            executeTargetPlaylistInjection(initialTrackId, labelContext);
+                        } else {
+                            document.getElementById('trackInfo').innerText = `❌ ERR: MANIFEST ${fileName} EMPTY OR MALFORMED.`;
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        document.getElementById('trackInfo').innerText = `❌ ERR: FAULT LOADING FILE -> ${fileName}\n${err.message}`;
+                    }
+                });
+
+                grid.appendChild(row);
+            });
+        }
+
+        // Action A: Dynamic Dom HTML String Overwrite Loop (Manual Override box)
+        document.getElementById('loadPayloadBtn').addEventListener('click', () => {
+            const rawInput = document.getElementById('targetUrlInput').value;
+            if (!rawInput) return;
+
+            const targetCode = cleanVideoCoordinates(rawInput);
+
+            if (!targetCode || targetCode.length !== 11) {
+                document.getElementById('trackInfo').innerText = "❌ ERROR: STRING DEVIATES FROM 11-CHAR CODE SIGNATURE.\nVERIFY TRAJECTORY TARGET.";
+                return;
+            }
+
+            executeTargetPlaylistInjection(targetCode, "MANUAL INTERCEPT OVERRIDE");
+            document.getElementById('targetUrlInput').value = ''; 
+        });
+
+        // SEQUENCER COMMAND: Shift forward down the active manifest list
+        document.getElementById('nextTrackBtn').addEventListener('click', () => {
+            if (!window.activeStreamingDeck || window.activeStreamingDeck.length === 0) {
+                document.getElementById('trackInfo').innerText = "⚠️ INTERCEPT ABORTED:\nNO ACTIVE PLAYLIST LOADED FROM MANIFEST DIRECTORY.";
+                return;
+            }
+
+            activeTrackIndex = (activeTrackIndex + 1) % window.activeStreamingDeck.length;
+            const targetCode = window.activeStreamingDeck[activeTrackIndex];
+            const cleanLabel = `${window.currentCollection.toUpperCase()} - SLOT ${activeTrackIndex + 1}/${window.activeStreamingDeck.length}`;
+            
+            executeTargetPlaylistInjection(targetCode, cleanLabel);
+        });
+
+        // SEQUENCER COMMAND: Shift backward up the active manifest list
+        document.getElementById('prevTrackBtn').addEventListener('click', () => {
+            if (!window.activeStreamingDeck || window.activeStreamingDeck.length === 0) {
+                document.getElementById('trackInfo').innerText = "⚠️ INTERCEPT ABORTED:\nNO ACTIVE PLAYLIST LOADED FROM MANIFEST DIRECTORY.";
+                return;
+            }
+
+            activeTrackIndex = (activeTrackIndex - 1 + window.activeStreamingDeck.length) % window.activeStreamingDeck.length;
+            const targetCode = window.activeStreamingDeck[activeTrackIndex];
+            const cleanLabel = `${window.currentCollection.toUpperCase()} - SLOT ${activeTrackIndex + 1}/${window.activeStreamingDeck.length}`;
+            
+            executeTargetPlaylistInjection(targetCode, cleanLabel);
+        });
+
+        // Action B: External Tab Deployment Bypass 
+        document.getElementById('launchExternalBtn').addEventListener('click', () => {
+            const rawInput = document.getElementById('targetUrlInput').value;
+            let targetCode = rawInput ? cleanVideoCoordinates(rawInput) : (window.activeStreamingDeck ? window.activeStreamingDeck[activeTrackIndex] : null);
+            
+            if (!targetCode || targetCode.length !== 11) return;
+
+            const externalUrl = `https://youtube.com{targetCode}`;
+            window.open(externalUrl, '_blank');
+            document.getElementById('trackInfo').innerText = `TACTICAL OVERRIDE: SEPARATE WINDOW ASSIGNED.\nMARKER: YT-${targetCode}`;
+        });
+
+        // Keyboard Enter key monitoring rule
+        document.getElementById('targetUrlInput').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') document.getElementById('loadPayloadBtn').click();
+        });
+
+        // Circuit breaker purge routine
+        document.getElementById('killFeedBtn').addEventListener('click', () => {
+            document.getElementById('viewportScreen').innerHTML = '<div style="color: #004400; padding: 20px; font-size: 11px;">MONITOR VIEWPORT POWERED DOWN // CARRIER EMPTY</div>';
+            document.getElementById('trackInfo').innerText = "FEED ABSOLUTELY TERMINATED // CARRIER SIGNAL EMPTY.";
+            document.getElementById('generatedUrlLog').innerText = "GENERATED IFRAME STR: (EMPTY SIGNAL)";
+            window.activeStreamingDeck = [];
+            window.currentCollection = "NONE";
+        });
+
+        // Arm the console list builder on page startup cycle
+        document.addEventListener("DOMContentLoaded", initializeDirectoryGrid);
+    </script>
+</body>
+</html>
+
