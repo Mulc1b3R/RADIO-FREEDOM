@@ -152,7 +152,7 @@
         initVisualizerEngine();
 
         // 📡 1. DYNAMIC SOURCE RESOLUTION GATE
-        let activeChannelTargetFile = "load.json"; 
+        let activeChannelTargetFile = "play.json"; 
         if (window.currentCollection && window.currentCollection.endsWith('.json')) {
             activeChannelTargetFile = window.currentCollection;
         } else if (window.PRESET_CHANNELS && window.PRESET_CHANNELS[window.currentChannelIndex]) {
